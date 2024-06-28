@@ -1,4 +1,4 @@
-// @flow
+
 
 import type { Alignment } from './Alignment';
 

@@ -1,4 +1,4 @@
-// @flow
+
 
 import Action from '../Action';
 import BlotFormatter from '../../BlotFormatter';
@@ -13,7 +13,7 @@ export default class AlignAction extends Action {
 
   constructor(formatter: BlotFormatter) {
     super(formatter);
-    this.aligner = new DefaultAligner(formatter.options.align);
+    this.aligner = new DefaultAligner(formatter.options.align, formatter);
     this.toolbar = new DefaultToolbar();
   }
 

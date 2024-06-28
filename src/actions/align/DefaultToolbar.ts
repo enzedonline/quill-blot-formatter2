@@ -1,4 +1,4 @@
-// @flow
+
 
 import { Toolbar } from './Toolbar';
 import { Aligner } from './Aligner';
@@ -6,7 +6,7 @@ import type { Alignment } from './Alignment';
 import BlotFormatter from '../../BlotFormatter';
 
 export default class DefaultToolbar implements Toolbar {
-  toolbar: ?HTMLElement;
+  toolbar: HTMLElement | null;
   buttons: HTMLElement[];
 
   constructor() {
@@ -48,7 +48,10 @@ export default class DefaultToolbar implements Toolbar {
     }
 
     if (formatter.options.align.toolbar.svgStyle) {
-      Object.assign(button.children[0].style, formatter.options.align.toolbar.svgStyle);
+      const childElement = button.children[0] as HTMLElement; // Type assertion
+      if (childElement) {
+        Object.assign(childElement.style, formatter.options.align.toolbar.svgStyle);
+      }
     }
   }
 

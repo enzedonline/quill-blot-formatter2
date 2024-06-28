@@ -1,16 +1,12 @@
 # Changelog
 
-## [v1.0.5] - 2018-03-28
+## [v2.0.0] - 2024-06-26
 ### Changed
-- updated demo link in README
-
-## [v1.0.4] - 2018-02-05
-### Changed
-- when ResizeAction finishes (mouse up) set the `height` and `width` attributes rather than the `style`. This emits the text-change quill event and updates the document which can be seen in quill.getContents()
-
-### Fixed
-- typescript definition for `BlotSpec.getActions()` and `Options.specs`
-
-## [v1.0.3] - 2018-01-15
-### Added
-- TypeScript definitions
+Converted all to typescript, drop flow
+Custom formats now create span wrapper around image with css applied and
+  css directly on iframe (see src\actions\align\AlignFormats.ts)
+Formats registered in BlotFormatter.ts
+CSS style definitions in src\css\quill-blot-formatter-2.css
+Still to-do:
+  ImageAlign format class is not satisfactory but it works. Tried to copy 'size' format but ran into 
+  `create is not a function` type error. 

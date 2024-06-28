@@ -1,4 +1,4 @@
-// @flow
+
 
 import BlotSpec from './BlotSpec';
 import BlotFormatter from '../BlotFormatter';
@@ -8,9 +8,9 @@ const PROXY_IMAGE_CLASS = 'blot-formatter__proxy-image';
 
 export default class UnclickableBlotSpec extends BlotSpec {
   selector: string;
-  unclickable: ?HTMLElement;
-  nextUnclickable: ?HTMLElement;
-  proxyImage: HTMLImageElement;
+  unclickable: HTMLElement | null;
+  nextUnclickable: HTMLElement | null;
+  proxyImage!: HTMLImageElement;
 
   constructor(formatter: BlotFormatter, selector: string) {
     super(formatter);
@@ -33,11 +33,11 @@ export default class UnclickableBlotSpec extends BlotSpec {
     this.formatter.quill.on('text-change', this.onTextChange);
   }
 
-  getTargetElement(): ?HTMLElement {
+  getTargetElement(): HTMLElement | null {
     return this.unclickable;
   }
 
-  getOverlayElement(): ?HTMLElement {
+  getOverlayElement(): HTMLElement | null {
     return this.unclickable;
   }
 
@@ -50,8 +50,10 @@ export default class UnclickableBlotSpec extends BlotSpec {
   createProxyImage(): HTMLElement {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    context.globalAlpha = 0;
-    context.fillRect(0, 0, 1, 1);
+    if (context) {
+      context.globalAlpha = 0;
+      context.fillRect(0, 0, 1, 1);
+    }
 
     this.proxyImage = document.createElement('img');
     this.proxyImage.src = canvas.toDataURL('image/png');
@@ -87,7 +89,8 @@ export default class UnclickableBlotSpec extends BlotSpec {
   }
 
   onTextChange = () => {
-    Array.from(document.querySelectorAll(`${this.selector}:not([${MOUSE_ENTER_ATTRIBUTE}])`))
+    Array.from(document.querySelectorAll(this.selector))
+      .filter((element): element is HTMLElement => !(element.hasAttribute(MOUSE_ENTER_ATTRIBUTE)))
       .forEach((unclickable) => {
         unclickable.setAttribute(MOUSE_ENTER_ATTRIBUTE, 'true');
         unclickable.addEventListener('mouseenter', this.onMouseEnter);

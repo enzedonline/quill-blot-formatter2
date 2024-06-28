@@ -1,4 +1,4 @@
-// @flow
+
 
 import Quill from 'quill';
 import Action from './Action';
@@ -20,10 +20,14 @@ export default class DeleteAction extends Action {
     }
 
     // delete or backspace
-    if (e.keyCode === 46 || e.keyCode === 8) {
-      const blot = Quill.find(this.formatter.currentSpec.getTargetElement());
-      if (blot) {
-        blot.deleteAt(0);
+    if (e.code === 'Delete' || e.code === 'Backspace') {
+      const targetElement = this.formatter.currentSpec.getTargetElement();
+      if (targetElement) {
+        const blot = Quill.find(targetElement);
+        if (blot) {
+          const index = this.formatter.quill.getIndex(blot);
+          this.formatter.quill.deleteText(index, 1); // Deletes 1 character from index position
+        }
       }
       this.formatter.hide();
     }

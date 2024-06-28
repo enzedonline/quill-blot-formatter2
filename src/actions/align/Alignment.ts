@@ -1,5 +1,3 @@
-// @flow
-
 export type Alignment = {
   name: string,
   icon: string;

@@ -1,10 +1,10 @@
-// @flow
+
 
 import BlotSpec from './BlotSpec';
 import BlotFormatter from '../BlotFormatter';
 
 export default class ImageSpec extends BlotSpec {
-  img: ?HTMLElement;
+  img: HTMLElement | null;
 
   constructor(formatter: BlotFormatter) {
     super(formatter);
@@ -15,7 +15,7 @@ export default class ImageSpec extends BlotSpec {
     this.formatter.quill.root.addEventListener('click', this.onClick);
   }
 
-  getTargetElement(): ?HTMLElement {
+  getTargetElement(): HTMLElement | null {
     return this.img;
   }
 

@@ -1,38 +1,22 @@
-# Quill Blot Formatter
+# Quill Blot Formatter 2 
 
-A [quill](https://quilljs.com/) module to format document [blots](https://github.com/quilljs/parchment#blots). Heavily inspired by [quill-image-resize-module](https://github.com/kensnyder/quill-image-resize-module). Out of the box supports resizing and realigning images and iframe videos, but can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
-
-## Demo
-[demo](https://codesandbox.io/s/4wnwllnnl9)
-
-## Installation
-Using `yarn`:
-```
-yarn add quill-blot-formatter
-```
-
-Using `npm`:
-```
-npm install --save quill-blot-formatter
-```
+An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter).
+to make alignments compatible with Quill V2.
+This implementation is exported as a single minified compiled js (/dist/js/quill-blot-formatter-2.min.js). 
+Clone and recompile if you need the node modules (see original blot-formatter for config).
+Alignment requires relevant css classes defined - see /dist/css/quill-blot-formatter-2.css.
 
 ## Usage
 ### As Module
 ```js
 import Quill from 'quill';
 
-// from the index, which exports a lot of useful modules
-import BlotFormatter from 'quill-blot-formatter';
-
-// or, from each individual module
-import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
-
-Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/blotFormatter2', BlotFormatter2);
 
 const quill = new Quill(..., {
   modules: {
     ...
-    blotFormatter: {
+    blotFormatter2: {
       // see config options below
     }
   }
@@ -40,17 +24,17 @@ const quill = new Quill(..., {
 ```
 
 ### Script Tag
-`quill-blot-formatter.min.js` is provided which exports the same modules as `index.js` under the global `QuillBlotFormatter`.
+`quill-blot-formatter-2.min.js` is provided which exports the same modules as `index.js` under the global `QuillBlotFormatter`.
 
 ```html
 <script src="<quill>"></script>
-<script src="node_modules/quill-blot-formatter/dist/quill-blot-formatter.min.js"></script>
+<script src="some-path/quill-blot-formatter-2.min.js"></script>
 <script>
-  Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+  Quill.register('modules/blotFormatter2', QuillBlotFormatter2.default);
   const quill = new Quill(..., {
       modules: {
           ...
-          blotFormatter: {
+          blotFormatter2: {
             // see config options below
           }
       }
@@ -60,7 +44,7 @@ const quill = new Quill(..., {
 ```
 
 ## BlotSpec
-The [`BlotSpec`](https://github.com/Fandom-OSS/quill-blot-formatter/blob/master/src/specs/BlotSpec.js) classes define how `BlotFormatter` interacts with blots. They take the `BlotFormatter` as a constructor arg and have the following functions:
+The `BlotSpec` (/src/specs/BlotSpec.ts) classes define how `BlotFormatter` interacts with blots. They take the `BlotFormatter` as a constructor arg and have the following functions:
 
 ### `init(): void`
 Called after all specs have been constructed. Use this to bind to quill events to determine when to activate a specific spec.
@@ -81,10 +65,10 @@ After the spec is activated this should set the quill selection using [`setSelec
 Called when the spec is deactivated by the user clicking away from the blot. Use this to clean up any state in the spec during activation.
 
 ### Notes
-Each spec should call `this.formatter.show(this);` to request activation. See [`specs/`](https://github.com/Fandom-OSS/quill-blot-formatter/tree/master/src/specs) for the built-in specs.
+Each spec should call `this.formatter.show(this);` to request activation. See `specs/` (/src/specs) for the built-in specs.
 
 ## Action
-The [`Action`](https://github.com/Fandom-OSS/quill-blot-formatter/blob/master/src/actions/Action.js) classes define the actions available to a blot once its spec is activated. They take the `BlotFormatter` as a constructor arg and have the following functions:
+The `Action` (/src/actions/Action.ts) classes define the actions available to a blot once its spec is activated. They take the `BlotFormatter` as a constructor arg and have the following functions:
 
 ### `onCreate(): void`
 Called immediately after the action is created. Use this to bind quill events and create elements to attach to the overlay.
@@ -95,7 +79,7 @@ Called when the formatter has changed something on the blot. Use this to update 
 ### `onDestroy(): void`
 Called when the formatter is hidden by the user.
 
-See [`actions/`](https://github.com/Fandom-OSS/quill-blot-formatter/tree/master/src/actions) for the existing actions.
+See `actions/` (/src/actions) for the existing actions.
 
 ## Options
 Using quill module options it's easy to disable existing specs, actions, or to override any of the styles provided by this module. For example: if you wanted to remove resizing, support only images, and change the overlay border the following config would work:
@@ -104,15 +88,9 @@ Using quill module options it's easy to disable existing specs, actions, or to o
 import Quill from 'quill';
 
 // from main module
-import BlotFormatter, { AlignAction, DeleteAction, ImageSpec } from 'quill-blot-formatter'
+import BlotFormatter2, { AlignAction, DeleteAction, ImageSpec } from 'quill-blot-formatter2'
 
-// or, from individual modules
-import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
-import AlignAction from 'quill-blot-formatter/dist/actions/align/AlignAction';
-import DeleteAction from 'quill-blot-formatter/dist/actions/DeleteAction';
-import ImageSpec from 'quill-blot-formatter/dist/specs/ImageSpec';
-
-Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/blotFormatter2', BlotFormatter2);
 
 class CustomImageSpec extends ImageSpec {
     getActions() {
@@ -123,7 +101,7 @@ class CustomImageSpec extends ImageSpec {
 const quill = new Quill(..., {
   modules: {
     ...
-    blotFormatter: {
+    blotFormatter2: {
       specs: [
         CustomImageSpec,
       ],
@@ -138,6 +116,6 @@ const quill = new Quill(..., {
 ```
 
 ### Notes
-- For all supported options as well as the default see [`Options`](https://github.com/Fandom-OSS/quill-blot-formatter/blob/master/src/Options.js).
+- For all supported options as well as the default see `Options` (/src/Options.js).
 - object properties are merged, but array properties override the defaults.
 - To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`

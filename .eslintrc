@@ -1,13 +1,16 @@
 {
   "extends": [
     "airbnb-base",
-    "plugin:flowtype/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
   "plugins": [
-    "flowtype"
+    "@typescript-eslint"
   ],
+  "parser": "@typescript-eslint/parser",
   "env": {
-    "browser": true
+    "browser": true,
+    "node": true,
+    "es6": true
   },
   "rules": {
     "class-methods-use-this": 0,
@@ -17,6 +20,7 @@
       "error",
       "ForInStatement"
     ],
-    "prefer-destructuring": 0
+    "prefer-destructuring": 0,
+    "linebreak-style": 0
   }
 }

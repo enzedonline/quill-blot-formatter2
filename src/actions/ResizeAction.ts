@@ -1,14 +1,19 @@
-// @flow
+
 
 import Action from './Action';
 import BlotFormatter from '../BlotFormatter';
+
+interface HandleStyle {
+  width?: string;
+  height?: string;
+}
 
 export default class ResizeAction extends Action {
   topLeftHandle: HTMLElement;
   topRightHandle: HTMLElement;
   bottomRightHandle: HTMLElement;
   bottomLeftHandle: HTMLElement;
-  dragHandle: ?HTMLElement;
+  dragHandle: HTMLElement | null | undefined;
   dragStartX: number;
   preDragWidth: number;
   targetRatio: number;
@@ -31,7 +36,8 @@ export default class ResizeAction extends Action {
     this.formatter.overlay.appendChild(this.bottomRightHandle);
     this.formatter.overlay.appendChild(this.bottomLeftHandle);
 
-    this.repositionHandles(this.formatter.options.resize.handleStyle);
+    const handleStyle: HandleStyle = this.formatter.options.resize.handleStyle || {};
+    this.repositionHandles(handleStyle);
   }
 
   onDestroy() {
@@ -57,7 +63,7 @@ export default class ResizeAction extends Action {
     return box;
   }
 
-  repositionHandles(handleStyle: ?{}) {
+  repositionHandles(handleStyle?: HandleStyle) {
     let handleXOffset = '0px';
     let handleYOffset = '0px';
     if (handleStyle) {

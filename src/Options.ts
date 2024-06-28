@@ -1,21 +1,23 @@
-// @flow
+
 
 import BlotSpec from './specs/BlotSpec';
 import ImageSpec from './specs/ImageSpec';
 import IframeVideoSpec from './specs/IframeVideoSpec';
 
+type Constructor<T> = new (...args: any[]) => T;
+
 export type OverlayOptions = {
   // classname applied to the overlay element
   className: string,
   // style applied to overlay element, or null to prevent styles
-  style: ?{},
+  style?: { [key: string]: any } | null | undefined
 };
 
 export type ResizeOptions = {
   // class name applied to the resize handles
   handleClassName: string,
   // style applied to resize handles, or null to prevent styles
-  handleStyle: ?{},
+  handleStyle?: { [key: string]: any } | null | undefined
 };
 
 export type AlignOptions = {
@@ -39,22 +41,22 @@ export type AlignOptions = {
     // class name applied to the root toolbar element
     mainClassName: string,
     // style applied to root toolbar element, or null to prevent styles
-    mainStyle: ?{},
+    mainStyle?: { [key: string]: any } | null | undefined
     // class name applied to each button in the toolbar
     buttonClassName: string,
     /* whether or not to add the selected style to the buttons.
     they'll always get the is-selected class */
     addButtonSelectStyle: boolean,
     // style applied to buttons, or null to prevent styles
-    buttonStyle: ?{},
+    buttonStyle?: { [key: string]: any } | null | undefined
     // style applied to the svgs in the buttons
-    svgStyle: ?{},
+    svgStyle?: { [key: string]: any } | null | undefined
   },
 };
 
 export type Options = {
   // the BlotSpecs supported
-  specs: Class<BlotSpec>[],
+  specs: Array<Constructor<BlotSpec>>,
   overlay: OverlayOptions,
   align: AlignOptions,
   resize: ResizeOptions,

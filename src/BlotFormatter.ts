@@ -1,22 +1,21 @@
-// @flow
-
+import Quill from 'quill';
 import deepmerge from 'deepmerge';
-import type { Options } from './Options';
-import DefaultOptions from './Options';
+import DefaultOptions, { Options } from './Options';
 import Action from './actions/Action';
 import BlotSpec from './specs/BlotSpec';
+import { IframeAlignClass, ImageAlign } from './actions/align/AlignFormats'
 
 const dontMerge = (destination: Array<any>, source: Array<any>) => source;
 
 export default class BlotFormatter {
   quill: any;
   options: Options;
-  currentSpec: ?BlotSpec;
+  currentSpec: BlotSpec | null;
   specs: BlotSpec[];
   overlay: HTMLElement;
   actions: Action[];
 
-  constructor(quill: any, options: $Shape<Options> = {}) {
+  constructor(quill: any, options: Partial<Options> = {}) {
     this.quill = quill;
     this.options = deepmerge(DefaultOptions, options, { arrayMerge: dontMerge });
     this.currentSpec = null;
@@ -32,8 +31,15 @@ export default class BlotFormatter {
     this.quill.root.parentNode.style.position = this.quill.root.parentNode.style.position || 'relative';
 
     this.quill.root.addEventListener('click', this.onClick);
-    this.specs = this.options.specs.map((SpecClass: Class<BlotSpec>) => new SpecClass(this));
+    this.specs = this.options.specs.map((SpecClass: new (formatter: BlotFormatter) => BlotSpec) => new SpecClass(this));
     this.specs.forEach(spec => spec.init());
+
+    // Register the custom align blots with Quill
+    Quill.register({
+      'formats/imageAlign': ImageAlign,
+      'formats/iframeAlign': IframeAlignClass,
+      'attributors/class/iframeAlign': IframeAlignClass,
+    }, true);
   }
 
   show(spec: BlotSpec) {
@@ -64,8 +70,7 @@ export default class BlotFormatter {
   }
 
   createActions(spec: BlotSpec) {
-    this.actions = spec.getActions().map((ActionClass: Class<Action>) => {
-      const action: Action = new ActionClass(this);
+    this.actions = spec.getActions().map((action: Action) => {
       action.onCreate();
       return action;
     });
