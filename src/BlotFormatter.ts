@@ -3,7 +3,6 @@ import deepmerge from 'deepmerge';
 import DefaultOptions, { Options } from './Options';
 import Action from './actions/Action';
 import BlotSpec from './specs/BlotSpec';
-import { IframeAlignClass, ImageAlign } from './actions/align/AlignFormats'
 
 const dontMerge = (destination: Array<any>, source: Array<any>) => source;
 
@@ -33,13 +32,6 @@ export default class BlotFormatter {
     this.quill.root.addEventListener('click', this.onClick);
     this.specs = this.options.specs.map((SpecClass: new (formatter: BlotFormatter) => BlotSpec) => new SpecClass(this));
     this.specs.forEach(spec => spec.init());
-
-    // Register the custom align blots with Quill
-    Quill.register({
-      'formats/imageAlign': ImageAlign,
-      'formats/iframeAlign': IframeAlignClass,
-      'attributors/class/iframeAlign': IframeAlignClass,
-    }, true);
   }
 
   show(spec: BlotSpec) {
