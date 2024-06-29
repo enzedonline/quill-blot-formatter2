@@ -23,11 +23,6 @@ export type ResizeOptions = {
 export type AlignOptions = {
   // the name of the attribute for an element that has its alignment changed
   attribute: string,
-  // the aligner does the actual alignment switch
-  aligner: {
-    // whether or not the aligner should handle the actual alignment properties
-    applyStyle: boolean,
-  },
   // icons used for alignment
   icons: {
     left: string,
@@ -77,9 +72,6 @@ const DefaultOptions: Options = {
   },
   align: {
     attribute: 'data-align',
-    aligner: {
-      applyStyle: true,
-    },
     icons: {
       left: `
         <svg viewbox="0 0 18 18">
