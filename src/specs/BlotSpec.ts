@@ -7,6 +7,12 @@ import ResizeAction from '../actions/ResizeAction';
 import DeleteAction from '../actions/DeleteAction';
 
 export interface Blot {
+  domNode: HTMLElement;
+  parent: Blot | null;
+  next: Blot | null;
+  prev: Blot | null;
+  format(name: string, value: any): void | undefined;
+  formats(): { [key: string]: any };
   length(): number;
 }
 
