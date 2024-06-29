@@ -49,13 +49,13 @@ The `BlotSpec` (/src/specs/BlotSpec.ts) classes define how `BlotFormatter` inter
 ### `init(): void`
 Called after all specs have been constructed. Use this to bind to quill events to determine when to activate a specific spec.
 
-### `getActions(): Class<Action>[]`
+### ` getActions(): Array<Action>`
 The [`actions`](#action) that are allowed on this blot. The default is `[AlignAction, ResizeAction, DeleteAction]`.
 
-### `getTargetElement(): ?HTMLElement`
-When the spec is active this should return the element that is to be formatter
+### `getTargetElement(): HTMLElement | null`
+When the spec is active this should return the element that is to be formatted
 
-### `getOverlayElement(): ?HTMLElement`
+### `getOverlayElement(): HTMLElement | null`
 When the spec is active this should return the element to display the formatting overlay. This defaults to `return getTargetElement()` since they will typically be the same element.
 
 ### `setSelection(): void`
@@ -116,6 +116,6 @@ const quill = new Quill(..., {
 ```
 
 ### Notes
-- For all supported options as well as the default see `Options` (/src/Options.js).
+- For all supported options as well as the default see `Options` (/src/Options.ts).
 - object properties are merged, but array properties override the defaults.
 - To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
