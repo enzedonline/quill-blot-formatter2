@@ -1,42 +1,37 @@
-import Quill from 'quill';
 import { Aligner } from './Aligner';
 import type { Alignment } from './Alignment';
+import type { Blot } from '../../specs/BlotSpec'
 import type { AlignOptions } from '../../Options';
-import BlotFormatter from '../../BlotFormatter';
-import { ImageAlign, IframeAlignClass } from './AlignFormats';
+import { ImageAlign, IframeAlign } from './AlignFormats';
 
 const LEFT_ALIGN: string = "left"
 const CENTER_ALIGN: string = "center"
 const RIGHT_ALIGN: string = "right"
 
 export default class DefaultAligner implements Aligner {
-  quill: any;
   alignments: { [key: string]: Alignment };
-  applyStyle: boolean;
 
-  constructor(options: AlignOptions, formatter: BlotFormatter) {
-    this.applyStyle = options.aligner.applyStyle;
-    this.quill = formatter.quill;
+  constructor(options: AlignOptions) {
     this.alignments = {
       [LEFT_ALIGN]: {
         name: LEFT_ALIGN,
         icon: options.icons.left,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, LEFT_ALIGN);
+        apply: (blot: Blot | null) => {
+          this.setAlignment(blot, LEFT_ALIGN);
         },
       },
       [CENTER_ALIGN]: {
         name: CENTER_ALIGN,
         icon: options.icons.center,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, CENTER_ALIGN);
+        apply: (blot: Blot | null) => {
+          this.setAlignment(blot, CENTER_ALIGN);
         },
       },
       [RIGHT_ALIGN]: {
         name: RIGHT_ALIGN,
         icon: options.icons.right,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, RIGHT_ALIGN);
+        apply: (blot: Blot | null) => {
+          this.setAlignment(blot, RIGHT_ALIGN);
         },
       },
     };
@@ -46,42 +41,38 @@ export default class DefaultAligner implements Aligner {
     return Object.keys(this.alignments).map(k => this.alignments[k]);
   }
 
-  clear(blot: any) {
-    if (blot instanceof HTMLElement) {
-      blot = Quill.find(blot)
-    }
+  clear(blot: Blot | null) {
     if (blot != null) {
       if (blot.domNode.tagName === 'IMG') {
         if (blot.parent !== null && blot.parent.domNode.tagName === 'SPAN') {
-          blot.parent.format(ImageAlign.blotName, false)
+          blot.parent.format(ImageAlign.attrName, false)
         }
       } else if (blot.domNode.tagName === 'IFRAME') {
-        blot.format(IframeAlignClass.attrName, false)
+        blot.format(IframeAlign.attrName, false)
       }
     }
   }
 
-  isAligned(el: HTMLElement, alignment: Alignment): boolean {
-    if (el.tagName === 'IMG') {
-      const expectedClass = `${ImageAlign.className}-${alignment.name}`;
-      const parentElement = el.parentElement as HTMLElement | null;
-      return parentElement !== null && parentElement.tagName === 'SPAN' && parentElement.classList.contains(expectedClass);
-    } else if (el.tagName === 'IFRAME') {
-      const expectedClass = `${IframeAlignClass.keyName}-${alignment.name}`;
-      return el.classList.contains(expectedClass);
+  isAligned(blot: Blot | null, alignment: Alignment): boolean {
+    if (blot != null) {
+      if (blot.domNode.tagName === 'IMG') {
+        return blot.parent != null && blot.parent.formats()[ImageAlign.attrName]===alignment.name;
+      } else if (blot.domNode.tagName === 'IFRAME') {
+        // blot.formats() is empty for block class attributers, check classList instead
+        return blot.domNode.classList.contains(`${IframeAlign.keyName}-${alignment.name}`);
+      }
     }
     return false;
   }
 
-  setAlignment(el: HTMLElement, alignment: string) {
-    let blot = Quill.find(el) as any | null;
+  setAlignment(blot: Blot | null, alignment: string) {
     if (blot != null) {
-      const hasAlignment = this.isAligned(el, this.alignments[alignment]);
+      const hasAlignment = this.isAligned(blot, this.alignments[alignment]);
       this.clear(blot);
-      if (el.tagName === 'IMG' && !hasAlignment) {
-        blot.format(ImageAlign.blotName, this.alignments[alignment].name);
-      } else if (el.tagName === 'IFRAME' && !hasAlignment) {
-        blot.format(IframeAlignClass.attrName, this.alignments[alignment].name);
+      if (blot.domNode.tagName === 'IMG' && !hasAlignment) {
+        blot.format(ImageAlign.attrName, this.alignments[alignment].name);
+      } else if (blot.domNode.tagName === 'IFRAME' && !hasAlignment) {
+        blot.format(IframeAlign.attrName, this.alignments[alignment].name);
       }
     }
   }
