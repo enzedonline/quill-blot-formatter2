@@ -1,9 +1,9 @@
-
-
+import Quill from 'quill';
 import { Toolbar } from './Toolbar';
 import { Aligner } from './Aligner';
 import type { Alignment } from './Alignment';
 import BlotFormatter from '../../BlotFormatter';
+import type { Blot } from '../../specs/BlotSpec'
 
 export default class DefaultToolbar implements Toolbar {
   toolbar: HTMLElement | null;
@@ -85,7 +85,8 @@ export default class DefaultToolbar implements Toolbar {
       return;
     }
 
-    if (aligner.isAligned(target, alignment)) {
+    const blot = Quill.find(target) as Blot | null;
+    if (aligner.isAligned(blot, alignment)) {
       this.selectButton(formatter, button);
     }
   }
@@ -116,15 +117,16 @@ export default class DefaultToolbar implements Toolbar {
     aligner: Aligner,
   ) {
     this.buttons.forEach((b) => { this.deselectButton(formatter, b); });
-    if (aligner.isAligned(alignTarget, alignment)) {
+    const blot = Quill.find(alignTarget) as Blot | null;
+    if (aligner.isAligned(blot, alignment)) {
       if (formatter.options.align.toolbar.allowDeselect) {
-        aligner.clear(alignTarget);
+        aligner.clear(blot);
       } else {
         this.selectButton(formatter, button);
       }
     } else {
       this.selectButton(formatter, button);
-      alignment.apply(alignTarget);
+      alignment.apply(blot);
     }
 
     formatter.update();
