@@ -1,5 +1,7 @@
+import type { Blot } from '../../specs/BlotSpec'
+
 export type Alignment = {
   name: string,
   icon: string;
-  apply: (el: HTMLElement) => void;
+  apply: (blot: Blot | null) => void;
 }
