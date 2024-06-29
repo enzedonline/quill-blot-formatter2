@@ -1,9 +1,8 @@
-
-
 import type { Alignment } from './Alignment';
+import type { Blot } from '../../specs/BlotSpec'
 
 export interface Aligner {
   getAlignments(): Alignment[];
-  isAligned(el: HTMLElement, alignment: Alignment): boolean;
-  clear(el: HTMLElement): void;
+  isAligned(blot: Blot | null, alignment: Alignment): boolean;
+  clear(blot: Blot | null): void;
 }
