@@ -49,7 +49,7 @@ The `BlotSpec` (/src/specs/BlotSpec.ts) classes define how `BlotFormatter` inter
 ### `init(): void`
 Called after all specs have been constructed. Use this to bind to quill events to determine when to activate a specific spec.
 
-### ` getActions(): Array<Action>`
+### `getActions(): Array<Action>`
 The [`actions`](#action) that are allowed on this blot. The default is `[AlignAction, ResizeAction, DeleteAction]`.
 
 ### `getTargetElement(): HTMLElement | null`
