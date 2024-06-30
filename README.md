@@ -39,7 +39,7 @@ const quill = new Quill(..., {
           }
       }
     }
-  });
+  );
 </script>
 ```
 
