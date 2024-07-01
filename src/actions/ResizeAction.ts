@@ -151,5 +151,9 @@ export default class ResizeAction extends Action {
     this.setCursor('');
     document.removeEventListener('mousemove', this.onDrag);
     document.removeEventListener('mouseup', this.onMouseUp);
+    // trigger text change event to strip resize cursor from output html
+    this.formatter.quill.emitter.emit(
+      this.formatter.quill.constructor.events.TEXT_CHANGE, 0, this.formatter.quill.getLength(), 'api'
+    );
   };
 }
