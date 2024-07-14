@@ -1,5 +1,5 @@
 {
-  "name": "quill-blot-formatter2",
+  "name": "@enzedonline/quill-blot-formatter2",
   "version": "2.0.0",
   "description": "An update for quill-blot-formatter to make quilljs v2 compatible.",
   "main": "./dist/index.js",
@@ -50,9 +50,11 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn clean && yarn build:webpack",
-    "build:webpack": "webpack -p --progress --colors",
-    "dev:webpack": "yarn dev:delay && webpack --progress --colors --watch",
+    "build": "yarn clean && yarn build:ts && yarn build:webpack && yarn build:copy-ts-defs",
+    "build:ts": "tsc",
+    "build:copy-ts-defs": "copyfiles index.d.ts dist",
+    "build:webpack": "webpack --mode production --progress",
+    "dev:webpack": "yarn dev:delay && webpack --mode development --progress --watch",
     "dev:delay": "node -e \"setTimeout(() => {}, 3000)\"",
     "prepublishOnly": "yarn build"
   }
