@@ -1,23 +1,23 @@
 {
-  "name": "quill-blot-formatter-2",
+  "name": "quill-blot-formatter2",
   "version": "2.0.0",
   "description": "An update for quill-blot-formatter to make quilljs v2 compatible.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "homepage": "https://github.com/Fandom-OSS/quill-blot-formatter",
+  "homepage": "https://github.com/enzedonline/quill-blot-formatter2",
   "bugs": {
-    "url": "https://github.com/Fandom-OSS/quill-blot-formatter/issues"
+    "url": "https://github.com/enzedonline/quill-blot-formatter2/issues"
   },
   "contributors": [
     {
-      "name": "Nelson Monterroso",
-      "email": "nmonterroso@users.noreply.github.com",
-      "url": "https://github.com/nmonterroso"
+      "name": "Richard Allen",
+      "email": "enzedonline@users.noreply.github.com",
+      "url": "https://github.com/enzedonline"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fandom-OSS/quill-blot-formatter"
+    "url": "https://github.com/enzedonline/quill-blot-formatter2"
   },
   "files": [
     "dist"
@@ -30,47 +30,30 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "deepmerge": "^2.0.0"
-  },
-  "peerDependencies": {
-    "quill": "^2.0.0"
+    "deepmerge": "^4.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
-    "@babel/plugin-transform-flow-strip-types": "^7.24.7",
-    "@babel/preset-env": "^7.24.7",
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-flow": "^6.23.0",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
     "copy-webpack-plugin": "^12.0.2",
-    "copyfiles": "^1.2.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-flowtype": "^2.50.3",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.7.0",
-    "flow-bin": "^0.238.1",
-    "flow-copy-source": "^1.2.1",
     "npm-run-all": "^4.1.2",
-    "quill": "^2.0.0",
-    "rimraf": "^4.0.0",
+    "quill": "^2.0.2",
+    "rimraf": "^6.0.1",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.5.2",
-    "webpack": "^5.92.1",
+    "typescript": "^5.5.3",
+    "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "build": "yarn clean && yarn build:babel && yarn build:webpack && yarn build:copy-flow-source && yarn build:copy-ts-defs",
-    "build:babel": "babel src/ --out-dir dist",
-    "build:copy-flow-source": "flow-copy-source --verbose src dist",
-    "build:copy-ts-defs": "copyfiles index.d.ts dist",
-    "build:webpack": "webpack -p --progress --colors",
     "clean": "rimraf dist",
-    "dev:babel": "babel --watch src/ --out-dir dist",
+    "build": "yarn clean && yarn build:webpack",
+    "build:webpack": "webpack -p --progress --colors",
     "dev:webpack": "yarn dev:delay && webpack --progress --colors --watch",
     "dev:delay": "node -e \"setTimeout(() => {}, 3000)\"",
-    "prepublishOnly": "yarn build",
-    "start": "yarn clean && yarn npm-run-all --race --parallel dev:babel dev:webpack"
+    "prepublishOnly": "yarn build"
   }
 }

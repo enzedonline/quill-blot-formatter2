@@ -5,7 +5,7 @@ module.exports = {
   mode: 'production', 
   entry: './src/index.ts', 
   output: {
-    filename: 'js/quill-blot-formatter-2.min.js',
+    filename: 'js/quill-blot-formatter2.min.js',
     path: path.resolve(__dirname, 'dist'),
     library: {
       type: 'umd',  
@@ -31,22 +31,8 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'src/css/quill-blot-formatter-2.css', to: 'css' },
+        { from: 'src/css/quill-blot-formatter2.css', to: 'css' },
       ],
     }),
   ],
 };
-
-// original config
-// module.exports = {
-//   entry: './dist/index.js',
-//   output: {
-//     filename: 'quill-blot-formatter.min.js',
-//     path: `${__dirname}/dist`,
-//     libraryTarget: 'umd',
-//     library: 'QuillBlotFormatter',
-//   },
-//   externals: {
-//     quill: 'Quill',
-//   },
-// };
