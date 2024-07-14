@@ -10,6 +10,20 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 npm install --save @enzedonline/quill-blot-formatter2
 ```
 
+## Compiled JS & CSS
+
+Download both from the [dist folder](https://github.com/enzedonline/quill-blot-formatter2) in this repository, or use jsdelivr CDN's:
+
+```html
+<script 
+  src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2/dist/js/quill-blot-formatter2.min.js">
+</script>
+<link
+  rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2/dist/css/quill-blot-formatter2.css"
+>
+```
+
 ## Usage
 ### As Module
 ```js
