@@ -1,3 +1,8 @@
 **/node_modules/**
 .idea/
 yarn-error.log
+/dist/*
+
+# Allow dist/js and dist/css
+!/dist/js/
+!/dist/css/
