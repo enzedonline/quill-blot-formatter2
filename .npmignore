@@ -1,0 +1,54 @@
+# Ignore node_modules since it will be installed on the user's side
+node_modules
+
+# Ignore TypeScript source files if you're publishing the compiled JavaScript files
+src
+
+# Ignore any build output directories (if you're using a different directory for build outputs)
+dist
+
+# Ignore test files
+test
+*.spec.ts
+*.test.ts
+
+# Ignore config files that are not needed for the package
+tsconfig.json
+tslint.json
+*.config.js
+.eslintrc
+
+# Ignore documentation files
+docs
+*.md
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# Ignore any build scripts or tools
+scripts
+
+# Ignore any environment files
+.env
+.env.local
+
+# Ignore Git-related files
+.git
+.gitignore
+.gitattributes
+
+# Ignore package lock files (optional, depending on your project setup)
+package-lock.json
+yarn.lock
+
+# Ignore IDE or editor configuration files
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Ignore coverage reports
+coverage
+.nyc_output
