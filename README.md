@@ -7,7 +7,7 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 ### Using npm:
 
 ```
-npm install --save quill-blot-formatter2
+npm install --save @enzedonline/quill-blot-formatter2
 ```
 
 ## Usage
