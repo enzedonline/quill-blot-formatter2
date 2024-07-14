@@ -32,8 +32,8 @@ const quill = new Quill(..., {
 
 ```html
 <script src="<quill>"></script>
-<script src="some-local-path/quill-blot-formatter2.min.js"></script>
-<link rel="stylesheet" type="text/css" href="some-local-path/quill-blot-formatter2.css">
+<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2/dist/js/quill-blot-formatter2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2/dist/css/quill-blot-formatter2.css">
 <script>
   Quill.register('modules/blotFormatter2', QuillBlotFormatter2.default);
   const quill = new Quill(..., {
