@@ -2,6 +2,7 @@
 .idea/
 yarn-error.log
 /dist/*
+.vscode/
 
 # Allow dist/js and dist/css
 !/dist/js/
