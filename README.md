@@ -1,10 +1,14 @@
-# Quill Blot Formatter 2 
+# Quill Blot Formatter 2 (quill-blot-formatter2)
 
-An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter).
-to make alignments compatible with Quill V2.
-This implementation is exported as a single minified compiled js (/dist/js/quill-blot-formatter-2.min.js). 
-Clone and recompile if you need the node modules (see original blot-formatter for config).
-Alignment requires relevant css classes defined - see /dist/css/quill-blot-formatter-2.css.
+An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos, but can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
+
+## Installation
+
+### Using npm:
+
+```
+npm install --save quill-blot-formatter2
+```
 
 ## Usage
 ### As Module
@@ -24,11 +28,12 @@ const quill = new Quill(..., {
 ```
 
 ### Script Tag
-`quill-blot-formatter-2.min.js` is provided which exports the same modules as `index.js` under the global `QuillBlotFormatter`.
+`quill-blot-formatter2.min.js` is provided which exports the same modules as `index.js` under the global `QuillBlotFormatter2`.
 
 ```html
 <script src="<quill>"></script>
-<script src="some-path/quill-blot-formatter-2.min.js"></script>
+<script src="some-local-path/quill-blot-formatter2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="some-local-path/quill-blot-formatter2.css">
 <script>
   Quill.register('modules/blotFormatter2', QuillBlotFormatter2.default);
   const quill = new Quill(..., {
@@ -41,6 +46,37 @@ const quill = new Quill(..., {
     }
   );
 </script>
+```
+## Alignment and Placing
+
+Alignment and placing is handled by css classes, one set each for image and iframe:
+```css
+.ql-image-align-left, .ql-image-align-center, .ql-image-align-right,
+.ql-iframe-align-left, .ql-iframe-align-center, .ql-iframe-align-right 
+```
+
+Suggested css can be found in [src/css/quill-blot-formatter2.css](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/css/quill-blot-formatter2.css) (shown below). This is also exported to the dist folder. 
+
+**These styles are not loaded automatically**, it is up to you to load the styles relevant to your site.
+
+```css
+div.ql-editor .ql-image-align-left,
+div.ql-editor .ql-iframe-align-left {
+    float: left;
+    padding: 0.5em 1em 0.5em 0;
+}
+div.ql-editor .ql-image-align-center,
+div.ql-editor .ql-iframe-align-center  {
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+    padding: 0.5em 0;
+}
+div.ql-editor .ql-image-align-right,
+div.ql-editor .ql-iframe-align-right  {
+    float: right;
+    padding: 0.5em 0 0.5em 1em;
+}
 ```
 
 ## BlotSpec
