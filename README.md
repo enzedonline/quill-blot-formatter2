@@ -80,6 +80,8 @@ const quill = new Quill(..., {
   );
 </script>
 ```
+**[Code Pen](https://codepen.io/enzedonline/pen/bGPgqeG)**
+
 ## Alt text and Title Editing
 
 From version 2.1, `alt` and `title` image attributes can be edited from the **`T`** button on the overlay toolbar.
@@ -96,7 +98,7 @@ To use that updated blot, simply include the following in your editor options:
 ```javascript
 blotFormatter2: {
     image: {
-        registerImageTitleBlot: True
+        registerImageTitleBlot: true
     }
 },
 ```
@@ -202,7 +204,7 @@ For a default setup using Quill's native Image blot, the recommended options are
 ```javascript
 blotFormatter2: {
     image: {
-        registerImageTitleBlot: True
+        registerImageTitleBlot: true
     }
 },
 ```
@@ -233,7 +235,7 @@ const quill = new Quill(..., {
     ...
     blotFormatter2: {
       image: {
-        registerImageTitleBlot: True
+        registerImageTitleBlot: true
       }
       specs: [
         CustomImageSpec,
