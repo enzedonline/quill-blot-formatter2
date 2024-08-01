@@ -82,7 +82,7 @@ const quill = new Quill(..., {
 ```
 ## Alt text and Title Editing
 
-From version 2.1, alt and title attributes can be edited from the **`T`** button on the overlay toolbar.
+From version 2.1, `alt` and `title` image attributes can be edited from the **`T`** button on the overlay toolbar.
 
 > [!CAUTION]
 > #### :exclamation: IMPORTANT NOTE REGARDING QUILL AND IMAGE TITLES :exclamation:
