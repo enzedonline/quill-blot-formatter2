@@ -1,5 +1,3 @@
-
-
 import BlotFormatter from '../BlotFormatter';
 import Action from '../actions/Action';
 import AlignAction from '../actions/align/AlignAction';
@@ -11,6 +9,7 @@ export interface Blot {
   parent: Blot | null;
   next: Blot | null;
   prev: Blot | null;
+  statics: any | null;
   format(name: string, value: any): void | undefined;
   formats(): { [key: string]: any };
   length(): number;
