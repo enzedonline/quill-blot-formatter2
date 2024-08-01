@@ -1,5 +1,3 @@
-
-
 import BlotSpec from './specs/BlotSpec';
 import ImageSpec from './specs/ImageSpec';
 import IframeVideoSpec from './specs/IframeVideoSpec';
@@ -11,6 +9,8 @@ export type OverlayOptions = {
   className: string,
   // style applied to overlay element, or null to prevent styles
   style?: { [key: string]: any } | null | undefined
+  // String literal labels rendered in the user interface
+  labels: { [key: string]: any },
 };
 
 export type ResizeOptions = {
@@ -28,6 +28,7 @@ export type AlignOptions = {
     left: string,
     center: string,
     right: string,
+    attribute: string,
   },
   // the toolbar so users can change alignments
   toolbar: {
@@ -49,12 +50,17 @@ export type AlignOptions = {
   },
 };
 
+export type ImageOptions = {
+  registerImageTitleBlot: Boolean;
+}
+
 export type Options = {
   // the BlotSpecs supported
   specs: Array<Constructor<BlotSpec>>,
   overlay: OverlayOptions,
   align: AlignOptions,
   resize: ResizeOptions,
+  image: ImageOptions,
 };
 
 const DefaultOptions: Options = {
@@ -69,6 +75,10 @@ const DefaultOptions: Options = {
       boxSizing: 'border-box',
       border: '1px dashed #444',
     },
+    labels: {
+      alt: "Alt Text",
+      title: "Image Title"
+    },
   },
   align: {
     attribute: 'data-align',
@@ -82,7 +92,7 @@ const DefaultOptions: Options = {
       `,
       center: `
         <svg viewbox="0 0 18 18">
-           <line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line>
+          <line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line>
           <line class="ql-stroke" x1="14" x2="4" y1="14" y2="14"></line>
           <line class="ql-stroke" x1="12" x2="6" y1="4" y2="4"></line>
         </svg>
@@ -94,6 +104,11 @@ const DefaultOptions: Options = {
           <line class="ql-stroke" x1="15" x2="9" y1="4" y2="4"></line>
         </svg>
       `,
+      attribute: `
+        <svg viewBox="0 0 24 24" fill="none" class="ql-stroke">
+          <path id="Vector" d="M10 19H12M12 19H14M12 19V5M12 5H6V6M12 5H18V6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `
     },
     toolbar: {
       allowDeselect: true,
@@ -121,6 +136,7 @@ const DefaultOptions: Options = {
         background: 'white',
         border: '1px solid #999',
         verticalAlign: 'middle',
+        cursor: 'pointer',
       },
       svgStyle: {
         display: 'inline-block',
@@ -144,6 +160,9 @@ const DefaultOptions: Options = {
       opacity: '0.80',
     },
   },
+  image: {
+    registerImageTitleBlot: false
+  }
 };
 
 export default DefaultOptions;
