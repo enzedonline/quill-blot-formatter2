@@ -1,7 +1,6 @@
-
-
 import Quill from 'quill';
 import Action from './Action';
+import BlotFormatter from '../BlotFormatter';
 
 export default class DeleteAction extends Action {
   onCreate() {
@@ -15,7 +14,8 @@ export default class DeleteAction extends Action {
   }
 
   onKeyUp = (e: KeyboardEvent) => {
-    if (!this.formatter.currentSpec) {
+    const modalOpen: boolean = !!document.querySelector('div[data-blot-formatter-modal]')
+    if (!this.formatter.currentSpec || modalOpen) {
       return;
     }
 
