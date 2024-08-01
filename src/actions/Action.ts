@@ -1,5 +1,3 @@
-
-
 import BlotFormatter from '../BlotFormatter';
 
 export default class Action {

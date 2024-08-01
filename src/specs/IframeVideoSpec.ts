@@ -1,5 +1,3 @@
-
-
 import UnclickableBlotSpec from './UnclickableBlotSpec';
 import BlotFormatter from '../BlotFormatter';
 

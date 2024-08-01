@@ -1,5 +1,3 @@
-
-
 import { Aligner } from './Aligner';
 import BlotFormatter from '../../BlotFormatter';
 

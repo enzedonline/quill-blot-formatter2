@@ -1,5 +1,3 @@
-
-
 import Action from '../Action';
 import BlotFormatter from '../../BlotFormatter';
 import DefaultAligner from './DefaultAligner';

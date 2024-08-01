@@ -1,5 +1,3 @@
-
-
 import BlotSpec from './BlotSpec';
 import BlotFormatter from '../BlotFormatter';
 
