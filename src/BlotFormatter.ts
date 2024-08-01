@@ -3,6 +3,7 @@ import deepmerge from 'deepmerge';
 import DefaultOptions, { Options } from './Options';
 import Action from './actions/Action';
 import BlotSpec from './specs/BlotSpec';
+import Image from './blots/Image';
 
 const dontMerge = (destination: Array<any>, source: Array<any>) => source;
 
@@ -32,6 +33,11 @@ export default class BlotFormatter {
     this.quill.root.addEventListener('click', this.onClick);
     this.specs = this.options.specs.map((SpecClass: new (formatter: BlotFormatter) => BlotSpec) => new SpecClass(this));
     this.specs.forEach(spec => spec.init());
+
+    // register image bot with title attribute support
+    if (this.options.image.registerImageTitleBlot) {
+      Quill.register(Image, true);
+    }
   }
 
   show(spec: BlotSpec) {
