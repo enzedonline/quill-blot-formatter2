@@ -1,5 +1,3 @@
-
-
 import Action from './Action';
 import BlotFormatter from '../BlotFormatter';
 
@@ -46,6 +44,7 @@ export default class ResizeAction extends Action {
     this.formatter.overlay.removeChild(this.topRightHandle);
     this.formatter.overlay.removeChild(this.bottomRightHandle);
     this.formatter.overlay.removeChild(this.bottomLeftHandle);
+    this.formatter.update();
   }
 
   createHandle(position: string, cursor: string): HTMLElement {
