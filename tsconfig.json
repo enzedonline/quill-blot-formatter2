@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es2022",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
@@ -15,7 +15,6 @@
     },
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "declaration": false,
     "outDir": "./dist" 
   },
   "include": [
