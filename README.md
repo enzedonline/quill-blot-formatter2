@@ -254,7 +254,7 @@ const quill = new Quill(..., {
 > To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
 <hr>
 
-
+## Further Customisations
 > [!NOTE]
 > The notes from here on are here only for those who wish to customise the default behaviour and/or work with custom blots. <br>
 > `blotFormatter2` is already compatible with Quill `Image` and `Video` blots, no custom blots or actions need be registered to work with this package.
