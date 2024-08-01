@@ -259,41 +259,41 @@ const quill = new Quill(..., {
 > The notes from here on are here only for those who wish to customise the default behaviour and/or work with custom blots. <br>
 > `blotFormatter2` is already compatible with Quill `Image` and `Video` blots, no custom blots or actions need be registered to work with this package.
 
-## BlotSpec
+### BlotSpec
 
 The `BlotSpec` ([/src/specs/BlotSpec.ts](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/specs/BlotSpec.ts)) classes define how `BlotFormatter` interacts with blots. They take the `BlotFormatter` as a constructor arg and have the following functions:
 
-### `init(): void`
+#### `init(): void`
 Called after all specs have been constructed. Use this to bind to quill events to determine when to activate a specific spec.
 
-### `getActions(): Array<Action>`
+#### `getActions(): Array<Action>`
 The [`actions`](#action) that are allowed on this blot. The default is `[AlignAction, ResizeAction, DeleteAction]`.
 
-### `getTargetElement(): HTMLElement | null`
+#### `getTargetElement(): HTMLElement | null`
 When the spec is active this should return the element that is to be formatted
 
-### `getOverlayElement(): HTMLElement | null`
+#### `getOverlayElement(): HTMLElement | null`
 When the spec is active this should return the element to display the formatting overlay. This defaults to `return getTargetElement()` since they will typically be the same element.
 
-### `setSelection(): void`
+#### `setSelection(): void`
 After the spec is activated this should set the quill selection using [`setSelection`](https://quilljs.com/docs/api/#setselection). Defaults to `quill.setSelection(null)`.
 
-### `onHide(): void`
+#### `onHide(): void`
 Called when the spec is deactivated by the user clicking away from the blot. Use this to clean up any state in the spec during activation.
 
-### Notes
+#### Notes
 Each spec should call `this.formatter.show(this);` to request activation. See `specs/` ([/src/specs](https://github.com/enzedonline/quill-blot-formatter2/tree/master/src/specs)) for the built-in specs.
 
-## Action
+### Action
 The `Action` ([/src/actions/Action.ts](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/actions/Action.ts)) classes define the actions available to a blot once its spec is activated. They take the `BlotFormatter` as a constructor arg and have the following functions:
 
-### `onCreate(): void`
+#### `onCreate(): void`
 Called immediately after the action is created. Use this to bind quill events and create elements to attach to the overlay.
 
-### `onUpdate(): void`
+#### `onUpdate(): void`
 Called when the formatter has changed something on the blot. Use this to update any internal state.
 
-### `onDestroy(): void`
+#### `onDestroy(): void`
 Called when the formatter is hidden by the user.
 
 See `actions` ([/src/actions](https://github.com/enzedonline/quill-blot-formatter2/tree/master/src/actions)) for the existing actions.
