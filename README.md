@@ -91,7 +91,7 @@ From version 2.1, alt and title attributes can be edited from the **`T`** button
 > 
 > This package includes an updated Image blot that addresses this issue. 
 
-To use that, simply include the following in your editor options:
+To use that updated blot, simply include the following in your editor options:
 
 ```javascript
 blotFormatter2: {
@@ -100,9 +100,11 @@ blotFormatter2: {
     }
 },
 ```
-***This is not enabled by default as this can potentially overwrite any custom Image blot in use.***
+***This is not enabled by default as this can potentially overwrite any custom Image blot you might have in use.***
 
 If you use a custom image blot, leave `registerImageTitleBlot` out of your options and be sure to add `title` to supported attributes.
+
+### Modal form labels
 
 For multi-lingual sites, you can change the modal form labels in the options. For example:
 
@@ -250,12 +252,12 @@ const quill = new Quill(..., {
 > For all supported options as well as the default see `Options` ([/src/Options.ts](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/Options.ts)).<br>
 > Object properties are merged, but array properties override the defaults.<br>
 > To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
+<hr>
+> [!NOTE]
+> The notes from here on are here only for those who wish to customise the default behaviour and/or work with custom blots. <br>
+> `blotFormatter2` is already compatible with Quill `Image` and `Video` blots, no custom blots or actions need be registered to work with this package.
 
 ## BlotSpec
-
-> [!NOTE]
-> The notes from her on are here only for those who wish to customise the default behaviour and/or work with custom blots. <br>
-> `blotFormatter2` is already compatible with Quill `Image` and `Video` blots, no custom blots or actions need be registered to work with this package.
 
 The `BlotSpec` ([/src/specs/BlotSpec.ts](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/specs/BlotSpec.ts)) classes define how `BlotFormatter` interacts with blots. They take the `BlotFormatter` as a constructor arg and have the following functions:
 
