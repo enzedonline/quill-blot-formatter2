@@ -1,18 +1,44 @@
 div.ql-editor .ql-image-align-left,
 div.ql-editor .ql-iframe-align-left {
     float: left;
-    padding: 0.5em 1em 0.5em 0;
-}
-div.ql-editor .ql-image-align-center,
-div.ql-editor .ql-iframe-align-center  {
-    text-align: center;
-    margin: 0 auto;
-    display: block;
-    padding: 0.5em 0;
-}
-div.ql-editor .ql-image-align-right,
-div.ql-editor .ql-iframe-align-right  {
-    float: right;
-    padding: 0.5em 0 0.5em 1em;
+    margin: 0.5rem 1rem 0.5rem 0;
 }
 
+div.ql-editor .ql-image-align-center,
+div.ql-editor .ql-iframe-align-center {
+    margin: 0.5rem auto;
+    display: block;
+    width: fit-content;
+}
+
+div.ql-editor .ql-image-align-right,
+div.ql-editor .ql-iframe-align-right {
+    float: right;
+    margin: 0.5rem 0 0.5rem 1rem;
+}
+
+/* image caption */
+div.ql-editor [class^="ql-image-align-"][data-title]:not([data-title=""]) {
+    position: relative;
+    margin-bottom: 2rem;
+}
+div.ql-editor [class^="ql-image-align-"][data-title]:not([data-title=""])::after {
+    content: attr(data-title);
+    display: block;
+    position: absolute;
+    bottom: -2rem;
+    padding-top: 2px;
+    margin-bottom: 5px;
+    width: -webkit-fill-available;
+    font-size: 0.9rem;
+    background-color: white;
+}
+div.ql-editor .ql-image-align-left[data-title]:not([data-title=""])::after {
+    text-align: left;
+}
+div.ql-editor .ql-image-align-center[data-title]:not([data-title=""])::after {
+    text-align: center;
+}
+div.ql-editor .ql-image-align-right[data-title]:not([data-title=""])::after {
+    text-align: right;
+}
