@@ -2,6 +2,9 @@
 
 An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos, but can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
 
+> [!IMPORTANT]
+> Before using this package, it's recommended to at least be familiar with the information covered in [Alt & Title Editing](#alt-text-and-title-editing), [CSS](#css) and [Options](#options)
+
 ## New in 2.1 :exclamation:
 
 This release adds alt and title editing support for images. Look for the **`T`** button next to the alignment buttons on the overlay toolbar.
@@ -85,8 +88,10 @@ From version 2.1, alt and title attributes can be edited from the **`T`** button
 > #### :exclamation: IMPORTANT NOTE REGARDING QUILL AND IMAGE TITLES :exclamation:
 >
 >At the time of writing, the current version of Quill (v2.0.2) does not natively support storing the title attribute in the image delta. As such, when you reload the editor, the title attribute will be lost. There is a Quill [pull request](https://github.com/slab/quill/pull/4350) to address this. 
+> 
+> This package includes an updated Image blot that addresses this issue. 
 
-This package includes an updated Image blot that addersses this issue. To use that, simply include the following in your editor options:
+To use that, simply include the following in your editor options:
 
 ```javascript
 blotFormatter2: {
