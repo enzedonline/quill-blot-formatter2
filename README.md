@@ -16,7 +16,7 @@ Using the suggested css below, the title can also be used a caption on your imag
 
 ![a floating image with caption from title attribute](/assets/blot-formatter-floating-image-with-title.png)
 
-See notes below on usage, css and importantly, [supporting image titles in Quill](#-important-note-regarding-quill-and-image-titles-).
+See notes below on usage, css and importantly, [supporting image titles in Quill](#alt-text-and-title-editing).
 
 ## Installation
 
@@ -84,7 +84,7 @@ From version 2.1, alt and title attributes can be edited from the **`T`** button
 > [!CAUTION]
 > #### :exclamation: IMPORTANT NOTE REGARDING QUILL AND IMAGE TITLES :exclamation:
 >
-At the time of writing, the current version of Quill (v2.0.2) does not natively support storing the title attribute in the image delta. As such, when you reload the editor, the title attribute will be lost. There is a Quill [pull request](https://github.com/slab/quill/pull/4350) to address this. 
+>At the time of writing, the current version of Quill (v2.0.2) does not natively support storing the title attribute in the image delta. As such, when you reload the editor, the title attribute will be lost. There is a Quill [pull request](https://github.com/slab/quill/pull/4350) to address this. 
 
 This package includes an updated Image blot that addersses this issue. To use that, simply include the following in your editor options:
 
@@ -125,7 +125,8 @@ For aligned images (assuming your image blot is inline), the image title is copi
 
 You can make use of this to display a caption using the [suggested css](#css) below. 
 
-Note, using the suggested css, if the title wraps, it will begin to clip the base of the image. This is a limitation of needing to use an absolute position to prevent the caption from growing the span width.
+> [!NOTE]
+> Using the suggested css, if the title wraps, it will begin to clip the base of the image. This is a limitation of needing to use an absolute position to prevent the caption from growing the span width.
 
 ## Alignment and Placing
 
@@ -186,52 +187,23 @@ div.ql-editor .ql-image-align-center[data-title]:not([data-title=""])::after {
 div.ql-editor .ql-image-align-right[data-title]:not([data-title=""])::after {
     text-align: right;
 }
+```
+## Options
 
+For a default setup using Quill's native Image blot, the recommended options are:
+
+```javascript
+blotFormatter2: {
+    image: {
+        registerImageTitleBlot: True
+    }
+},
 ```
 
-## BlotSpec
-The `BlotSpec` (/src/specs/BlotSpec.ts) classes define how `BlotFormatter` interacts with blots. They take the `BlotFormatter` as a constructor arg and have the following functions:
-
-### `init(): void`
-Called after all specs have been constructed. Use this to bind to quill events to determine when to activate a specific spec.
-
-### `getActions(): Array<Action>`
-The [`actions`](#action) that are allowed on this blot. The default is `[AlignAction, ResizeAction, DeleteAction]`.
-
-### `getTargetElement(): HTMLElement | null`
-When the spec is active this should return the element that is to be formatted
-
-### `getOverlayElement(): HTMLElement | null`
-When the spec is active this should return the element to display the formatting overlay. This defaults to `return getTargetElement()` since they will typically be the same element.
-
-### `setSelection(): void`
-After the spec is activated this should set the quill selection using [`setSelection`](https://quilljs.com/docs/api/#setselection). Defaults to `quill.setSelection(null)`.
-
-### `onHide(): void`
-Called when the spec is deactivated by the user clicking away from the blot. Use this to clean up any state in the spec during activation.
-
-### Notes
-Each spec should call `this.formatter.show(this);` to request activation. See `specs/` (/src/specs) for the built-in specs.
-
-## Action
-The `Action` (/src/actions/Action.ts) classes define the actions available to a blot once its spec is activated. They take the `BlotFormatter` as a constructor arg and have the following functions:
-
-### `onCreate(): void`
-Called immediately after the action is created. Use this to bind quill events and create elements to attach to the overlay.
-
-### `onUpdate(): void`
-Called when the formatter has changed something on the blot. Use this to update any internal state.
-
-### `onDestroy(): void`
-Called when the formatter is hidden by the user.
-
-See `actions/` (/src/actions) for the existing actions.
-
-## Options
-Using quill module options it's easy to disable existing specs, actions, or to override any of the styles provided by this module. 
-
 > [!IMPORTANT]
-> See above for information seting options for alt and title editing.
+> [See above](#alt-text-and-title-editing) for information seting options for alt and title editing.
+
+Using quill module options it's easy to disable existing specs, actions, or to override any of the styles provided by this module. 
 
 For example: if you wanted to remove resizing, support only images, and change the overlay border the following config would work:
 
@@ -269,7 +241,51 @@ const quill = new Quill(..., {
 });
 ```
 
+> [!NOTE]
+> For all supported options as well as the default see `Options` (/src/Options.ts).
+> Object properties are merged, but array properties override the defaults.
+> To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
+
+## BlotSpec
+
+> [!NOTE]
+> These notes are here only for those who wish to costomise the default behaviour and work with custom blots. `blotFormatter2` is already compatible with Quill `Image` and `Video` blots, no custom blots need be registered to work with this package.
+
+The `BlotSpec` (/src/specs/BlotSpec.ts) classes define how `BlotFormatter` interacts with blots. They take the `BlotFormatter` as a constructor arg and have the following functions:
+
+### `init(): void`
+Called after all specs have been constructed. Use this to bind to quill events to determine when to activate a specific spec.
+
+### `getActions(): Array<Action>`
+The [`actions`](#action) that are allowed on this blot. The default is `[AlignAction, ResizeAction, DeleteAction]`.
+
+### `getTargetElement(): HTMLElement | null`
+When the spec is active this should return the element that is to be formatted
+
+### `getOverlayElement(): HTMLElement | null`
+When the spec is active this should return the element to display the formatting overlay. This defaults to `return getTargetElement()` since they will typically be the same element.
+
+### `setSelection(): void`
+After the spec is activated this should set the quill selection using [`setSelection`](https://quilljs.com/docs/api/#setselection). Defaults to `quill.setSelection(null)`.
+
+### `onHide(): void`
+Called when the spec is deactivated by the user clicking away from the blot. Use this to clean up any state in the spec during activation.
+
 ### Notes
-- For all supported options as well as the default see `Options` (/src/Options.ts).
-- object properties are merged, but array properties override the defaults.
-- To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
+Each spec should call `this.formatter.show(this);` to request activation. See `specs/` (/src/specs) for the built-in specs.
+
+## Action
+The `Action` (/src/actions/Action.ts) classes define the actions available to a blot once its spec is activated. They take the `BlotFormatter` as a constructor arg and have the following functions:
+
+### `onCreate(): void`
+Called immediately after the action is created. Use this to bind quill events and create elements to attach to the overlay.
+
+### `onUpdate(): void`
+Called when the formatter has changed something on the blot. Use this to update any internal state.
+
+### `onDestroy(): void`
+Called when the formatter is hidden by the user.
+
+See `actions/` (/src/actions) for the existing actions.
+
+
