@@ -1,8 +1,12 @@
+import Quill from 'quill';
 import { Aligner } from './Aligner';
 import type { Alignment } from './Alignment';
 import type { Blot } from '../../specs/BlotSpec'
 import type { AlignOptions } from '../../Options';
 import { ImageAlign, IframeAlign } from './AlignFormats';
+
+const parchment = Quill.import('parchment') as any;
+const { Scope } = parchment;
 
 const LEFT_ALIGN: string = "left"
 const CENTER_ALIGN: string = "center"
@@ -41,7 +45,7 @@ export default class DefaultAligner implements Aligner {
     return Object.keys(this.alignments).map(k => this.alignments[k]);
   }
 
-  clear(blot: Blot | null) {
+  clear(blot: Blot | null): void {
     if (blot != null) {
       if (blot.domNode.tagName === 'IMG') {
         if (blot.parent !== null && blot.parent.domNode.tagName === 'SPAN') {
@@ -53,11 +57,29 @@ export default class DefaultAligner implements Aligner {
     }
   }
 
+  isInlineBlot(blot: Blot): boolean {
+    return (blot.statics?.scope & Scope.INLINE) === Scope.INLINE_BLOT;
+  }
+
+  isBlockBlot(blot: Blot): boolean {
+    return (blot.statics?.scope & Scope.BLOCK) === Scope.BLOCK_BLOT;
+  }
+
+  hasInlineScope(blot: Blot): boolean {
+    return (blot.statics.scope & Scope.INLINE) === Scope.INLINE;
+  }
+
+  hasBlockScope(blot: Blot): boolean {
+    return (blot.statics.scope & Scope.BLOCK) === Scope.BLOCK;
+  }
+
   isAligned(blot: Blot | null, alignment: Alignment): boolean {
     if (blot != null) {
-      if (blot.domNode.tagName === 'IMG') {
-        return blot.parent != null && blot.parent.formats()[ImageAlign.attrName]===alignment.name;
-      } else if (blot.domNode.tagName === 'IFRAME') {
+      if (this.isInlineBlot(blot) || this.hasInlineScope(blot)) {
+        // .formats() only returns value on parent for inline class attributers
+        const imageAlignment = blot.parent?.formats()[ImageAlign.attrName]?.align;
+        return imageAlignment === alignment.name;
+      } else if (this.isBlockBlot(blot) || this.hasBlockScope(blot)) {
         // blot.formats() is empty for block class attributers, check classList instead
         return blot.domNode.classList.contains(`${IframeAlign.keyName}-${alignment.name}`);
       }
@@ -67,12 +89,25 @@ export default class DefaultAligner implements Aligner {
 
   setAlignment(blot: Blot | null, alignment: string) {
     if (blot != null) {
+
       const hasAlignment = this.isAligned(blot, this.alignments[alignment]);
       this.clear(blot);
-      if (blot.domNode.tagName === 'IMG' && !hasAlignment) {
-        blot.format(ImageAlign.attrName, this.alignments[alignment].name);
-      } else if (blot.domNode.tagName === 'IFRAME' && !hasAlignment) {
-        blot.format(IframeAlign.attrName, this.alignments[alignment].name);
+      if (!hasAlignment) {
+        if (this.isInlineBlot(blot) || this.hasInlineScope(blot)) {
+          blot.format(
+            ImageAlign.attrName,
+            {
+              align: this.alignments[alignment].name,
+              title: blot.domNode.getAttribute('title') || ''
+            }
+          );
+        } else if (this.isBlockBlot(blot) || this.hasBlockScope(blot)) {
+          console.log(blot)
+          blot.format(
+            IframeAlign.attrName,
+            this.alignments[alignment].name
+          );
+        }
       }
     }
   }
