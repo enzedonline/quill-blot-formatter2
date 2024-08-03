@@ -47,6 +47,7 @@ export default class BlotFormatter {
     this.quill.root.parentNode.appendChild(this.overlay);
     this.repositionOverlay();
     this.createActions(spec);
+    document.addEventListener('click', this.onDocumentClick);
   }
 
   hide() {
@@ -57,9 +58,14 @@ export default class BlotFormatter {
     this.currentSpec.onHide();
     this.currentSpec = null;
     this.quill.root.parentNode.removeChild(this.overlay);
+    document.removeEventListener('click', this.onDocumentClick);
     this.overlay.style.setProperty('display', 'none');
     this.setUserSelect('');
     this.destroyActions();
+    // TEXT_CHANGE event clears resize cursor from image when form is saved while overlay still active
+    this.quill.emitter.emit(
+      this.quill.constructor.events.TEXT_CHANGE, 0, this.quill.getLength(), 'api'
+    );
   }
 
   update() {
@@ -117,6 +123,14 @@ export default class BlotFormatter {
         document.documentElement.style.setProperty(prop, value);
       }
     });
+  }
+
+  onDocumentClick = (event: MouseEvent) => {
+    // if clicked outside of quill editor and not the alt/title modal, dismiss overlay 
+    const target = event.target as HTMLElement;
+    if (!this.quill.root.parentNode.contains(target) && !target.closest('div[data-blot-formatter-modal]')) {
+      this.hide();
+    }
   }
 
   onClick = () => {
