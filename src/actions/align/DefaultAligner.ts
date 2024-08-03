@@ -102,7 +102,6 @@ export default class DefaultAligner implements Aligner {
             }
           );
         } else if (this.isBlockBlot(blot) || this.hasBlockScope(blot)) {
-          console.log(blot)
           blot.format(
             IframeAlign.attrName,
             this.alignments[alignment].name
