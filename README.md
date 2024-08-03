@@ -210,7 +210,7 @@ blotFormatter2: {
 ```
 
 > [!IMPORTANT]
-> [See above](#alt-text-and-title-editing) for information seting options for alt and title editing.
+> [See above](#alt-text-and-title-editing) for information regarding setting options for alt and title editing.
 
 Using quill module options it's easy to disable existing specs, actions, or to override any of the styles provided by this module. 
 
