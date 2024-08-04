@@ -1,16 +1,20 @@
+/* align left */
 div.ql-editor .ql-image-align-left,
 div.ql-editor .ql-iframe-align-left {
     float: left;
     margin: 0.5rem 1rem 0.5rem 0;
 }
-
+/* align center */
 div.ql-editor .ql-image-align-center,
 div.ql-editor .ql-iframe-align-center {
     margin: 0.5rem auto;
     display: block;
+}
+div.ql-editor .ql-image-align-center {
+    width: -moz-fit-content;
     width: fit-content;
 }
-
+/* align right */
 div.ql-editor .ql-image-align-right,
 div.ql-editor .ql-iframe-align-right {
     float: right;
