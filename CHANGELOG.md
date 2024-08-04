@@ -1,9 +1,10 @@
 # Changelog
 
-## [v2.1.2] - 2024-08-01
+## [v2.1.2] - 2024-08-04
 ### Changed
-- Clicking outside of Quill editor now also dismisses overlay (previous behaviour only dismissed if click inside editor)
-- Quill TEXT_CHANGE event raised on overlay hide - fixes bug when Quill used as form widget, resize cursor remains on image HTML if form submitted immediately after using BlotFormatter
+- Remove `width: fit-content;` from `ql-iframe-align-center`, can cause iframe resize issues in certain circumstances and only needed for inline (image) blots.
+- Clicking outside of Quill editor now also dismisses overlay (previous behaviour only dismissed if click inside editor).
+- Quill `TEXT_CHANGE` event raised on overlay hide - fixes bug when Quill used as form widget, resize cursor remains on image HTML if form submitted without further changes after using BlotFormatter.
 
 ## [v2.1.1] - 2024-08-01
 ### Changed

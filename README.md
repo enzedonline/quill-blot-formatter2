@@ -147,24 +147,32 @@ Alignment and placing is handled by css classes, one set each for image and ifra
 
 ## CSS
 
-Suggested css can be found in [src/css/quill-blot-formatter2.css](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/css/quill-blot-formatter2.css) (shown below). This is also exported to the dist folder. 
+Suggested css can be found in [src/css/quill-blot-formatter2.css](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/css/quill-blot-formatter2.css) (shown below). This is also exported to the dist folder and published via npm:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2.1/dist/css/quill-blot-formatter2.css">
+```
 
 **These styles are not loaded automatically**, it is up to you to load the styles relevant to your site.
 
 ```css
+/* align left */
 div.ql-editor .ql-image-align-left,
 div.ql-editor .ql-iframe-align-left {
     float: left;
     margin: 0.5rem 1rem 0.5rem 0;
 }
-
+/* align center */
 div.ql-editor .ql-image-align-center,
 div.ql-editor .ql-iframe-align-center {
     margin: 0.5rem auto;
     display: block;
+}
+div.ql-editor .ql-image-align-center {
+    width: -moz-fit-content;
     width: fit-content;
 }
-
+/* align right */
 div.ql-editor .ql-image-align-right,
 div.ql-editor .ql-iframe-align-right {
     float: right;
