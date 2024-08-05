@@ -230,6 +230,10 @@ If your Quill root element is scrollable, any active overlay will scroll with th
 }
 ```
 If it is another element scrolling your editor (other than the document), the overlay may remain in a static position. The module exposes a `repositionOverlay()` method which you can call from your own event listener. 
+```javascript
+const bf = quill.getModule('blotFormatter2');
+bf.repositionOverlay();
+```
 
 ## Options
 
