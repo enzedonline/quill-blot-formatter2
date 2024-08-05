@@ -34,6 +34,15 @@ export default class BlotFormatter {
     this.specs = this.options.specs.map((SpecClass: new (formatter: BlotFormatter) => BlotSpec) => new SpecClass(this));
     this.specs.forEach(spec => spec.init());
 
+    // scroll visible overlay if editor is scrollable
+    this.repositionOverlay = this.repositionOverlay.bind(this);
+    this.quill.root.addEventListener('scroll', this.repositionOverlay);
+    
+    // reposition overlay element if editor resized
+    new ResizeObserver(() => {
+      this.repositionOverlay();
+    }).observe(this.quill.root);
+
     // register image bot with title attribute support
     if (this.options.image.registerImageTitleBlot) {
       Quill.register(Image, true);
