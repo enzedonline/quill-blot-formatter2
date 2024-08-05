@@ -137,6 +137,18 @@ You can make use of this to display a caption using the [suggested css](#css) be
 > [!NOTE]
 > Using the suggested css, if the title wraps, it will begin to clip the base of the image. This is a limitation of needing to use an absolute position to prevent the caption from growing the span width.
 
+## Formatting Videos
+
+When loading Quill with Blot Formatter, a transparent image is appended to the document body to mask any iframes in order to capture the click event and prevent default mouse behaviour on that video.
+
+If you use Quill in a modal, you may need to increase the `z-index` on this overlay in order for this to work. 
+
+```css
+img.blot-formatter__proxy-image {
+  z-index: 99; /* use an appropriate value here */
+}
+```
+
 ## Alignment and Placing
 
 Alignment and placing is handled by css classes, one set each for image and iframe:
@@ -205,6 +217,20 @@ div.ql-editor .ql-image-align-right[data-title]:not([data-title=""])::after {
     text-align: right;
 }
 ```
+## Scrollable Editors
+
+If your Quill root element is scrollable, any active overlay will scroll with the target element. The overlay element sits in the Quill container element however and will be visible outside of the bounds of your editor unless you set the overflow behaviour for the container to hidden. For example:
+```css
+.ql-editor {
+  max-height: 15rem;
+  overflow-y: auto;
+}
+.ql-container {
+  overflow: hidden;
+}
+```
+If it is another element scrolling your editor (other than the document), the overlay may remain in a static position. The module exposes a `repositionOverlay()` method which you can call from your own event listener. 
+
 ## Options
 
 For a default setup using Quill's native Image blot, the recommended options are:
@@ -262,6 +288,7 @@ const quill = new Quill(..., {
 > For all supported options as well as the default see `Options` ([/src/Options.ts](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/Options.ts)).<br>
 > Object properties are merged, but array properties override the defaults.<br>
 > To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
+
 <hr>
 
 ## Further Customisations

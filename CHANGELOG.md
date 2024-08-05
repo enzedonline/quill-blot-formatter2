@@ -1,10 +1,12 @@
 # Changelog
 
-## [v2.1.2] - 2024-08-04
+## [v2.1.2] - 2024-08-05
 ### Changed
 - Remove `width: fit-content;` from `ql-iframe-align-center`, can cause iframe resize issues in certain circumstances and only needed for inline (image) blots.
 - Clicking outside of Quill editor now also dismisses overlay (previous behaviour only dismissed if click inside editor).
 - Quill `TEXT_CHANGE` event raised on overlay hide - fixes bug when Quill used as form widget, resize cursor remains on image HTML if form submitted without further changes after using BlotFormatter.
+- Prevent creating multiple proxy images: if one exists, use that otherwise create a new one.
+- Overlay is repositioned if quill root is scrolled or resized. Previously it remained static and did not reposition with the target element.
 
 ## [v2.1.1] - 2024-08-01
 ### Changed
