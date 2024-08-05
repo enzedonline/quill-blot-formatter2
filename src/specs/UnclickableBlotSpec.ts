@@ -83,8 +83,8 @@ export default class UnclickableBlotSpec extends BlotSpec {
       this.proxyImage.style,
       {
         display: 'block',
-        left: `${rect.left + window.pageXOffset}px`,
-        top: `${rect.top + window.pageYOffset}px`,
+        left: `${rect.left + window.scrollX}px`,
+        top: `${rect.top + window.scrollY}px`,
         width: `${rect.width}px`,
         height: `${rect.height}px`,
       },
@@ -92,8 +92,11 @@ export default class UnclickableBlotSpec extends BlotSpec {
   }
 
   onTextChange = () => {
-    Array.from(document.querySelectorAll(this.selector))
-      .filter((element): element is HTMLElement => !(element.hasAttribute(MOUSE_ENTER_ATTRIBUTE)))
+    Array.from(this.formatter.quill.root.querySelectorAll(this.selector))
+      .filter((element): element is HTMLElement => {
+        const htmlElement = element as HTMLElement;
+        return !(htmlElement.hasAttribute(MOUSE_ENTER_ATTRIBUTE));
+      })
       .forEach((unclickable) => {
         unclickable.setAttribute(MOUSE_ENTER_ATTRIBUTE, 'true');
         unclickable.addEventListener('mouseenter', this.onMouseEnter);
