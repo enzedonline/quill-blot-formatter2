@@ -23,7 +23,12 @@ export default class UnclickableBlotSpec extends BlotSpec {
       it's important that this is attached to the body instead of the root quill element.
       this prevents the click event from overlapping with ImageSpec
        */
-      document.body.appendChild(this.createProxyImage());
+      const proxyImage: HTMLElement | null = document.querySelector('img.blot-formatter__proxy-image')
+      if (proxyImage) {
+        this.proxyImage = proxyImage as HTMLImageElement
+      } else {
+        document.body.appendChild(this.createProxyImage());
+      }
     }
 
     this.hideProxyImage();
