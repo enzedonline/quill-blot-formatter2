@@ -20,14 +20,14 @@ export default class UnclickableBlotSpec extends BlotSpec {
   init() {
     if (document.body) {
       /*
-      it's important that this is attached to the body instead of the root quill element.
+      it's important that this is attached to the quill container instead of the root element.
       this prevents the click event from overlapping with ImageSpec
        */
-      const proxyImage: HTMLElement | null = document.querySelector('img.blot-formatter__proxy-image')
+      const proxyImage: HTMLElement | null = this.formatter.quill.container.querySelector('img.blot-formatter__proxy-image')
       if (proxyImage) {
         this.proxyImage = proxyImage as HTMLImageElement
       } else {
-        document.body.appendChild(this.createProxyImage());
+        this.formatter.quill.container.appendChild(this.createProxyImage());
       }
     }
 
@@ -90,16 +90,19 @@ export default class UnclickableBlotSpec extends BlotSpec {
   }
 
   repositionProxyImage(unclickable: HTMLElement) {
-    const rect = unclickable.getBoundingClientRect();
+    const containerRect = this.formatter.quill.container.getBoundingClientRect();
+    const iframeRect = unclickable.getBoundingClientRect();
+    const iframeTopRelativeToDoc = iframeRect.top + window.scrollY;
+    const iframeLeftRelativeToDoc = iframeRect.left + window.scrollX;
 
     Object.assign(
       this.proxyImage.style,
       {
         display: 'block',
-        left: `${rect.left + window.scrollX}px`,
-        top: `${rect.top + window.scrollY}px`,
-        width: `${rect.width}px`,
-        height: `${rect.height}px`,
+        left: `${iframeLeftRelativeToDoc - containerRect.left}px`,
+        top: `${iframeTopRelativeToDoc - containerRect.top}px`,
+        width: `${iframeRect.width}px`,
+        height: `${iframeRect.height}px`,
       },
     );
   }
