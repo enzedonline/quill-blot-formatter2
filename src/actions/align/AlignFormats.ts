@@ -25,7 +25,11 @@ class ImageAlignAttributor extends ClassAttributor {
   add(node: Element, value: ImageAlignValue): boolean {
     if (typeof value === 'object') {
       super.add(node, value.align);
-      node.setAttribute('data-title', value.title);
+      if (!!value.title) {
+        node.setAttribute('data-title', value.title);
+      } else {
+        node.removeAttribute('data-title');
+      }
       return true;
     } else {
       return super.add(node, value);

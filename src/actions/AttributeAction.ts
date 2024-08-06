@@ -15,9 +15,15 @@ export default class AttributeAction extends Action {
     setAltTitle(alt: string, title: string): void {
         const targetElement = this.formatter.currentSpec?.getTargetElement();
         if (targetElement) {
-            if (alt) { targetElement.setAttribute('alt', alt); }
+            if (alt) { 
+                targetElement.setAttribute('alt', alt); 
+            } else {
+                targetElement.removeAttribute('alt');
+            }
             if (title) {
                 targetElement.setAttribute('title', title);
+            } else {
+                targetElement.removeAttribute('title');
             }
             // Update format if applied
             const blot = Quill.find(targetElement) as Blot | null;
@@ -58,7 +64,7 @@ export default class AttributeAction extends Action {
                 modal.remove();
             });
             form.addEventListener('cancel', () => { modal.remove(); })
-            modal.addEventListener('click', (event) => {
+            modal.addEventListener('mousedown', (event) => {
                 if (event.target === modal) {
                     modal.remove();
                 }
