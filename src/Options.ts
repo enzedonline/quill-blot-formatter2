@@ -47,6 +47,8 @@ export type AlignOptions = {
     buttonStyle?: { [key: string]: any } | null | undefined
     // style applied to the svgs in the buttons
     svgStyle?: { [key: string]: any } | null | undefined
+    // show T button for image alt/title editing
+    allowAltTitleEdit: Boolean;
   },
 };
 
@@ -146,6 +148,7 @@ const DefaultOptions: Options = {
         border: '1px solid #999',
         verticalAlign: 'middle',
       },
+      allowAltTitleEdit: true
     },
   },
   resize: {
@@ -161,7 +164,7 @@ const DefaultOptions: Options = {
     },
   },
   image: {
-    registerImageTitleBlot: false
+    registerImageTitleBlot: false,
   }
 };
 

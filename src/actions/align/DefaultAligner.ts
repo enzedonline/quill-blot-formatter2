@@ -14,8 +14,10 @@ const RIGHT_ALIGN: string = "right"
 
 export default class DefaultAligner implements Aligner {
   alignments: { [key: string]: Alignment };
+  options: AlignOptions;
 
   constructor(options: AlignOptions) {
+    this.options = options;
     this.alignments = {
       [LEFT_ALIGN]: {
         name: LEFT_ALIGN,
@@ -94,13 +96,20 @@ export default class DefaultAligner implements Aligner {
       this.clear(blot);
       if (!hasAlignment) {
         if (this.isInlineBlot(blot) || this.hasInlineScope(blot)) {
-          blot.format(
-            ImageAlign.attrName,
-            {
-              align: this.alignments[alignment].name,
-              title: blot.domNode.getAttribute('title') || ''
-            }
-          );
+          if (this.options.toolbar.allowAltTitleEdit) {
+            blot.format(
+              ImageAlign.attrName,
+              {
+                align: this.alignments[alignment].name,
+                title: blot.domNode.getAttribute('title') || ''
+              }
+            );
+          } else {
+            blot.format(
+              ImageAlign.attrName,
+              this.alignments[alignment].name
+            );
+          }
         } else if (this.isBlockBlot(blot) || this.hasBlockScope(blot)) {
           blot.format(
             IframeAlign.attrName,

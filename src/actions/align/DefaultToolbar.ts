@@ -71,19 +71,21 @@ export default class DefaultToolbar implements Toolbar {
       toolbar.appendChild(button);
       align_counter = i;
     });
-    // Add alt/title button if target is image
-    const targetElement = formatter.currentSpec?.getTargetElement();
-    if (targetElement?.tagName === "IMG") {
-      const attributeAction = new AttributeAction(formatter);
-      const button = document.createElement('span');
-      button.classList.add(formatter.options.align.toolbar.buttonClassName);
-      button.innerHTML = attributeAction.icon;
-      button.addEventListener('click', (event) => {
-        attributeAction.showAltTitleModal(event);
-      });
-      this.addButtonStyle(button, ++align_counter, formatter);
-      this.buttons.push(button);
-      toolbar.appendChild(button);
+    if (formatter.options.align.toolbar.allowAltTitleEdit) {
+      // Add alt/title button if target is image
+      const targetElement = formatter.currentSpec?.getTargetElement();
+      if (targetElement?.tagName === "IMG") {
+        const attributeAction = new AttributeAction(formatter);
+        const button = document.createElement('span');
+        button.classList.add(formatter.options.align.toolbar.buttonClassName);
+        button.innerHTML = attributeAction.icon;
+        button.addEventListener('click', (event) => {
+          attributeAction.showAltTitleModal(event);
+        });
+        this.addButtonStyle(button, ++align_counter, formatter);
+        this.buttons.push(button);
+        toolbar.appendChild(button);
+      }
     }
   }
 
