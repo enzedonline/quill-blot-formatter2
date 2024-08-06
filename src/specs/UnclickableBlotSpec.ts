@@ -34,7 +34,20 @@ export default class UnclickableBlotSpec extends BlotSpec {
     this.hideProxyImage();
     this.proxyImage.addEventListener('click', this.onProxyImageClick);
     this.formatter.quill.on('text-change', this.onTextChange);
+    this.formatter.quill.root.addEventListener('scroll', () => {
+      // reposition proxy image if quill root scrolls (only if target is child of quill root)
+      if (this.nextUnclickable && this.formatter.quill.root.contains(this.nextUnclickable)) {
+        this.repositionProxyImage(this.nextUnclickable);
+      }
+    });
+    this.proxyImage.addEventListener('wheel', this.passScrollEventThrough);
   }
+
+  passScrollEventThrough = (event: WheelEvent) => {
+    // Manually scroll the quill root element
+    this.formatter.quill.root.scrollLeft += event.deltaX;
+    this.formatter.quill.root.scrollTop += event.deltaY;
+  };
 
   getTargetElement(): HTMLElement | null {
     return this.unclickable;
