@@ -1,6 +1,5 @@
 import Quill from 'quill';
 import Action from './Action';
-import BlotFormatter from '../BlotFormatter';
 
 export default class DeleteAction extends Action {
   onCreate() {
@@ -9,8 +8,8 @@ export default class DeleteAction extends Action {
   }
 
   onDestroy() {
-    document.removeEventListener('keyup', this.onKeyUp);
-    this.formatter.quill.root.removeEventListener('input', this.onKeyUp);
+    document.removeEventListener('keyup', this.onKeyUp, true);
+    this.formatter.quill.root.removeEventListener('input', this.onKeyUp, true);
   }
 
   onKeyUp = (e: KeyboardEvent) => {
@@ -26,7 +25,7 @@ export default class DeleteAction extends Action {
         const blot = Quill.find(targetElement);
         if (blot) {
           const index = this.formatter.quill.getIndex(blot);
-          this.formatter.quill.deleteText(index, 1); // Deletes 1 character from index position
+          this.formatter.quill.deleteText(index, 1, "user"); // Deletes 1 character from index position
         }
       }
       this.formatter.hide();

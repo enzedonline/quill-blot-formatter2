@@ -1,5 +1,46 @@
 # Changelog
 
+## [v2.2] - 2024-09-13
+### Changed
+Major rewrite: 
+- New dynamic `Toolbar` module & taken out of `Align` action with simplified add/remove actions via `Options` 
+- `UnclickableBlotSpec` rewritten and now creates 1 proxy per unclickable, allows for touch screen compatibility and removes many bugs related to proxy positioning
+- `Resize` largely rewritten, including resize by pinch, size info display, relative sizing support for responsive sites
+- Enhancement: Support for relative sizes added. Option to enable/disable relative size on blot, option to use relative by default, always or never.
+- Enhancement: Added `--resize-width` css element style property and `data-relative` attribute to assist responsive site styling (see readme).
+- Enhancement: Support for touch devices including resize by pinch gesture on overlay.
+- Enhancement: Size information displayed on touch/mouse down, and when resizing to provide interactive feedback.
+- Enhancement: Actions are now optional, turn on/off in the options (see readme).
+- Enhancement: Added option to select which alignments are available in the toolbar.
+- Enhancement: Context menu on proxy image and overlay disabled - context menu is confusing since it does not relate to the visible element.
+- Enhancement: Optional video blot included that creates embed at 100% width & sets aspect-ratio 16:9 and `getSemanticHTML()` fix. Enable as per readme. 
+- Enhancement: Height set to `auto` in all cases except where resizing iframe and resize mode is absolute
+- Enhancement: Unclickable blot selector can now be configured in options, defaults to `iframe.ql-video`.
+- Enhancement: Mouse up/down/move events swapped for pointer events for touch and stylus compatibility.
+- Enhancement: Refactored resize action to minimise calculations during drag event. UXP should be smoother and more responsive.
+- Enhancement: Added minimum width option to prevent blot from being resized too small and maximum width to limit to editor width.
+- Enhancement: Improved suggested CSS no longer clips image when title caption wraps.
+- Bug fix: Disable blot formatter if editor is in read only mode (`quill.options.readOnly === true`). 
+- Bug fix: Pointer up outside of alt/title edit form dismissed modal, problem arose when select text pointer action extended beyond form bounds. Modal dismisses on pointer down instead of click now.
+- Bug fix: Alt/title attributes now removed if empty when submitting alt/title modal.
+- Bug fix: Previously could scroll to an uncovered iframe and click before moving pointer. Each iframe now has own proxy, iframes never uncovered.
+- Bug fix: Scroll wheel event passed on from proxy image to quill root. Fixes editor not wheel scrolling when pointer is over proxy.
+- Bug fix: Scroll wheel event passed on from formatter overlay to quill root. Fixes editor not wheel scrolling when pointer is over formatter overlay.
+- Bug fix: Touch scroll on overlay or proxy passes scroll through to quill root. Fixes editor not touch scrolling when touch is on formatter overlay or proxy.
+- Bug fix: Reposition proxy images & overlay when quill root scrolls or editor is resized. Previously, proxy image & overlay stayed static on editor scroll, became displaced and caused formatter to activate on iframe when pointer click was elsewhere.
+- Bug fix: Reposition proxy images on quill root `text_change` event. Previously, proxy image stayed static if content change before proxy caused iframe position to shift.
+- Bug fix: Moved proxy images to `quill.container` to prevent it masking elements outside of editor and also causing window to overflow when editor is scrollable. Assumes `quill.container` has `overflow: hidden;`. See readme notes on scrollable editors.
+- Build now generates `.d.ts` definition files.
+- Build now uses npm instead of yarn
+
+For customised implementations of this package, be sure to sure to go through the readme for potential breaking changes. If using the new suggested CSS, it may be necessary to reapply alignment formats in some cases. See the CSS section in the readme for more details.
+
+Dependency Updates:
+ terser-webpack-plugin   ^5.3.0  →  ^5.3.10
+ typescript              ^5.5.4  →   ^5.6.2
+ webpack                ^5.93.0  →  ^5.94.0
+ node_modules/micromatch fix applied
+
 ## [v2.1.2] - 2024-08-05
 ### Changed
 - Remove `width: fit-content;` from `ql-iframe-align-center`, can cause iframe resize issues in certain circumstances and only needed for inline (image) blots.

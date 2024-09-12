@@ -1,3 +1,4 @@
+import Quill from 'quill';
 import BlotFormatter from '../BlotFormatter';
 import Action from '../actions/Action';
 import AlignAction from '../actions/align/AlignAction';
@@ -17,6 +18,7 @@ export interface Blot {
 
 export default class BlotSpec {
   formatter: BlotFormatter;
+  isUnclickable: boolean = false;
 
   constructor(formatter: BlotFormatter) {
     this.formatter = formatter;
@@ -25,15 +27,30 @@ export default class BlotSpec {
   init(): void {}
 
   getActions(): Array<Action> {
-    return [
-      new AlignAction(this.formatter),
-      new ResizeAction(this.formatter),
-      new DeleteAction(this.formatter)
-    ];
+    const actions: Array<Action> = [];
+    if (this.formatter.options.align.allowAligning) {
+      actions.push(new AlignAction(this.formatter));
+    }
+    if (this.formatter.options.resize.allowResizing) {
+      actions.push(new ResizeAction(this.formatter));
+    }
+    if (this.formatter.options.delete.allowKeyboardDelete) {
+      actions.push(new DeleteAction(this.formatter));
+    }
+    return actions;
   }
 
   getTargetElement(): HTMLElement | null {
     return null;
+  }
+
+  getTargetBlot(): Blot | null {
+    const target = this.getTargetElement();
+    if (!!target) {
+      return Quill.find(target) as Blot | null;
+    } else {
+      return null;
+    }
   }
 
   getOverlayElement(): HTMLElement | null {

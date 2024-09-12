@@ -1,48 +1,59 @@
-/* align left */
+div.ql-editor {
+    --blot-align-left-margin: 0.5rem 1rem 0.5rem 0;
+    --blot-align-center-margin: 1rem auto;
+    --blot-align-right-margin: 0.5rem 0 0.5rem 1rem;
+}
+
+/* image wrapper common */
+div.ql-editor [class^="ql-image-align-"] {
+    display: flex;
+    flex-wrap: wrap;
+    width: var(--resize-width);
+    max-width: 100%;
+}
+div.ql-editor [class^="ql-image-align-"]>img {
+    flex: 1;
+}
+/* left */
 div.ql-editor .ql-image-align-left,
 div.ql-editor .ql-iframe-align-left {
+    margin: var(--blot-align-left-margin);
     float: left;
-    margin: 0.5rem 1rem 0.5rem 0;
 }
-/* align center */
+/* centre */
 div.ql-editor .ql-image-align-center,
 div.ql-editor .ql-iframe-align-center {
-    margin: 0.5rem auto;
-    display: block;
+    margin: var(--blot-align-center-margin);
 }
-div.ql-editor .ql-image-align-center {
-    width: -moz-fit-content;
-    width: fit-content;
-}
-/* align right */
+/* right */
 div.ql-editor .ql-image-align-right,
 div.ql-editor .ql-iframe-align-right {
+    margin: var(--blot-align-right-margin);
     float: right;
-    margin: 0.5rem 0 0.5rem 1rem;
 }
 
 /* image caption */
-div.ql-editor [class^="ql-image-align-"][data-title]:not([data-title=""]) {
-    position: relative;
-    margin-bottom: 2rem;
+/* common */
+div.ql-editor [class^="ql-image-align-"][data-title] {
+    margin-bottom: 0;
 }
-div.ql-editor [class^="ql-image-align-"][data-title]:not([data-title=""])::after {
+div.ql-editor [class^="ql-image-align-"][data-title]::after {
     content: attr(data-title);
-    display: block;
-    position: absolute;
-    bottom: -2rem;
-    padding-top: 2px;
-    margin-bottom: 5px;
-    width: -webkit-fill-available;
+    padding: 0.25rem 0.2rem;
     font-size: 0.9rem;
+    line-height: 1.1;
     background-color: white;
+    width: 100%;
 }
-div.ql-editor .ql-image-align-left[data-title]:not([data-title=""])::after {
+/* left */
+div.ql-editor .ql-image-align-left[data-title]::after {
     text-align: left;
 }
-div.ql-editor .ql-image-align-center[data-title]:not([data-title=""])::after {
+/* center */
+div.ql-editor .ql-image-align-center[data-title]::after {
     text-align: center;
 }
-div.ql-editor .ql-image-align-right[data-title]:not([data-title=""])::after {
+/* right */
+div.ql-editor .ql-image-align-right[data-title]::after {
     text-align: right;
 }
