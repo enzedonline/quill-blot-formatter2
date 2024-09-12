@@ -1,6 +1,6 @@
 {
   "name": "@enzedonline/quill-blot-formatter2",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "An update for quill-blot-formatter to make quilljs v2 compatible.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
