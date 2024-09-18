@@ -17,7 +17,9 @@ export default class ImageSpec extends BlotSpec {
 
   getActions(): Array<Action> {
     const actions = super.getActions();
-    actions.push(new AttributeAction(this.formatter));
+    if (this.formatter.options.image.allowAltTitleEdit) {
+      actions.push(new AttributeAction(this.formatter));
+    }
     return actions
   }
 

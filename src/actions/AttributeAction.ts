@@ -5,40 +5,67 @@ import type { Blot } from '../specs/BlotSpec';
 import { ImageAlign } from './align/AlignFormats';
 import ToolbarButton from './toolbar/ToolbarButton';
 
+type AltTitleModal = {
+    element: HTMLDivElement;
+    form: HTMLFormElement;
+    altInput: HTMLTextAreaElement;
+    titleInput: HTMLTextAreaElement;
+    cancelButton: HTMLButtonElement;
+}
+
 export default class AttributeAction extends Action {
+    modal: AltTitleModal;
+    targetElement: HTMLElement | null | undefined = null;
 
     constructor(formatter: BlotFormatter) {
         super(formatter);
-        if (formatter.options.image.allowAltTitleEdit) {
-            this.toolbarButtons = [
-                new ToolbarButton(
-                    'attribute',
-                    this.onClickHandler,
-                    this.formatter.options.toolbar,
-                )
-            ]
-        }
+        this.toolbarButtons = [
+            new ToolbarButton(
+                'attribute',
+                this.onClickHandler,
+                this.formatter.options.toolbar,
+            )
+        ]
+        this.modal = this.createModal()
+    }
+
+    onCreate(): void {
+        this.targetElement = this.formatter.currentSpec?.getTargetElement();
+    }
+
+    onDestroy(): void {
+        this.targetElement = null;
+        this.modal.element.remove();
     }
 
     onClickHandler: EventListener = () => {
         this.showAltTitleModal();
     }
 
-    setAltTitle(alt: string, title: string): void {
-        const targetElement = this.formatter.currentSpec?.getTargetElement();
-        if (targetElement) {
+    showAltTitleModal(): void {
+        if (this.targetElement) {
+            this.modal.altInput.value = this.targetElement.getAttribute('alt') || '';
+            this.modal.titleInput.value = this.targetElement.getAttribute('title') || '';
+            document.body.append(this.modal.element);
+        }
+    }
+
+    setAltTitle(): void {
+        if (this.targetElement) {
+            const alt: string = this.modal.altInput.value
+            const title: string = this.modal.titleInput.value
             if (alt) {
-                targetElement.setAttribute('alt', alt);
+                this.targetElement.setAttribute('alt', alt);
             } else {
-                targetElement.removeAttribute('alt');
+                this.targetElement.removeAttribute('alt');
             }
             if (title) {
-                targetElement.setAttribute('title', title);
+                this.targetElement.setAttribute('title', title);
             } else {
-                targetElement.removeAttribute('title');
+                this.targetElement.removeAttribute('title');
             }
-            // Update format if applied
-            const blot = Quill.find(targetElement) as Blot | null;
+            // Update align format if applied
+            const blot = Quill.find(this.targetElement) as Blot | null;
             const imageAlignment = blot?.parent?.formats()[ImageAlign.attrName]?.align;
             if (blot && imageAlignment) {
                 blot.parent?.format(ImageAlign.attrName, false)
@@ -53,63 +80,102 @@ export default class AttributeAction extends Action {
         }
     }
 
-    showAltTitleModal(): void {
+    createModal(): AltTitleModal {
         const uuid: string = Array.from(crypto.getRandomValues(new Uint8Array(5)), (n) =>
             String.fromCharCode(97 + (n % 26))
         ).join('');
-        document.body.insertAdjacentHTML('beforeend', this.modalHTML(uuid));
-        const modal: HTMLElement | null = document.getElementById(`${uuid}-modal`);
-        const cancelButton: HTMLElement | null = document.getElementById(`${uuid}-cancel`);
-        const form: HTMLFormElement = document.getElementById(`${uuid}-form`) as HTMLFormElement;
-        const targetElement = this.formatter.currentSpec?.getTargetElement();
 
-        if (modal && form) {
-            const elements = form.elements as HTMLFormControlsCollection;
-            const altInput = elements.namedItem('alt') as HTMLTextAreaElement;
-            const titleInput = elements.namedItem('title') as HTMLTextAreaElement;
+        // Create modal background
+        const modal = document.createElement('div');
+        modal.id = `${uuid}-modal`;
+        modal.setAttribute('data-blot-formatter-modal', '');
 
-            altInput.value = targetElement?.getAttribute('alt') || ''
-            titleInput.value = targetElement?.getAttribute('title') || ''
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-                this.setAltTitle(altInput.value, titleInput.value);
-                modal.remove();
-            });
-            form.addEventListener('cancel', () => { modal.remove(); })
-            modal.addEventListener('pointerdown', (event: PointerEvent) => {
-                if (event.target === modal) {
-                    modal.remove();
-                }
-            });
-            cancelButton?.addEventListener('click', () => { modal.remove(); })
+        // Create modal container
+        const modalContainer = document.createElement('div');
+
+        // Create form element
+        const form = document.createElement('form');
+        form.id = `${uuid}-form`;
+
+        // Create label for alt
+        const labelAlt = document.createElement('label');
+        labelAlt.setAttribute('for', 'alt');
+        labelAlt.textContent = this.formatter.options.overlay.labels?.alt || this.formatter.options.image.altTitleModalOptions.labels.alt;
+
+        // Create textarea for alt
+        const textareaAlt = document.createElement('textarea');
+        textareaAlt.name = 'alt';
+        textareaAlt.rows = 3;
+
+        // Create label for title
+        const labelTitle = document.createElement('label');
+        labelTitle.setAttribute('for', 'title');
+        labelTitle.textContent = this.formatter.options.overlay.labels?.title || this.formatter.options.image.altTitleModalOptions.labels.title;
+
+        // Create textarea for title
+        const textareaTitle = document.createElement('textarea');
+        textareaTitle.name = 'title';
+        textareaTitle.rows = 3;
+
+        // Create submit button
+        const buttonDiv = document.createElement('div');
+        const submitButton = document.createElement('button');
+        submitButton.type = 'submit';
+        submitButton.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.submitButton;
+        buttonDiv.appendChild(submitButton);
+
+        // Append elements to the form
+        form.appendChild(labelAlt);
+        form.appendChild(textareaAlt);
+        form.appendChild(labelTitle);
+        form.appendChild(textareaTitle);
+        form.appendChild(buttonDiv);
+
+        // Create cancel button
+        const cancelButton = document.createElement('button');
+        cancelButton.id = `${uuid}-cancel`;
+        cancelButton.type = 'button';
+        cancelButton.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.cancelButton;
+
+        // styles
+        if (this.formatter.options.image.altTitleModalOptions.styles) {
+            Object.assign(modal.style, this.formatter.options.image.altTitleModalOptions.styles.modalBackground);
+            Object.assign(modalContainer.style, this.formatter.options.image.altTitleModalOptions.styles.modalContainer);
+            Object.assign(labelAlt.style, this.formatter.options.image.altTitleModalOptions.styles.label);
+            Object.assign(textareaAlt.style, this.formatter.options.image.altTitleModalOptions.styles.textarea);
+            Object.assign(labelTitle.style, this.formatter.options.image.altTitleModalOptions.styles.label);
+            Object.assign(textareaTitle.style, this.formatter.options.image.altTitleModalOptions.styles.textarea);
+            Object.assign(submitButton.style, this.formatter.options.image.altTitleModalOptions.styles.submitButton);
+            Object.assign(cancelButton.style, this.formatter.options.image.altTitleModalOptions.styles.cancelButton);
         }
-    }
 
-    modalHTML(uuid: string): string {
-        return `
-        <div id="${uuid}-modal" data-blot-formatter-modal
-            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999">
-            <div style="background-color: #f2f2f2; padding: 10px; border-radius: 5px; position: relative; width: 90%; max-width: 500px;">
-                <form id="${uuid}-form" style="margin-block-end: 0;">
-                    <label style="color: black; display: block;" for="alt">
-                    <h6 style="color: black; margin: 0; padding-bottom: 5px !important;">${this.formatter.options.overlay.labels.alt}</h6>
-                    </label>
-                    <textarea style="background-color: white; display: block; resize: none; width: 100%; padding: 5px;" name="alt" rows="3"></textarea>
-                    <label style="display: block; margin-top: 10px;" for="title">
-                    <h6 style="color: black; margin: 0; padding-bottom: 5px !important;">${this.formatter.options.overlay.labels.title}</h6>
-                    </label>
-                    <textarea style="background-color: white; display: block; resize: none; width: 100%; padding: 5px;" name="title" rows="3"></textarea>
-                    <div style="text-align: right;">
-                        <button type="submit" style="margin-top: 5px; font-size: x-large; text-decoration: none; font-weight:bold; color: green; cursor: pointer; background: none; border: 0; padding: 0;">✓</button>
-                    </div>
-                </form>
-                <button id="${uuid}-cancel" type="cancel" style="width: 1.8rem; height: 1.8rem; position: absolute; top: -0.5em; right: -0.5em; padding: 0 2px 2px 2px; background: white; border: 1px solid gray; border-radius: 5px; cursor: pointer;">
-                <svg viewBox="0 0 384 512" height="1.2rem" width="1.2rem" style="fill: red;">   
-                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
-                </svg>
-                </button>
-            </div>
-        </div>
-        `;
+        // Append form and cancel button to the modal container
+        modalContainer.appendChild(form);
+        modalContainer.appendChild(cancelButton);
+
+        // Append modal container to the modal background
+        modal.appendChild(modalContainer);
+
+        // event listeners
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            this.setAltTitle();
+            modal.remove();
+        });
+        form.addEventListener('cancel', () => { modal.remove(); });
+        modal.addEventListener('pointerdown', (event: PointerEvent) => {
+            if (event.target === modal) {
+                modal.remove();
+            }
+        });
+        cancelButton.addEventListener('click', () => { modal.remove(); });
+
+        return {
+            element: modal,
+            form: form,
+            altInput: textareaAlt,
+            titleInput: textareaTitle,
+            cancelButton: cancelButton
+        };
     }
 }

@@ -11,8 +11,8 @@ export type OverlayOptions = {
   style?: { [key: string]: any } | null | undefined
   // style applied to overlay size info element, or null to prevent styles
   sizeInfoStyle?: { [key: string]: any } | null | undefined
-  // String literal labels rendered in the user interface
-  labels: { [key: string]: any },
+  // String literal labels rendered in the user interface - legacy use only
+  labels?: { [key: string]: any } | null | undefined,
 };
 
 export type ResizeOptions = {
@@ -35,7 +35,7 @@ export type ResizeOptions = {
 
 export type AlignOptions = {
   // allow blot aligning - all other options irrelevent if false
-  allowAligning: boolean; 
+  allowAligning: boolean;
   // alignment names to use - must match icon name & be a member of align format whitelist
   alignments: string[];
 };
@@ -60,11 +60,40 @@ export type ToolbarOptions = {
   svgStyle?: { [key: string]: any } | null | undefined,
 };
 
+type AltTitleModalOptions = {
+  styles?: {
+    // style for screen background mask
+    modalBackground?: { [key: string]: any } | null | undefined;
+    // style for modal dialog
+    modalContainer?: { [key: string]: any } | null | undefined;
+    // style for form labels
+    label?: { [key: string]: any } | null | undefined;
+    // textarea styles
+    textarea?: { [key: string]: any } | null | undefined;
+    // style for submit button
+    submitButton?: { [key: string]: any } | null | undefined;
+    // style for cancel button
+    cancelButton?: { [key: string]: any } | null | undefined;
+  } | null | undefined;
+  icons: {
+    // inner html for buttons (svg recommended)
+    submitButton: string;
+    cancelButton: string;
+  };
+  labels: {
+    // text for labels (for multi-lang support)
+    alt: string;
+    title: string;
+  };
+}
+
 export type ImageOptions = {
   // show T button for image alt/title editing
   allowAltTitleEdit: Boolean;
   // Register custom Quill Blot for image with suport for title attribute
   registerImageTitleBlot: Boolean;
+  // styles for the alt/title modal
+  altTitleModalOptions: AltTitleModalOptions;
   // Register ArrowRight keyboard binding to handle moving cursor past formatted image
   registerArrowRightFix: Boolean;
 }
@@ -76,7 +105,7 @@ export type VideoOptions = {
   registerCustomVideoBlot: Boolean;
   // custom keyboard binding to handle backspace between two contiguous video blots (Quill bug fix)
   registerBackspaceFix: Boolean;
-  // default video aspect ratio to use if none supplied
+  // default video aspect ratio to use if none supplied, also used when registering custom video blot
   defaultAspectRatio: string;
   // additional styles applied to proxy image, or null to prevent styles
   proxyStyle: { [key: string]: any };
@@ -119,10 +148,6 @@ const DefaultOptions: Options = {
       textWrap: 'nowrap',
       fontSize: '1rem',
       opacity: 0
-    },
-    labels: {
-      alt: "Alt Text",
-      title: "Image Title"
     },
   },
   align: {
@@ -219,7 +244,83 @@ const DefaultOptions: Options = {
   image: {
     allowAltTitleEdit: true,
     registerImageTitleBlot: false,
-    registerArrowRightFix: true
+    registerArrowRightFix: true,
+    altTitleModalOptions: {
+      styles: {
+        modalBackground: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        },
+        modalContainer: {
+          backgroundColor: '#f2f2f2',
+          padding: '5px 10px 10px 10px',
+          borderRadius: '5px',
+          position: 'relative',
+          width: '90%',
+          maxWidth: '500px'
+        },
+        label: {
+          display: 'block',
+          color: 'black',
+          margin: '10px 0 5px 0',
+          fontSize: '0.9em'
+        },
+        textarea: {
+          backgroundColor: 'white',
+          display: 'block',
+          resize: 'none',
+          width: '100%',
+          padding: '5px'
+        },
+        submitButton: {
+          display: 'block',
+          marginLeft: 'auto',
+          marginTop: '5px',
+          cursor: 'pointer',
+          border: 0,
+          padding: 0,
+          width: '2.5rem',
+          height: '2.5rem',
+          fill: 'green'
+        },
+        cancelButton: {
+          display: 'flex',
+          width: '2rem',
+          height: '2rem',
+          position: 'absolute',
+          top: '-0.7rem',
+          right: '-0.7rem',
+          background: 'white',
+          border: '1px solid gray',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          alignItems: 'center',
+          fill: 'red'
+        },
+      },
+      icons: {
+        submitButton: `
+        <svg viewBox="0 0 24 24">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"></path>
+        </svg>`,
+        cancelButton: `
+        <svg viewBox="0 0 384 512">   
+            <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+        </svg>`,
+      },
+      labels: {
+        alt: 'Alt Text',
+        title: 'Image Title'
+      }
+    }
   },
   video: {
     selector: 'iframe.ql-video',
