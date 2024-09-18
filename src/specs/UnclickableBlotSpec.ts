@@ -67,10 +67,6 @@ export default class UnclickableBlotSpec extends BlotSpec {
     return this.unclickable;
   }
 
-  onHide = () => {
-    this.unclickable = null;
-  }
-
   onTextChange = () => {
     // check if any unclickable has been deleted, remove proxy if so
     Object.entries(this.unclickableProxies).forEach(([key, { unclickable, proxyImage }]) => {
@@ -147,35 +143,18 @@ export default class UnclickableBlotSpec extends BlotSpec {
 
   repositionProxyImages(): void {
     if (Object.keys(this.unclickableProxies).length > 0) {      
-      // Get the scroll positions of the document
-      const docScrollTop: number = window.scrollY;
-      const docScrollLeft: number = window.scrollX;
-      // Get the scroll positions of the quill container and its ancestors
       const containerRect: DOMRect = this.formatter.quill.container.getBoundingClientRect();
-      let scrollTop: number = 0;
-      let scrollLeft: number = 0;
-      let element: HTMLElement | null = this.formatter.quill.container;
-      while (element) {
-        scrollTop += element.scrollTop;
-        scrollLeft += element.scrollLeft;
-        element = element.parentElement;
-      }
+      const containerScrollLeft: number = this.formatter.quill.container.scrollLeft;
+      const containerScrollTop: number = this.formatter.quill.container.scrollTop;
 
       Object.entries(this.unclickableProxies).forEach(([key, { unclickable, proxyImage }]) => {
         try {
           // Calculate the unclickable's position relative to the container
           const unclickableRect: DOMRect = unclickable.getBoundingClientRect();
-          const unclickableTopRelativeToDoc: number = unclickableRect.top + docScrollTop;
-          const unclickableLeftRelativeToDoc: number = unclickableRect.left + docScrollLeft;
-          const unclickableTopRelativeToContainer: number = unclickableTopRelativeToDoc - containerRect.top - scrollTop;
-          const unclickableLeftRelativeToContainer: number = unclickableLeftRelativeToDoc - containerRect.left - scrollLeft;
-
-          Object.assign(
-            proxyImage.style,
-            {
-              display: 'block',
-              left: `${unclickableLeftRelativeToContainer}px`,
-              top: `${unclickableTopRelativeToContainer}px`,
+          Object.assign(proxyImage.style, {
+              // display: 'block',
+              left: `${unclickableRect.left - containerRect.left - 1 + containerScrollLeft}px`,
+              top: `${unclickableRect.top - containerRect.top + containerScrollTop}px`,
               width: `${unclickableRect.width}px`,
               height: `${unclickableRect.height}px`,
             },
@@ -188,11 +167,12 @@ export default class UnclickableBlotSpec extends BlotSpec {
     }
   }
 
+
   onProxyImageClick = (event: MouseEvent) => {
     // get target unclickable (unclickable), show overlay
     const targetElement = event.target as HTMLElement;
-    const id = targetElement.dataset.blotFormatterId
-    this.unclickable = this.unclickableProxies[`${id}`].unclickable
+    const id = targetElement.dataset.blotFormatterId;
+    this.unclickable = this.unclickableProxies[`${id}`].unclickable;
     this.formatter.show(this);
   };
 

@@ -154,18 +154,17 @@ export default class BlotFormatter {
   private repositionOverlay() {
     if (this.currentSpec) {
       const overlayTarget = this.currentSpec.getOverlayElement();
-      if (!overlayTarget) {
-        return;
+      if (overlayTarget) {
+        const containerRect: DOMRect = this.quill.container.getBoundingClientRect();
+        const specRect: DOMRect = overlayTarget.getBoundingClientRect();
+        Object.assign(this.overlay.style, {
+          display: 'block',
+          left: `${specRect.left - containerRect.left - 1 + this.quill.container.scrollLeft}px`,
+          top: `${specRect.top - containerRect.top + this.quill.container.scrollTop}px`,
+          width: `${specRect.width}px`,
+          height: `${specRect.height}px`,
+        });
       }
-      const specRect = overlayTarget.getBoundingClientRect();
-      const parentRect = this.quill.container.getBoundingClientRect();
-      Object.assign(this.overlay.style, {
-        display: 'block',
-        left: `${specRect.left - parentRect.left - 1 + this.quill.container.scrollLeft}px`,
-        top: `${specRect.top - parentRect.top + this.quill.container.scrollTop}px`,
-        width: `${specRect.width}px`,
-        height: `${specRect.height}px`,
-      });
     }
   }
 
