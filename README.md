@@ -208,7 +208,7 @@ Resizing a blot will add the following attributes:
 
 The following are applied to aligned image span wrappers and directly to iframes. They exist purely to build CSS selectors & rules to assist with styling.
 - `data-relative-size` *boolean*, reflects if blot has been sized with px or %.
-- `style: --resize-width` *string*, a copy of the blot width attribute. Can be used to set width on image align span wrapper, and also conditionally resize elements on responsive sites.
+- `style: --resize-width` *string*, a copy of the blot width attribute. Can be used to set width on image align span wrapper, and also conditionally resize elements on responsive sites. For images, this will only be added if it has an alignment set.
 
 #### Size Information Display
 
@@ -233,6 +233,8 @@ If using absolute sizing and the current display size differs from the width att
 If no width has been set on the blot, and the blot is an image, the image size will be shown (along with current display size if different).
 
 The size information box will be active during resizing for interactive feedback.
+
+Styling of the size information box is possible via `options.overlay.sizeInfoStyle`.
 
 #### Options
 
@@ -280,9 +282,11 @@ With `allowResizeModeChange = true`, the `useRelativeSize` setting is only appli
 
 When changing from absolute to relative size, you may notice a small change in display size on the blot. Relative sizes are rounded to the nearest whole number % which may result in the displayed width adjusting slighlty up or down.
 
-#### Resizing on touch screens
+#### Resizing on touch screens :warning:*New in version 2.2*
 
-The drag handles do not respond well on a touch screen, it is recommended to use the pinch gesture (i.e touch the overlay with two fingers, control the size by spreading/contracting the fingers).
+Resize blots on a touch screen via the pinch gesture: with the formatter overlay active, touch the overlay with two fingers, control the size by spreading/contracting the fingers
+
+The drag handles do not respond well on a touch screen, it is recommended to use the pinch gesture.
 
 ### Delete Action
 
@@ -319,6 +323,8 @@ From version 2.1, `alt` and `title` image attributes can be edited from the **`T
 > 
 > If you use a custom image blot, leave `registerImageTitleBlot` out of your options and be sure to add `title` to supported attributes.
 
+![the attribute action alt/title modal form](/assets/blot-formatter-alt-title-editing.png)
+
 #### Options
 
 To disable alt/title editing use the following option (default `true`):
@@ -328,15 +334,53 @@ To disable alt/title editing use the following option (default `true`):
   },
 ```
 
+The alt/title modal is customisable in terms of style, icons and label text (:warning:*New in 2.2.1*):
+```typescript
+image: {
+  altTitleModalOptions: {
+    styles: {
+      modalBackground: { [key: string]: any } | null | undefined; // screen background mask
+      modalContainer: { [key: string]: any } | null | undefined;; // modal dialog
+      label: { [key: string]: any } | null | undefined;           // form labels
+      textarea: { [key: string]: any } | null | undefined;        // textareas
+      submitButton: { [key: string]: any } | null | undefined;    // submit button
+      cancelButton: { [key: string]: any } | null | undefined;    // cancel button
+    };
+    icons: {
+      // inner html for buttons (svg recommended)
+      submitButton: string; 
+      cancelButton: string;
+    };
+    labels: {
+      // text for labels (for multi-lang support)
+      alt: string;
+      title: string;
+    };
+  }
+}
+```
+
+##### Styles
+
+Any of styles specified above will be merged with the default styles unless `null`  is specified, in which case the style attribute will be absent from the rendered modal. You can also specify  `styles: null` to remove all inline styles from the modal. If you prefer to use CSS to style the modal, you can use `div[data-blot-formatter-modal]` in your selector to target the rendered modal elements.
+
+##### Icons
+
+Specify a string representation of an svg (without width/height attributes) or other suitable inner HTML for the buttons.
+
+##### Labels
+
 For multi-lingual sites, you can change the modal form labels in the options. For example:
 
 ```typescript
-  overlay: {
-      labels: {
-          alt: "Alt tekst",
-          title: "Bildetittel",
-      },
-  },
+image: {
+  altTitleModalOptions: {
+    labels: {
+      alt: "Alt tekst",
+      title: "Bildetittel",
+    };
+  }
+}
 ```
 #### Using the title as caption
 
@@ -355,7 +399,7 @@ For aligned images (assuming your image blot is inline), the image title is copi
 </span>
 ```
 
-You can make use of this to display a caption using the [suggested css](#css) below. 
+You can make use of the `data-title` attribute to display a caption using the [suggested css](#css) below. 
 
 ## Included Custom Blots
 
@@ -382,6 +426,15 @@ This is a modified `Image` blot (*[source](/src/blots/Image.ts)*) that adds `tit
 
 This is a modified `Video` blot (*[source](/src/blots/Video.ts)*) that will add the video with aspect ratio of 16:9 (the default for YouTube) and an initial width of 100% instead of the default 350x150px. 
 
+If you'd like to use the custom blot with a different aspect ratio, you can set this via the `defaultAspectRatio` setting. For example, to set 2:1:
+
+```typescript
+video: {
+  registerCustomVideoBlot: true,
+  defaultAspectRatio: '2/1 auto'
+}
+```
+
 This blot also fixes a [Quill bug](https://github.com/slab/quill/issues/4289) where the video embed is outputted as a hyperlink when using `quill.getSemanticHTML()`. Using this custom blot, the iframe will be replicated exactly as it is in the editor.
 
 ## Formatting Images
@@ -400,8 +453,8 @@ This blot also fixes a [Quill bug](https://github.com/slab/quill/issues/4289) wh
   },
 ```
 
-- `allowAltTitleEdit: boolean`: show the alt/title button on the overlay (see previous section)
-- `registerImageTitleBlot: boolean`: registers a custom Image blot that supports the delta for the title attribute (see previous section)
+- `allowAltTitleEdit: boolean`: show the alt/title `T` button on the overlay (see previous section)
+- `registerImageTitleBlot: boolean`: registers the custom Image blot that supports the delta for the title attribute (see previous section)
 - `registerArrowRightFix: boolean`: registers a keyboard binding that fixes a Quill bug where the cursor disappears when moved by right arrow into the `span` tag for the image.
 
 ## Formatting Videos
@@ -432,9 +485,9 @@ Proxy image positions are maintained whenever one of the following occurs: Quill
 ```
 
   - `selector: string`: this is used to determine which elements are iframes to assign proxy images to. If you use a custom video blot without the Quill default `ql-video` class, amend this to suit your needs.
-  - `registerCustomVideoBlot: boolean`: Registers a custom video blot with `aspect-ratio: 16 / 9 auto` (the Youtube default) and initial width 100% (see below).
-  - `registerBackspaceFix: boolean`: Registers a backspace keyboard binding that fixes a [Quill bug](https://github.com/slab/quill/issues/4364): If there are two adjacent video blots and the first is deleted with backspace, the size attributes of deleted blot are passed into the remaining blot.
-  - `defaultAspectRatio: string`: If no aspect ratio has been defined either via inline style or CSS, and the size mode is relative, this value will be used during resizing. Note, this is not sticky and will not be saved into the Quill delta.
+  - `defaultAspectRatio: string`: Sets the aspect ratio used by the custom video blot if registered. If no aspect ratio has been defined either via inline style or CSS, and the size mode is relative, this value will be used during resizing. Note, in this case, this is not sticky and will not be saved into the Quill delta.
+  - `registerCustomVideoBlot: boolean`: Registers a custom video blot with aspect-ratio specified by `defaultAspectRatio` which is `aspect-ratio: 16 / 9 auto;` by default (the Youtube default) and initial width 100% (see below).
+  - `registerBackspaceFix: boolean`: Registers a backspace keyboard binding that fixes the following [Quill bug](https://github.com/slab/quill/issues/4364): *If there are two adjacent video blots and the first is deleted with backspace, the size attributes of deleted blot are passed into the remaining blot.*
   - `proxyStyle: { [key: string]: any } | null | undefined`: an optional mapped type of style settings to add to the proxy image. For troubleshooting any issues to do with proxy positioning, it can be useful to use `{'border': '5px red solid'}` to help visualise the proxy placement.
 
 ## CSS
@@ -599,7 +652,7 @@ Example css below progressively expands relative-sized images by 20% up to a max
       }
 ```
 > [!Note] 
-> This is a bit simplistic and can result in adjacent content being 'pinched out' if this was used on a float image or a table for instance and the `calc` statement result in a value of (say) between 80% & 100%. A more robust (but complicated) method uses min/max calculations to mimic a logic gate (i.e mimicking an if/else clause) and set the width steps to a fixed width depending on the range that `--resize-width` falls into. A description of that method can be found in [this article](https://enzedonline.com/en/tech-blog/creating-conditional-logic-in-css/).
+> This is a bit simplistic and can result in adjacent content being 'pinched out' if this was used on a float image or a table for instance and the `calc` statement resulted in a value of (say) between 80% & 100%. A more robust (but complicated) method uses min/max calculations to mimic a logic gate (i.e mimicking an if/else clause) and set the width steps to a fixed width depending on the range that `--resize-width` falls into. A description of that method can be found in [this article](https://enzedonline.com/en/tech-blog/creating-conditional-logic-in-css/).
 
 > [!IMPORTANT]
 > It's recommended to only apply these responsive styles outside of the editor (or when the editor is set to read-only) as otherwise this would interfere with the ability to resize blots at those screen sizes.
@@ -660,7 +713,7 @@ For more information on configuring and extending the toolbar and buttons, see t
 
 See relavent sections above for a more detailed description of available options. Additionally, the [Options module](/src/Options.ts) has inline descriptions in each type definition.
 
-For a setup using blot-formatter's custom Image and Video blots, with alt/title editing and optional relative sizing enabled (with relative size the default):
+For a setup using blot-formatter-2's custom Image and Video blots, with alt/title editing and optional relative sizing enabled (with relative size the default):
 
 ```typescript
 blotFormatter2: {
@@ -684,7 +737,7 @@ Using quill module options it's easy to disable existing specs, actions, or to o
 
 For example: if you wanted to disable resizing, support only images, disable alt/title editing, and change the overlay border, the following config would work:
 
-```js
+```javascript
 import Quill from 'quill';
 
 // from main module

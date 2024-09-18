@@ -1,6 +1,13 @@
 # Changelog
 
-## [v2.2] - 2024-09-13
+## [v2.2.1] - 2024-09-13
+### Changed
+Minor bug fix:
+- Bug fix: when clicking directly from one video to another, the target became `null` instead of the new target video. Now correctly loads target video.
+- Bug fix: insome cases, proxies became misaligned if ancestor element of quill root (other than the document window) was in a scrolled position. Now correctly tracks target video positions regardless of ancestor scroll positions.
+- Enhancement: alt/title modal -  Styles & button icons now configurable via options. Replaced button icon unicode glyphs with svg images for more reliable rendering.
+
+## [v2.2.0] - 2024-09-13
 ### Changed
 Major rewrite: 
 - New dynamic `Toolbar` module & taken out of `Align` action with simplified add/remove actions via `Options` 
