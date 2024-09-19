@@ -50,6 +50,10 @@ export default class AttributeAction extends Action {
         }
     }
 
+    hideAltTitleModal(): void {
+        this.modal.element.remove();
+    }
+
     setAltTitle(): void {
         if (this.targetElement) {
             const alt: string = this.modal.altInput.value
@@ -160,15 +164,15 @@ export default class AttributeAction extends Action {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             this.setAltTitle();
-            modal.remove();
+            this.hideAltTitleModal();
         });
-        form.addEventListener('cancel', () => { modal.remove(); });
+        form.addEventListener('cancel', () => { this.hideAltTitleModal() });
         modal.addEventListener('pointerdown', (event: PointerEvent) => {
             if (event.target === modal) {
-                modal.remove();
+                this.hideAltTitleModal();
             }
         });
-        cancelButton.addEventListener('click', () => { modal.remove(); });
+        cancelButton.addEventListener('click', () => { this.hideAltTitleModal(); });
 
         return {
             element: modal,
