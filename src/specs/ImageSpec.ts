@@ -2,6 +2,7 @@ import BlotSpec from './BlotSpec';
 import BlotFormatter from '../BlotFormatter';
 import Action from '../actions/Action';
 import AttributeAction from '../actions/AttributeAction';
+import CompressAction from '../actions/CompressAction';
 
 export default class ImageSpec extends BlotSpec {
   img: HTMLElement | null;
@@ -20,7 +21,10 @@ export default class ImageSpec extends BlotSpec {
     if (this.formatter.options.image.allowAltTitleEdit) {
       actions.push(new AttributeAction(this.formatter));
     }
-    return actions
+    if (this.formatter.options.image.allowCompressor && CompressAction.isEligibleForCompression(this.img)) {
+      actions.push(new CompressAction(this.formatter));
+    }
+    return actions;
   }
 
   getTargetElement(): HTMLElement | null {
