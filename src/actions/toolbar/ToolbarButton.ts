@@ -17,6 +17,7 @@ export default class ToolbarButton implements _ToolbarButton {
     onClick: EventListener;
     options: ToolbarOptions;
     element: HTMLElement | null = null;
+    initialVisibility: boolean = true; // preset visibility before button is created
 
     constructor(
         action: string,
@@ -29,7 +30,7 @@ export default class ToolbarButton implements _ToolbarButton {
         this.options = options;
     }
 
-    create(visible: string | boolean = true): HTMLElement {
+    create(): HTMLElement {
         this.element = document.createElement('span');
         this.element.innerHTML = this.icon;
         this.element.className = this.options.buttonClassName;
@@ -37,7 +38,7 @@ export default class ToolbarButton implements _ToolbarButton {
         this.element.dataset.action = this.action;
         this.selected = this.preselect();
         this.element.onclick = this.onClick;
-        this.visible = visible;
+        this.visible = this.initialVisibility;
         return this.element;
     }
 
