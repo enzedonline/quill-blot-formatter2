@@ -12,22 +12,25 @@ export default class ResizeAction extends Action {
   topRightHandle: HTMLElement;
   bottomRightHandle: HTMLElement;
   bottomLeftHandle: HTMLElement;
-  dragHandle: HTMLElement | null | undefined;
-  dragStartX: number;
+  dragHandle: HTMLElement | null | undefined = null;
+  dragStartX: number = 0;
   dragCursorStyle: HTMLElement;
-  preDragWidth: number;
-  pinchStartDistance: number;
-  calculatedAspectRatio: number;
-  computedAspectRatio: string | undefined;
+  preDragWidth: number = 0;
+  pinchStartDistance: number = 0;
+  calculatedAspectRatio: number = 0;
+  computedAspectRatio: string | undefined = undefined;
   target: HTMLElement | null | undefined;
   editorStyle: CSSStyleDeclaration | undefined;
-  editorWidth: number;
+  editorWidth: number = 0;
   useRelativeSize: boolean;
-  resizeModeButton: ToolbarButton | null;
-  isUnclickable: boolean;
-  hasResized: boolean;
-  formattedWidth: string;
+  resizeModeButton: ToolbarButton | null = null;
+  isUnclickable: boolean = false;
+  hasResized: boolean = false;
+  formattedWidth: string = '';
   private sizeInfoTimerId: ReturnType<typeof setTimeout> | null = null;
+  private isImage: boolean = false;
+  private isSVG: boolean = false;
+  private naturalWidth: number | undefined = undefined;
 
   constructor(formatter: BlotFormatter) {
     super(formatter);
@@ -35,18 +38,8 @@ export default class ResizeAction extends Action {
     this.topRightHandle = this.createHandle('top-right', 'nesw-resize');
     this.bottomRightHandle = this.createHandle('bottom-right', 'nwse-resize');
     this.bottomLeftHandle = this.createHandle('bottom-left', 'nesw-resize');
-    this.dragHandle = null;
-    this.dragStartX = 0;
     this.dragCursorStyle = document.createElement('style');
-    this.preDragWidth = 0;
-    this.pinchStartDistance = 0;
-    this.calculatedAspectRatio = 0;
-    this.editorWidth = 0;
     this.useRelativeSize = this.formatter.options.resize.useRelativeSize;
-    this.resizeModeButton = null;
-    this.isUnclickable = false;
-    this.hasResized = false;
-    this.formattedWidth = '';
     if (formatter.options.resize.allowResizeModeChange) {
       this.resizeModeButton = this.createResizeModeButton();
       this.toolbarButtons = [
@@ -58,6 +51,10 @@ export default class ResizeAction extends Action {
   onCreate() {
     this.target = this.formatter.currentSpec?.getTargetElement();
     this.isUnclickable = this.formatter.currentSpec?.isUnclickable || false;
+    this.isImage = this.target instanceof HTMLImageElement;
+    if (this.isImage) {
+      this.isSVG = this.isSvgImage();
+    }
 
     this.formatter.overlay.appendChild(this.topLeftHandle);
     this.formatter.overlay.appendChild(this.topRightHandle);
@@ -89,6 +86,9 @@ export default class ResizeAction extends Action {
   onDestroy() {
     this.target = null;
     this.isUnclickable = false;
+    this.isImage = false;
+    this.naturalWidth = undefined;
+    this.isSVG = false;
     this.setCursor('');
     this.formatter.overlay.removeChild(this.topLeftHandle);
     this.formatter.overlay.removeChild(this.topRightHandle);
@@ -206,6 +206,10 @@ export default class ResizeAction extends Action {
             }
           }
         }
+        // get natural width if oversize protection on and resize mode is absolute (not relative) - excludes SVG
+        if (this.isImage && !this.useRelativeSize && !this.isSVG && this.formatter.options.resize.imageOversizeProtection) {
+          this.naturalWidth = (this.target as HTMLImageElement).naturalWidth;
+        }
         // show size info box
         this.showSizeInfo(true, rect.width, rect.height);
       }
@@ -229,6 +233,8 @@ export default class ResizeAction extends Action {
           }
         }
       }
+      // clear any cached image natural width
+      this.naturalWidth = undefined;
 
       this.formatter.update();
       // fade out size info box
@@ -269,7 +275,6 @@ export default class ResizeAction extends Action {
   onHandlePointerUp = () => {
     // disable resize mode, reset cursor, tidy up
     this.setCursor('');
-    // this.formatter.hideProxy();
     this.resizeMode(false);
     // remove resize event listeners
     document.removeEventListener('pointermove', this.onHandleDrag);
@@ -330,6 +335,9 @@ export default class ResizeAction extends Action {
 
   resizeTarget(newWidth: number) {
     if (this.target) {
+      // if image oversize protection on, limit newWidth
+      // this.naturalWidth only has value when target is image and protextion is on (set in resizeMode)
+      newWidth = Math.min(this.naturalWidth ?? Infinity, newWidth);
       // update size info display
       const newHeight: number = newWidth / this.calculatedAspectRatio;
       this.updateSizeInfo(newWidth, newHeight);
@@ -481,8 +489,18 @@ export default class ResizeAction extends Action {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  roundDimension(dim: string): string {
+  private roundDimension(dim: string): string {
     // round string number with units (prefix and/or suffix): '-$34.565c' -> '-$35c', '21.244px' -> '24px'
     return dim.replace(/([^0-9.-]*)(-?[\d.]+)(.*)/, (_, prefix, num, suffix) => `${prefix}${Math.round(Number(num))}${suffix}`);
+  }
+
+  private isSvgImage(): boolean {
+    if (this.target instanceof HTMLImageElement) {
+      if (this.target.src.startsWith('data:image/')) {
+        return this.target.src.includes('image/svg+xml');
+      }
+      return this.target.src.endsWith('.svg');
+    }
+    return false;
   }
 }
