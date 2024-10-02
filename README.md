@@ -20,6 +20,7 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
   - [Delete Action](#delete-action)
   - [Attribute Action (alt/title editing)](#attribute-action-image-blots-only)
     - [Using the title as caption](#using-the-title-as-caption)
+  - [Compress Action](#compress-action-embedded-image-blots-only)
 - [Included Custom Blots](#included-custom-blots)
   - [Image](#image)
   - [Video](#video)
@@ -46,6 +47,12 @@ This release is a major rewrite, including:
 - many fixes for bugs carried over from original `blot-formatter` package
 
 ![size information display](/assets/resize.png)
+
+#### Version 2.2.2
+- compress action was added to reduce the size of embedded images if applicable
+- an optional `imageOversizeProtection` setting for the Resize Action prevents images from being sized larger than their natural size when using absolute sizes
+
+![compress action](/assets/compressor.png)
 
 See [change log](CHANGELOG.md) for full details.
 
@@ -134,7 +141,7 @@ const quill = new Quill(..., {
 
 ## Actions
 
-There are three common actions plus an additional one for image blots. These are enabled by default with the following options:
+There are three common actions plus an additional two for image blots. These are enabled with the following options:
 
 ```typescript
 blotFormatter2: {
@@ -149,10 +156,13 @@ blotFormatter2: {
   },
   image: {
     allowAltTitleEdit: true,
+    allowCompressor: true
   }
 }
 ```
 Set the value to `false` to disable the `action`.
+
+All of these are set to `true` by default except `allowCompressor`. 
 
 ### Align Action
 
@@ -238,13 +248,14 @@ Styling of the size information box is possible via `options.overlay.sizeInfoSty
 
 #### Options
 
-There are four settings most likely of interest:
+There are five settings most likely of interest:
 
 ```typescript
   resize: {
     allowResizing: true,
     allowResizeModeChange: false,
     useRelativeSize: false,
+    imageOversizeProtection: false,
     minimumWidthPx: 25,
   },
   ```
@@ -252,6 +263,7 @@ There are four settings most likely of interest:
 - `allowResizing: boolean`: allow blots to be resized. Setting this to false stops the `Resize` action loading when the formatter overlay is activated. This will disable the drag handles in the overlay corners and not load the event listeners that handle resizing.
 - `allowResizeModeChange: boolean`: shows the `%` button on the toolbar. Clicking this toggles the size mode between absolute and relative. See [Using Relative Sizes](#using-relative-sizes) for more details. If `allowResizing` is `false`, the `Resize` action will not be loaded and the `%` button will not be available.
 - `useRelativeSize: boolean`: if `true` then use relative sizes by default or use relative sizes for all resize operations depending on value set for `allowResizeModeChange`. See [Using Relative Sizes](#using-relative-sizes) for more details.
+- `imageOversizeProtection: boolean`: when set to true, prevents an image being resized larger than its natural width to prevent degradation of image quality. This is only applicable when the resize mode is absolute (px) and not relative (%). If the image `src` is an `svg` (either embedded ot linked), the image is exempt from this limit. :warning: *New in 2.2.2*
 - `minimumWidthPx: number`: the minimum width (px) a blot can be shrunk to during a resize operation.
 
 Additionally, `handleClassName` and `handleStyle` are availble to control the drag handle styling (see [Options](./src/Options.ts))
@@ -305,6 +317,8 @@ To disable the Delete action, use the following setting:
 
 From version 2.1, `alt` and `title` image attributes can be edited from the **`T`** button on the overlay toolbar.
 
+![the attribute action alt/title modal form](/assets/blot-formatter-alt-title-editing.png)
+
 > [!CAUTION]
 > #### :exclamation: IMPORTANT NOTE REGARDING QUILL AND IMAGE TITLES :exclamation:
 >
@@ -322,8 +336,6 @@ From version 2.1, `alt` and `title` image attributes can be edited from the **`T
 > ***This is not enabled by default as this can potentially overwrite any custom Image blot you might have in use.***
 > 
 > If you use a custom image blot, leave `registerImageTitleBlot` out of your options and be sure to add `title` to supported attributes.
-
-![the attribute action alt/title modal form](/assets/blot-formatter-alt-title-editing.png)
 
 #### Options
 
@@ -362,7 +374,7 @@ image: {
 
 ##### Styles
 
-Any of styles specified above will be merged with the default styles unless `null`  is specified, in which case the style attribute will be absent from the rendered modal. You can also specify  `styles: null` to remove all inline styles from the modal. If you prefer to use CSS to style the modal, you can use `div[data-blot-formatter-modal]` in your selector to target the rendered modal elements.
+Any of the styles specified above will be merged with the default styles unless `null`  is specified, in which case the style attribute will be absent from the rendered modal. You can also specify  `styles: null` to remove all inline styles from the modal. If you prefer to use CSS to style the modal, you can use `div[data-blot-formatter-modal]` in your selector to target the rendered modal elements.
 
 ##### Icons
 
@@ -400,6 +412,74 @@ For aligned images (assuming your image blot is inline), the image title is copi
 ```
 
 You can make use of the `data-title` attribute to display a caption using the [suggested css](#css) below. 
+
+### Compress Action (embedded image blots only) 
+:warning: *New in version 2.2.2*
+
+The Compress Action will reduce the size of embedded images that meet the criteria for reduction. 
+
+![compressor action](assets/compressor.png)
+
+> [!IMPORTANT] 
+> The Compressor Action is not available for linked (external) images, or embedded SVG's & GIF's. 
+>
+>This action is not enabled by default.
+
+To compress an image, activate the formatter for that image and click the 'compress image' button:  
+![compress button](assets/compress.jpg)
+
+The button is only visible for eligible image types.
+
+All compressed images are jpeg format.
+
+Images are considered 'compressible' if
+- They are larger than the `maxWidth` value in options (if any - see *Options* below).
+- The image has been resized and its `width` attribute is smaller than its natural width. This condition will only be met if it has been resized with absolute units (px, rem or em). 
+
+Images resized with relative (%) unit will only be reduced if they are larger than the `maxWidth` value.
+
+A modal is used to confirm the action before compressing. The styles and text content of the modal are fully cusomtisable in the options. The modal has a default prompt and a 'more info' button to expand a more detailed explantaion. These can be configured in options. Set the 'more info' text to `null` to hide the button.
+
+When completed, a feedback box is displayed in the formatter overlay to show the reduced amount in kB, as well as the initial and final dimensions for the image. If the image is not compressible (already optimum size), this is displayed instead of the modal.
+
+#### Options
+
+```typescript
+image: {
+  allowCompressor: Boolean;
+  compressorOptions: {
+    jpegQuality: number;
+    maxWidth?: number | null; 
+    styles? : {
+      modalBackground?: { [key: string]: any } | null | undefined;
+      modalContainer?: { [key: string]: any } | null | undefined;
+      buttonContainer?: { [key: string]: any } | null | undefined;
+      buttons?: { [key: string]: any } | null | undefined;
+    } | null | undefined;
+    text: {
+      prompt: string;
+      moreInfo: string | null;
+      reducedLabel: string; 
+      nothingToDo: string;
+    };
+    icons: {
+      continue: string;
+      moreInfo: string;
+      cancel: string;
+    };
+  }
+}
+```
+- `allowCompressor`: enable the Compressor Action (`false` by default).
+- `jpegQuality`: jpeg quality (compression factor) to apply when reducing the image. Must be 0 - 1 where 0 is absolute compression (lowest quality) and 1 is no compression (highest quality). `0.8` by default. This value will typically reduce the file size to 30% of the original without any noticeable degradation of image quality.
+- `maxWidth`: if set, will reduce images to this size if the image has no width attribute, or is resized with relative (%) units, and is larger than the `maxWidth` value. `null` by default.
+- `styles`: Any of the styles specified above will be merged with the default styles unless null is specified, in which case the style attribute will be absent from the rendered modal. You can also specify `styles: null` to remove all inline styles from the modal. If you prefer to use CSS to style the modal, you can use `div[data-blot-formatter-compress-modal]` in your selector to target the rendered modal elements.
+- `text`: text or rich text HTML for the modal and feedback box
+  - `prompt` - text for the modal when opened
+  - `moreInfo` - extra detail for the user when clicking the `?` button. Setting this to `null` hides the `?` button.
+  - `reducedLabel` - label for the file size reduction feedback ("Reduced" in the screenshot above).
+  - `nothingToDo` - text shown in the feedback box when there is no compression to do.
+- `icons` - Specify a string representation of an svg (without width/height attributes) or other suitable inner HTML for the buttons.
 
 ## Included Custom Blots
 

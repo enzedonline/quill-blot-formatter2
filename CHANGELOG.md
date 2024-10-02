@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.2.1] - 2024-10-02
+### Changed
+Enhancements:
+- Added Compress action for embedded images (other than gif & svg). Optional action to reduce those images either to a maximum width or to their resized dimensions (if absolute and not relative). Configurable jpeg compression to further reduce image file size.
+- Added resize option to protect images from being resized larger than their natural (intrinsic) size. Excludes SVG.
+
 ## [v2.2.1] - 2024-09-13
 ### Changed
 Minor bug fix:
