@@ -130,7 +130,7 @@ export default class BlotFormatter {
   private addEventListeners(): void {
     // overlay event listeners
     // scroll the quill root on mouse wheel & touch move event
-    this.overlay.addEventListener('wheel', this.passWheelEventThrough);
+    this.overlay.addEventListener('wheel', this.passWheelEventThrough, { passive: false });
     this.overlay.addEventListener('touchstart', this.onTouchScrollStart, { passive: false });
     this.overlay.addEventListener('touchmove', this.onTouchScrollMove, { passive: false });
     // disable context menu on overlay
