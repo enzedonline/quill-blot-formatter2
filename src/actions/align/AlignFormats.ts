@@ -1,5 +1,5 @@
 import Quill from 'quill';
-export const InlineBlot = Quill.import('blots/inline') as any;
+export const Inline = Quill.import('blots/inline') as any;
 const parchment = Quill.import('parchment') as any;
 const { ClassAttributor, Scope } = parchment;
 
@@ -26,8 +26,12 @@ class IframeAlignAttributor extends ClassAttributor {
         super.add(node, value);
         node.dataset.blotAlign = value;
       }
-      const width = node.getAttribute('width');
+      let width: string | null = node.getAttribute('width');
       if (width) {
+        // width style value must include units, add 'px' if numeric only
+        if (!isNaN(Number(width.trim().slice(-1)))) {
+          width = `${width}px`
+        }
         node.style.setProperty('--resize-width', width);
         node.dataset.relativeSize = `${width.endsWith('%')}`;
       } else {
@@ -75,6 +79,7 @@ interface ImageAlignValue extends ImageAlignInputValue {
 }
 
 class ImageAlignAttributor extends ClassAttributor {
+  static tagName = 'SPAN';
   constructor() {
     super('imageAlign', 'ql-image-align', {
       scope: Scope.INLINE,
@@ -82,9 +87,10 @@ class ImageAlignAttributor extends ClassAttributor {
     });
   }
 
-  add(node: Element, value: ImageAlignInputValue): boolean {
-    if (node instanceof HTMLElement && node.firstChild instanceof HTMLElement) {
-      if (typeof value === 'object') {
+  add(node: Element, value: ImageAlignInputValue | string): boolean {
+    if (node instanceof HTMLSpanElement && value) {
+      let imageElement = node.querySelector('img') as HTMLImageElement;
+      if (typeof value === 'object' && value.align) {
         super.add(node, value.align);
         node.setAttribute('contenteditable', 'false');
         // data-title used to populate caption via ::after
@@ -93,27 +99,44 @@ class ImageAlignAttributor extends ClassAttributor {
         } else {
           node.removeAttribute('data-title');
         }
-        node.firstChild.dataset.blotAlign = value.align;
-      } else {
+        if (value.align) {
+          imageElement.dataset.blotAlign = value.align;
+        }
+      } else if (typeof value === 'string') {
         super.add(node, value);
-        node.firstChild.dataset.blotAlign = value;
+        imageElement.dataset.blotAlign = value;
+      } else {
+        return false;
       }
       // set width style property on wrapper if image and has imageAlign format
       // fallback to image natural width if width attribute missing (image not resized))
       // width needed to size wrapper correctly via css
-      let width: string | null = node.firstChild.getAttribute('width');
+      // width style value must include units, add 'px' if numeric only
+      let width: string | null = imageElement.getAttribute('width');
       if (!width) {
-        if (node.firstChild instanceof HTMLImageElement) {
-          width = `${node.firstChild.naturalWidth}px`;
-        } else {
-          width = `${node.firstChild.clientWidth}px`
+        width = `${imageElement.naturalWidth}px`;
+        imageElement.setAttribute('width', width);
+      } else {
+        if (!isNaN(Number(width.trim().slice(-1)))) {
+          width = `${width}px`
+          imageElement.setAttribute('width', width);
         }
-        node.firstChild.setAttribute('width', width);
       }
       node.style.setProperty('--resize-width', width);
       node.setAttribute('data-relative-size', `${width?.endsWith('%')}`)
       return true;
     } else {
+      // bug fix - Quill's inline styles merge elements and remove span element if styles nested
+      // for the first outer style, reapply imageAlign format on image 
+      // for subsequent outer styles, skip reformat and just return true - will nest multiple span wrappers otherwise
+      const imageElement = node.querySelector('img');
+      if (imageElement instanceof HTMLImageElement) {
+        const imageBlot = Quill.find(imageElement) as any;
+        if (imageBlot && node.firstChild instanceof HTMLSpanElement) {
+          imageBlot.format('imageAlign', value);
+        }
+        return true;
+      }
       return false;
     }
   }
@@ -128,26 +151,26 @@ class ImageAlignAttributor extends ClassAttributor {
   }
 
   value(node: Element): ImageAlignValue {
-    const className = super.value(node);
-    const title: string = node.getAttribute('data-title') || '';
-    let width: string = (node instanceof HTMLElement) ? node.style.getPropertyValue('--resize-width') : '';
+    // in case nested style, find image element and span wrapper
+    const imageElement = node.querySelector('img') as HTMLImageElement;
+    const spanWrapper = imageElement.parentElement as HTMLElement;
+    const align = super.value(spanWrapper);
+    const title: string = imageElement.getAttribute('title') || '';
+    let width: string = imageElement.getAttribute('width') || '';
     // attempt fallback value for images aligned pre-version 2.2
-    if (!parseFloat(width) && node.firstChild instanceof HTMLElement) {
-      width = node.firstChild.getAttribute('width') || '';
-      if (!parseFloat(width) && node.firstChild instanceof HTMLImageElement) {
-        if (node.firstChild.complete) {
-          width = `${node.firstChild.naturalWidth}px`;
-        } else {
-          node.firstChild.onload = () => {
-            width = `${(node.firstChild as HTMLImageElement).naturalWidth}px`;
-            (node as HTMLElement).style.setProperty('--resize-width', width);
-            (node.firstChild as HTMLImageElement).setAttribute('width', width);
-          }
+    if (!parseFloat(width)) {
+      if (imageElement.complete) {
+        width = `${imageElement.naturalWidth}px`;
+      } else {
+        imageElement.onload = () => {
+          width = `${imageElement.naturalWidth}px`;
+          spanWrapper.style.setProperty('--resize-width', width);
+          imageElement.setAttribute('width', width);
         }
       }
     }
     return {
-      align: className,
+      align: align,
       title: title,
       width: width,
       contenteditable: 'false',
