@@ -45,6 +45,10 @@ div.ql-editor [class^="ql-image-align-"][data-title]::after {
     background-color: white;
     width: 100%;
 }
+/* remove text decoration on caption when image linked */
+a:has([class^="ql-image-align-"]>img) {
+    text-decoration: none !important;
+}
 /* left */
 div.ql-editor .ql-image-align-left[data-title]::after {
     text-align: left;
