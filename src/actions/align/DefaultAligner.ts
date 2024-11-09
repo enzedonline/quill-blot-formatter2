@@ -104,6 +104,13 @@ export default class DefaultAligner implements Aligner {
               title: blot.domNode.getAttribute('title') || ''
             }
           );
+          // if image only item in editor, add new paragraph underneath otherwise no selectable item in editor
+          try {
+            const ops: any = this.formatter.quill.getContents().ops;
+            if (ops.length===2 && ops[1].insert==='\n') {
+              this.formatter.quill.insertText(this.formatter.quill.getLength(), '\n', 'user');
+            }
+          } catch { }
         } else if (this.isBlockBlot(blot) || this.hasBlockScope(blot)) {
           blot.format(
             IframeAlign.attrName,
