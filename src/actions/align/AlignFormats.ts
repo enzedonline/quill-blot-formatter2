@@ -112,17 +112,7 @@ class ImageAlignAttributor extends ClassAttributor {
       // fallback to image natural width if width attribute missing (image not resized))
       // width needed to size wrapper correctly via css
       // width style value must include units, add 'px' if numeric only
-      let width: string | null = imageElement.getAttribute('width');
-      if (!width) {
-        width = `${imageElement.naturalWidth}px`;
-        imageElement.setAttribute('width', width);
-      } else {
-        if (!isNaN(Number(width.trim().slice(-1)))) {
-          width = `${width}px`
-          imageElement.setAttribute('width', width);
-        }
-      }
-      node.style.setProperty('--resize-width', width);
+      let width: string | null = this.getImageWidth(imageElement);
       node.setAttribute('data-relative-size', `${width?.endsWith('%')}`)
       return true;
     } else {
@@ -132,7 +122,13 @@ class ImageAlignAttributor extends ClassAttributor {
       const imageElement = node.querySelector('img');
       if (imageElement instanceof HTMLImageElement) {
         const imageBlot = Quill.find(imageElement) as any;
-        if (imageBlot && node.firstChild instanceof HTMLSpanElement) {
+        if (
+          imageBlot && 
+          (
+            node.firstChild instanceof HTMLSpanElement || 
+            !(imageElement.parentElement?.matches('span[class^="ql-image-align-"]'))
+          )
+        ) {
           imageBlot.format('imageAlign', value);
         }
         return true;
@@ -153,19 +149,17 @@ class ImageAlignAttributor extends ClassAttributor {
   value(node: Element): ImageAlignValue {
     // in case nested style, find image element and span wrapper
     const imageElement = node.querySelector('img') as HTMLImageElement;
-    const spanWrapper = imageElement.parentElement as HTMLElement;
-    const align = super.value(spanWrapper);
+    const parentElement = imageElement.parentElement as HTMLElement;
+    const align = super.value(parentElement);
     const title: string = imageElement.getAttribute('title') || '';
     let width: string = imageElement.getAttribute('width') || '';
-    // attempt fallback value for images aligned pre-version 2.2
+    // attempt to get width if missing or image not loaded
     if (!parseFloat(width)) {
       if (imageElement.complete) {
-        width = `${imageElement.naturalWidth}px`;
+        width = this.getImageWidth(imageElement);
       } else {
-        imageElement.onload = () => {
-          width = `${imageElement.naturalWidth}px`;
-          spanWrapper.style.setProperty('--resize-width', width);
-          imageElement.setAttribute('width', width);
+        imageElement.onload = (event) => {
+          width = this.getImageWidth(event.target as HTMLImageElement);
         }
       }
     }
@@ -177,6 +171,22 @@ class ImageAlignAttributor extends ClassAttributor {
       relativeSize: `${width.endsWith('%')}`
     };
   }
+
+  getImageWidth = (imageElement: HTMLImageElement) => {
+    let width = imageElement.getAttribute('width');
+    if (!width) {
+      width = `${imageElement.naturalWidth}px`;
+      imageElement.setAttribute('width', width);
+    } else {
+      if (!isNaN(Number(width.trim().slice(-1)))) {
+        width = `${width}px`
+        imageElement.setAttribute('width', width);
+      }
+    }
+    (imageElement.parentElement as HTMLElement).style.setProperty('--resize-width', width);
+    return width;
+  }
+
 }
 
 const ImageAlign = new ImageAlignAttributor();
