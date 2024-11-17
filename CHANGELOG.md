@@ -1,6 +1,17 @@
 # Changelog
 
-## [v2.2.1] - 2024-10-02
+## [v2.2.3] - 2024-11-18
+### Changed
+Bug Fix:
+- When image was aligned with other Quill inline styles applied, alignments would get knocked out by other styles when reloading editor from delta or when using `dangerouslyPasteHTML()` (Quill inline styles merge elements). Bug fix reapplies alignment format on image for first wrapped style if encountered to reestablish span wrapper.
+- In some cases, if the image was not yet loaded while the format was applied, the width would be set to natural width regardless of pre-existing width attribute. Width is now read on image load in those cases.
+- If image width attribute was purely numeric (ie without dimensions), aligning image would cause image to be displayed full width (due to numeric values being invalid for style width attributes). Width now gets 'px' appended if no units in image width attribute.
+- Click event on linked image was opening link during editing. Click event no longer propagates.
+- Updated CSS to remove text decoration on linked image: caused image caption to be underlined in those cases.
+- If image only item in editor, add new paragraph underneath when formatting from toolbar, otherwise unable to place cursor in editor.
+
+
+## [v2.2.2] - 2024-10-02
 ### Changed
 Enhancements:
 - Added Compress action for embedded images (other than gif & svg). Optional action to reduce those images either to a maximum width or to their resized dimensions (if absolute and not relative). Configurable jpeg compression to further reduce image file size.
