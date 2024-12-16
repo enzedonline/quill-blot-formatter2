@@ -1,29 +1,18 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "module": "commonjs",
+    "module": "es2022",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    },
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "declaration": true, 
-    "declarationDir": "./dist", 
-    "outDir": "./dist" 
+    "declaration": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist" 
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
