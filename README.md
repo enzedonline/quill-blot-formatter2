@@ -502,6 +502,8 @@ blotFormatter2: {
 
 This is a modified `Image` blot (*[source](/src/blots/Image.ts)*) that adds `title` attribute support to the default Quill `Image` blot. If you use the `Attribute` action for alt/title editing, you must either use this blot or register your own with `title` support.
 
+This blot will not remove an empty `alt` attribute. This for accessibilty compatibility and allows editors to set a blank `alt` to tell screenreaders to ignore the image.
+
 ### Video
 
 This is a modified `Video` blot (*[source](/src/blots/Video.ts)*) that will add the video with aspect ratio of 16:9 (the default for YouTube) and an initial width of 100% instead of the default 350x150px. 

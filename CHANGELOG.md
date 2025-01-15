@@ -1,5 +1,26 @@
 # Changelog
 
+## [v2.3.0] - 2025-01-14
+### Changed
+`AttributeAction` will now create an empty `alt` attribute if no value was passed. The optional custom ImageBlot was amended to support this.
+
+Previously, the attribute was removed. This for accessibilty compatibility and allows editors to set a blank `alt` to tell screenreaders to ignore the image.
+
+### Updated
+`tsconfig.compilerOptions.module` updated from `commonjs` to `es2022`.
+
+Following package versions updated:
+
+| Package                | Previous Version | Updated Version |
+|------------------------|-----------------|-----------------|
+| quill                  | ^2.0.2         | ^2.0.3          |
+| terser-webpack-plugin  | ^5.3.10        | ^5.3.11         |
+| ts-loader              | ^9.5.1         | ^9.5.2          |
+| typescript             | ^5.6.2         | ^5.7.3          |
+| webpack                | ^5.94.0        | ^5.97.1         |
+| webpack-cli            | ^5.1.4         | ^6.0.1          |
+
+
 ## [v2.2.3] - 2024-11-18
 ### Changed
 Bug Fix:
