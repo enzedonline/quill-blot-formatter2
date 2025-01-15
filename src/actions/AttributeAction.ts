@@ -56,13 +56,11 @@ export default class AttributeAction extends Action {
 
     setAltTitle(): void {
         if (this.targetElement) {
-            const alt: string = this.modal.altInput.value
-            const title: string = this.modal.titleInput.value
-            if (alt) {
-                this.targetElement.setAttribute('alt', alt);
-            } else {
-                this.targetElement.removeAttribute('alt');
-            }
+            const alt: string = typeof this.modal.altInput.value === "string" 
+                ? this.modal.altInput.value 
+                : "";
+            const title: string = this.modal.titleInput.value;
+            this.targetElement.setAttribute('alt', alt);
             if (title) {
                 this.targetElement.setAttribute('title', title);
             } else {
