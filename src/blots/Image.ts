@@ -18,7 +18,7 @@ class Image extends ImageBlot {
 
     format(name: string, value: string) {
         if (ATTRIBUTES.indexOf(name) > -1) {
-            if (value) {
+            if (value || name === 'alt') {
                 this.domNode.setAttribute(name, value);
             } else {
                 this.domNode.removeAttribute(name);
