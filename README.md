@@ -168,6 +168,9 @@ All of these are set to `true` by default except `allowCompressor`.
 
 This action handles aligning the blot.
 
+> [!IMPORTANT]
+> For the alignment to have an effect on the rendered HTML, you must include relevant CSS to handle these formats. See the [CSS section](#css) further down for more details.
+
 Two Quill formats for aligning blots are registered with this package: `IframeAlign` and `ImageAlign`
 
 Alignment and placing is handled by css classes, one set each for image and iframe:
@@ -263,7 +266,7 @@ There are five settings most likely of interest:
 - `allowResizing: boolean`: allow blots to be resized. Setting this to false stops the `Resize` action loading when the formatter overlay is activated. This will disable the drag handles in the overlay corners and not load the event listeners that handle resizing.
 - `allowResizeModeChange: boolean`: shows the `%` button on the toolbar. Clicking this toggles the size mode between absolute and relative. See [Using Relative Sizes](#using-relative-sizes) for more details. If `allowResizing` is `false`, the `Resize` action will not be loaded and the `%` button will not be available.
 - `useRelativeSize: boolean`: if `true` then use relative sizes by default or use relative sizes for all resize operations depending on value set for `allowResizeModeChange`. See [Using Relative Sizes](#using-relative-sizes) for more details.
-- `imageOversizeProtection: boolean`<sup>:warning:*New in 2.2.2*</sup>:  when set to true, prevents an image being resized larger than its natural width to prevent degradation of image quality. This is only applicable when the resize mode is absolute (px) and not relative (%). If the image `src` is an `svg` (either embedded ot linked), the image is exempt from this limit.
+- `imageOversizeProtection: boolean`<sup>:warning:*New in 2.2.2*</sup>:  when set to true, prevents an image being resized larger than its natural width to prevent degradation of image quality. This is only applicable when the resize mode is absolute (px) and not relative (%). If the image `src` is an `svg` (either embedded or linked), the image is exempt from this limit.
 - `minimumWidthPx: number`: the minimum width (px) a blot can be shrunk to during a resize operation.
 
 Additionally, `handleClassName` and `handleStyle` are availble to control the drag handle styling (see [Options](./src/Options.ts))
