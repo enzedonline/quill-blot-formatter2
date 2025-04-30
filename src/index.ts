@@ -19,3 +19,7 @@ export { default as BlotSpec } from './specs/BlotSpec';
 export { default as ImageSpec } from './specs/ImageSpec';
 export { default as UnclickableBlotSpec } from './specs/UnclickableBlotSpec';
 export { default as IframeVideoSpec } from './specs/IframeVideoSpec';
+
+// formats
+export { ImageAlign as ImageAlignFormat } from './actions/align/AlignFormats';
+export { IframeAlign as IframeAlignFormat } from './actions/align/AlignFormats';
