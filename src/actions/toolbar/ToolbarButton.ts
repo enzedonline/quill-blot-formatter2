@@ -12,7 +12,7 @@ export interface _ToolbarButton {
 }
 
 export default class ToolbarButton implements _ToolbarButton {
-    action: string; 
+    action: string;
     icon: string;
     onClick: EventListener;
     options: ToolbarOptions;
@@ -34,11 +34,14 @@ export default class ToolbarButton implements _ToolbarButton {
         this.element = document.createElement('span');
         this.element.innerHTML = this.icon;
         this.element.className = this.options.buttonClassName;
-        this.styleButton();
         this.element.dataset.action = this.action;
-        this.selected = this.preselect();
         this.element.onclick = this.onClick;
+        if (this.options.tooltips && this.options.tooltips[this.action]) {
+            this.element.title = this.options.tooltips[this.action];
+        }
+        this.selected = this.preselect();
         this.visible = this.initialVisibility;
+        this.styleButton();
         return this.element;
     }
 
@@ -63,10 +66,21 @@ export default class ToolbarButton implements _ToolbarButton {
 
     set selected(value: boolean) {
         if (this.element) {
-            this.element.dataset.selected = `${value}`
-            value ?
-                this.element.style.setProperty('filter', 'invert(20%)') :
-                this.element.style.removeProperty('filter');
+            this.element.dataset.selected = value.toString();
+            // apply styles to indicate selected state
+            if (value) {
+                this.element.classList.add(this.options.buttonSelectedClassName);
+                if (this.options.buttonSelectedStyle) {
+                    Object.assign(this.element.style, this.options.buttonSelectedStyle);
+                }
+            } else {
+                this.element.classList.remove(this.options.buttonSelectedClassName);
+                if (this.options.buttonSelectedStyle) {
+                    this.element.removeAttribute('style');
+                    if (this.options.buttonStyle)
+                        Object.assign(this.element.style, this.options.buttonStyle);
+                }
+            }
         }
     }
 
