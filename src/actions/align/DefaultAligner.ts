@@ -3,7 +3,7 @@ import BlotFormatter from '../../BlotFormatter';
 import { Aligner } from './Aligner';
 import type { Alignment } from './Alignment';
 import type { Blot } from '../../specs/BlotSpec'
-import type { Options } from '../../Options';
+import type Options from '../../Options';
 import { ImageAlign, IframeAlign } from './AlignFormats';
 
 const parchment = Quill.import('parchment') as any;
@@ -83,8 +83,8 @@ export default class DefaultAligner implements Aligner {
           // if no width attr and use relative mandatory, try to set relative width attr
           if (
             !blot.domNode.getAttribute('width') &&
-            this.formatter.options.resize.useRelativeSize &&
-            !this.formatter.options.resize.allowResizeModeChange
+            this.options.resize.useRelativeSize &&
+            !this.options.resize.allowResizeModeChange
           ) {
             try {
               const editorStyle = getComputedStyle(this.formatter.quill.root);

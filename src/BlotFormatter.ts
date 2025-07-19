@@ -1,6 +1,7 @@
 import Quill from 'quill';
 import deepmerge from 'deepmerge';
-import DefaultOptions, { Options } from './Options';
+import Options from './Options';
+import { DefaultOptions } from './DefaultOptions';
 import Action from './actions/Action';
 import BlotSpec from './specs/BlotSpec';
 import Image from './blots/Image';
