@@ -12,7 +12,7 @@ div.ql-editor [class^="ql-image-align-"] {
     max-width: 100%;
 }
 div.ql-editor [class^="ql-image-align-"]>img {
-    flex: 1;
+    flex: 1 1 auto;
 }
 /* left */
 div.ql-editor .ql-image-align-left,
