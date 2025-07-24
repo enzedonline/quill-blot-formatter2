@@ -13,7 +13,7 @@ export default class DeleteAction extends Action {
   }
 
   onKeyUp = (e: KeyboardEvent) => {
-    const modalOpen: boolean = !!document.querySelector('div[data-blot-formatter-modal]')
+    const modalOpen: boolean = !!document.querySelector('[data-blot-formatter-modal]')
     if (!this.formatter.currentSpec || modalOpen) {
       return;
     }
