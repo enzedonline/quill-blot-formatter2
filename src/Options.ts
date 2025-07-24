@@ -124,6 +124,50 @@ export type CompressorOptions = {
   };
 }
 
+export type LinkOptions = {
+  // show link button for adding/editing links
+  allowLinkEdit: Boolean;
+  modal: {
+    // class name applied to the link modal dialog
+    className: string;
+    // style applied to the modal dialog, or null to prevent styles
+    dialogStyle?: { [key: string]: any } | null | undefined;
+    // class name applied to the form element
+    formClassName: string;
+    // style applied to the form, or null to prevent styles
+    formStyle?: { [key: string]: any } | null | undefined;
+    // class name applied to the form element
+    labelText: string;
+    // style applied to the form, or null to prevent styles
+    labelStyle?: { [key: string]: any } | null | undefined;
+    // placeholder text for the input
+    inputPlaceholder?: string | null | undefined;
+    // style applied to the input, or null to prevent styles
+    inputStyle?: { [key: string]: any } | null | undefined;
+    // buttons
+    buttons: {
+      submit: {
+        className: string; // class name applied to the submit button
+        style?: { [key: string]: any } | null | undefined; // style applied to the submit button, or null to prevent styles
+        icon: string; // inner html for submit button (svg recommended)
+        tooltip: string; // tooltip text for submit button
+      },
+      cancel: {
+        className: string; // class name applied to the cancel button
+        style?: { [key: string]: any } | null | undefined; // style applied to the cancel button, or null to prevent styles
+        icon: string; // inner html for cancel button (svg recommended)
+        tooltip: string; // tooltip text for cancel button
+      },
+      remove: {
+        className: string; // class name applied to the remove button
+        style?: { [key: string]: any } | null | undefined; // style applied to the remove button, or null to prevent styles
+        icon: string; // inner html for remove button (svg recommended)
+        tooltip: string; // tooltip text for remove button
+      }
+    }
+  }
+}
+
 export type ImageOptions = {
   // show T button for image alt/title editing
   allowAltTitleEdit: Boolean;
@@ -137,6 +181,8 @@ export type ImageOptions = {
   allowCompressor: Boolean;
   // options for the image compressor
   compressorOptions: CompressorOptions;
+  // options for the link action
+  linkOptions: LinkOptions;
 }
 
 export type VideoOptions = {

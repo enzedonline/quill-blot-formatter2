@@ -3,6 +3,7 @@ import BlotFormatter from '../BlotFormatter';
 import Action from '../actions/Action';
 import AttributeAction from '../actions/AttributeAction';
 import CompressAction from '../actions/CompressAction';
+import LinkAction from '../actions/LinkAction';
 
 export default class ImageSpec extends BlotSpec {
   img: HTMLElement | null;
@@ -18,6 +19,9 @@ export default class ImageSpec extends BlotSpec {
 
   getActions(): Array<Action> {
     const actions = super.getActions();
+    if (this.formatter.options.image.linkOptions.allowLinkEdit) {
+      actions.push(new LinkAction(this.formatter));
+    }
     if (this.formatter.options.image.allowAltTitleEdit) {
       actions.push(new AttributeAction(this.formatter));
     }
