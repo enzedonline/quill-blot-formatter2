@@ -7,8 +7,17 @@ import BlotSpec from './specs/BlotSpec';
 import Image from './blots/Image';
 import VideoResponsive from './blots/Video';
 import Toolbar from './actions/toolbar/Toolbar';
+import CaretAction from './actions/CaretAction';
 
 const dontMerge = (destination: Array<any>, source: Array<any>) => source;
+
+enum PointerPosition {
+  LEFT = 'left',
+  RIGHT = 'right',
+  ABOVE = 'above',
+  BELOW = 'below',
+  INSIDE = 'inside',
+}
 
 export default class BlotFormatter {
   quill: any;
@@ -72,8 +81,19 @@ export default class BlotFormatter {
     document.addEventListener('pointerdown', this.onDocumentPointerDown);
   }
 
-  hide() {
+  hide(event: PointerEvent | null = null) {
     if (this.currentSpec) {
+      if (event) {
+        const targetBlot = this.currentSpec!.getTargetBlot();
+        if (targetBlot) {
+          const position = this.getClickPosition(event);
+          if (position === PointerPosition.LEFT) {
+            CaretAction.placeCaretBeforeBlot(this.quill, targetBlot);
+          } else if (position === PointerPosition.RIGHT) {
+            CaretAction.placeCaretAfterBlot(this.quill, targetBlot);
+          }
+        }
+      }
       this.currentSpec.onHide();
       this.currentSpec = null;
       this.quill.container.removeChild(this.overlay);
@@ -194,12 +214,12 @@ export default class BlotFormatter {
       target.closest('div[data-blot-formatter-modal]') ||
       target.classList.contains('blot-formatter__proxy-image')
     )) {
-      this.hide();
+      this.hide(event);
     }
   }
 
-  private onClick = () => {
-    this.hide();
+  private onClick = (event: PointerEvent) => {
+    this.hide(event);
   }
 
   passWheelEventThrough = (event: WheelEvent) => {
@@ -317,7 +337,17 @@ export default class BlotFormatter {
           }
         },
         handler: (range: any, context: any) => {
-          this.quill.setSelection(range.index + range.length + 1, 0, "user");
+          const index = range.index + range.length;
+          const documentLength = this.quill.getLength();
+          if (index + 1 >= documentLength - 1) {
+            // For the last blot, place cursor at the very end
+            this.quill.setSelection(documentLength - 1, 0, "user");
+          } else {
+            // overshoot by one then use native browser API to send caret back one
+            // without this, caret will be placed inside formatting span wrapper
+            this.quill.setSelection(index + 2, 0, "user");
+            CaretAction.sendCaretBack(1); // Move cursor back by 1 character
+          }
         }
       });
     }
@@ -335,6 +365,23 @@ export default class BlotFormatter {
       } else {
         return width.endsWith('%');
       }
+    }
+  }
+
+  getClickPosition = (event: PointerEvent): PointerPosition => {
+    const target = this.overlay;
+    const rect = target.getBoundingClientRect();
+
+    if (event.clientY < rect.top) {
+      return PointerPosition.ABOVE;
+    } else if (event.clientY > rect.bottom) {
+      return PointerPosition.BELOW;
+    } else if (event.clientX < rect.left) {
+      return PointerPosition.LEFT;
+    } else if (event.clientX > rect.right) {
+      return PointerPosition.RIGHT;
+    } else {
+      return PointerPosition.INSIDE;
     }
   }
 }
