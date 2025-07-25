@@ -4,6 +4,7 @@ import Action from '../actions/Action';
 import AlignAction from '../actions/align/AlignAction';
 import ResizeAction from '../actions/ResizeAction';
 import DeleteAction from '../actions/DeleteAction';
+import CaretAction from '../actions/CaretAction';
 
 export interface Blot {
   domNode: HTMLElement;
@@ -37,6 +38,7 @@ export default class BlotSpec {
     if (this.formatter.options.delete.allowKeyboardDelete) {
       actions.push(new DeleteAction(this.formatter));
     }
+    actions.push(new CaretAction(this.formatter));
     return actions;
   }
 
