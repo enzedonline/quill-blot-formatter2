@@ -275,6 +275,7 @@ export const DefaultOptions: Options = {
           margin: 0,
           padding: '3px 5px',
           width: '100%',
+          outline: '1px auto #df9001c2',
         },
         buttons: {
           submit: {
