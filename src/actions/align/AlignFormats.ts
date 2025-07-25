@@ -149,7 +149,7 @@ class ImageAlignAttributor extends ClassAttributor {
   value(node: Element): ImageAlignValue {
     // in case nested style, find image element and span wrapper
     const imageElement = node.querySelector('img') as HTMLImageElement;
-    if (!imageElement) return null as any;
+    if (!imageElement) return null as any; // this can happen during certain 'undo' operations
     const parentElement = imageElement.parentElement as HTMLElement;
     const align = super.value(parentElement);
     const title: string = imageElement.getAttribute('title') || '';
