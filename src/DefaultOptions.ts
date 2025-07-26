@@ -2,6 +2,8 @@ import Options from './Options';
 import IframeVideoSpec from './specs/IframeVideoSpec';
 import ImageSpec from './specs/ImageSpec';
 
+const closeButtonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>`;
+
 export const DefaultOptions: Options = {
   specs: [
     ImageSpec,
@@ -132,20 +134,24 @@ export const DefaultOptions: Options = {
           borderRadius: '5px',
           position: 'relative',
           width: '90%',
-          maxWidth: '500px'
+          maxWidth: '500px',
+          boxShadow: '6px 6px 5px #00000075'
         },
         label: {
           display: 'block',
           color: 'black',
           margin: '7px 0 5px 0',
-          fontSize: '0.9em'
+          fontSize: '14px'
         },
         textarea: {
           backgroundColor: 'white',
+          fontSize: '13px',
           display: 'block',
           resize: 'none',
           width: '100%',
-          padding: '5px'
+          padding: '5px',
+          border: '1px solid lightgray',
+          borderRadius: '4px',
         },
         submitButton: {
           display: 'block',
@@ -154,28 +160,29 @@ export const DefaultOptions: Options = {
           cursor: 'pointer',
           border: 0,
           padding: 0,
-          width: '2.5rem',
-          height: '2.5rem',
+          width: '2rem',
+          height: '2rem',
           fill: '#198754'
         },
         cancelButton: {
           display: 'flex',
-          width: '2rem',
-          height: '2rem',
+          width: '1.5rem',
+          height: '1.5rem',
           position: 'absolute',
+          padding: 0,
           top: '-0.7rem',
           right: '-0.7rem',
           background: 'white',
-          border: '1px solid gray',
+          border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',
           alignItems: 'center',
-          fill: '#c54a47'
+          color: 'rgb(197, 74, 71)'
         },
       },
       icons: {
         submitButton: `<svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"></path></svg>`,
-        cancelButton: `<svg viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>`,
+        cancelButton: closeButtonIcon,
       },
       labels: {
         alt: 'Alt Text',
@@ -310,7 +317,7 @@ export const DefaultOptions: Options = {
               alignItems: 'center',
               color: 'rgb(197, 74, 71)',
             },
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>`,
+            icon: closeButtonIcon,
             tooltip: 'Cancel'
           },
           remove: {
