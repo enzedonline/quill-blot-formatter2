@@ -29,11 +29,11 @@ export default class LinkAction extends Action {
             this.onClickHandler,
             this.formatter.options.toolbar
         );
+        // override preselect method to show button active if img has link on load
         this.toolbarButton.preselect = () => {
-            return !!this.getLink(); // button active is img has link on load
+            return !!this.getLink(); 
         };
         this.toolbarButtons = [this.toolbarButton];
-        (window as any).linkAction = this; // For debugging purposes
     }
 
     onCreate(): void {
