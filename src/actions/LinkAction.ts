@@ -29,12 +29,15 @@ export default class LinkAction extends Action {
             this.onClickHandler,
             this.formatter.options.toolbar
         );
+        this.toolbarButton.preselect = () => {
+            return !!this.getLink(); // button active is img has link on load
+        };
         this.toolbarButtons = [this.toolbarButton];
+        (window as any).linkAction = this; // For debugging purposes
     }
 
     onCreate(): void {
         this.targetElement = this.formatter.currentSpec?.getTargetElement();
-        this.toolbarButton.selected = (!!this.getLink());
     }
 
     onDestroy(): void {
