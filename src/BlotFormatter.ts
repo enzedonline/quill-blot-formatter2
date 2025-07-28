@@ -69,6 +69,11 @@ export default class BlotFormatter {
   }
 
   show(spec: BlotSpec) {
+    // hide any open tooltips (closes open hyperlink dialog and more)
+    this.quill.container.querySelectorAll('.ql-tooltip:not(.ql-hidden)').forEach((tooltip: HTMLElement) => {
+      tooltip.classList.add('ql-hidden');
+    });
+    (window as any).bf = this;
     // clear overlay in case show called while overlay active on other blot
     this.hide();
     this.currentSpec = spec;
