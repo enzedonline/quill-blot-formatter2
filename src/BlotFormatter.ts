@@ -58,8 +58,6 @@ export default class BlotFormatter {
       (SpecClass: new (formatter: BlotFormatter) => BlotSpec) => new SpecClass(this)
     );
     this.specs.forEach(spec => spec.init());
-    // disable native image resizing on firefox
-    document.execCommand('enableObjectResizing', false, 'false'); // eslint-disable-line no-undef
     // set position relative on quill container for absolute positioning of overlay & proxies 
     this.quill.container.style.position = this.quill.container.style.position || 'relative';
     // register custom blots as per options
