@@ -2,7 +2,9 @@ import Options from './Options';
 import IframeVideoSpec from './specs/IframeVideoSpec';
 import ImageSpec from './specs/ImageSpec';
 
-const closeButtonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>`;
+const closeButtonIcon = `<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>`;
+const okButtonIcon = `<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>`;
+const infoButtonIcon = `<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>`;
 
 export const DefaultOptions: Options = {
   specs: [
@@ -181,7 +183,7 @@ export const DefaultOptions: Options = {
         },
       },
       icons: {
-        submitButton: `<svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"></path></svg>`,
+        submitButton: okButtonIcon,
         cancelButton: closeButtonIcon,
       },
       labels: {
@@ -206,13 +208,13 @@ export const DefaultOptions: Options = {
           zIndex: 9999
         },
         modalContainer: {
-          backgroundColor: '#000000c7',
+          backgroundColor: 'rgb(253, 253, 253)',
+          border: '1px solid #ccc',
+          boxShadow: '6px 6px 5px #00000075',
           padding: '15px',
           borderRadius: '8px',
           position: 'relative',
           maxWidth: 'min(90%, 400px)',
-          border: '3px solid black',
-          color: 'lightgray',
           textAlign: 'justify',
           userSelect: 'none',
         },
@@ -225,12 +227,32 @@ export const DefaultOptions: Options = {
           paddingTop: '12px'
         },
         buttons: {
-          width: '2rem',
-          height: '2rem',
+          width: '1.5rem',
+          height: '1.5rem',
           padding: 0,
           backgroundColor: 'transparent',
           border: 0,
-          cursor: 'pointer'
+          cursor: 'pointer',
+        }
+      },
+      buttons: {
+        continue: {
+          className: 'blot-formatter__compress-continue',
+          style: {
+            color: '#198754'
+          }
+        },
+        cancel: {
+          className: 'blot-formatter__compress-cancel',
+          style: {
+            color: 'rgb(197, 74, 71)'
+          }
+        },
+        moreInfo: {
+          className: 'blot-formatter__compress-more-info',
+          style: {
+            color: 'royalblue'
+          }
         }
       },
       text: {
@@ -240,16 +262,17 @@ export const DefaultOptions: Options = {
         nothingToDo: 'Image already optimised.'
       },
       icons: {
-        cancel: `<svg viewBox="0 0 24 24" fill="#ea1414"><path d="M 3.4285714,0 C 1.5375,0 0,1.5375 0,3.4285714 V 20.571429 C 0,22.4625 1.5375,24 3.4285714,24 H 20.571429 C 22.4625,24 24,22.4625 24,20.571429 V 3.4285714 C 24,1.5375 22.4625,0 20.571429,0 Z m 4.2321429,7.6607143 c 0.5035714,-0.5035714 1.3178571,-0.5035714 1.8160714,0 L 11.994643,10.178571 14.5125,7.6607143 c 0.503571,-0.5035714 1.317857,-0.5035714 1.816071,0 0.498215,0.5035714 0.503572,1.3178571 0,1.8160714 l -2.517857,2.5178573 2.517857,2.517857 c 0.503572,0.503571 0.503572,1.317857 0,1.816071 -0.503571,0.498215 -1.317857,0.503572 -1.816071,0 l -2.517857,-2.517857 -2.5178573,2.517857 c -0.5035714,0.503572 -1.3178571,0.503572 -1.8160714,0 C 7.1625,15.825 7.1571429,15.010714 7.6607143,14.5125 L 10.178571,11.994643 7.6607143,9.4767857 c -0.5035714,-0.5035714 -0.5035714,-1.3178571 0,-1.8160714 z" /></svg>`,
-        moreInfo: `<svg viewBox="0 0 512 512" fill="royalblue"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>`,
-        continue: `<svg viewBox="0 0 24 24" fill="green"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" /></svg>`
+        cancel: `<span style="color: rgb(197, 74, 71);">${closeButtonIcon}</span>`,
+        moreInfo: infoButtonIcon,
+        continue: okButtonIcon
       }
     },
     linkOptions: {
       allowLinkEdit: true,
       modal: {
         className: 'blot-formatter__link-modal',
-        dialogStyle: {
+        dialogStyle: { // NOTE: positioning handled programatically
+          margin: 0,
           backgroundColor: '#fdfdfd',
           border: '1px solid #ccc',
           boxShadow: '6px 6px 5px #00000075',
@@ -257,16 +280,24 @@ export const DefaultOptions: Options = {
           padding: '6px 13px 6px 10px',
           whiteSpace: 'nowrap',
           borderRadius: '5px',
-          width: '400px',
+          minWidth: '300px',
           maxWidth: '90%',
           overflow: 'visible',
+          zIndex: 101, // Ensure it is above the background
+        },
+        backgroundClassName: 'blot-formatter__link-modal-background',
+        backgroundStyle: {
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 100,
         },
         formClassName: 'blot-formatter__link-form',
         formStyle: {
           display: 'flex',
           flexWrap: 'nowrap',
           columnGap: '5px',
-          alignItems: 'center',
+          alignItems: 'baseline',
         },
         labelText: 'URL:',
         labelStyle: {
