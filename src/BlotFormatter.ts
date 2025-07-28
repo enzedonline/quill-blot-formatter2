@@ -207,11 +207,11 @@ export default class BlotFormatter {
   }
 
   private onDocumentPointerDown = (event: PointerEvent) => {
-    // if clicked outside of quill editor and not the alt/title modal or iframe proxy image, dismiss overlay 
+    // if clicked outside of quill editor and not a blot formatter modal or iframe proxy image, dismiss overlay 
     const target = event.target as HTMLElement;
     if (!(
       this.quill.root.parentNode.contains(target) ||
-      target.closest('div[data-blot-formatter-modal]') ||
+      target.closest('[data-blot-formatter-modal]') ||
       target.classList.contains('blot-formatter__proxy-image')
     )) {
       this.hide(event);
