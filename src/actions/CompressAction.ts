@@ -226,13 +226,13 @@ export default class CompressAction extends Action {
             Object.assign(modalBackground.style, this.options.styles.modalBackground);
             Object.assign(modalContainer.style, this.options.styles.modalContainer);
             Object.assign(modalButtonContainer.style, this.options.styles.buttonContainer);
-            Object.assign(cancelButton.style, this.options.styles.buttons);
+            Object.assign(cancelButton.style, { ...this.options.styles.buttons, ...this.options.buttons.cancel.style });
             if (this.options.text.moreInfo) {
-                Object.assign(moreInfoButton.style, this.options.styles.buttons);
+                Object.assign(moreInfoButton.style, { ...this.options.styles.buttons, ...this.options.buttons.moreInfo.style });
             } else {
                 moreInfoButton.style.visibility = 'hidden';
             }
-            Object.assign(continueButton.style, this.options.styles.buttons);
+            Object.assign(continueButton.style, { ...this.options.styles.buttons, ...this.options.buttons.continue.style });
         }
         cancelButton.innerHTML = this.options.icons.cancel;
         moreInfoButton.innerHTML = this.options.icons.moreInfo;

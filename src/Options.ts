@@ -109,6 +109,20 @@ export type CompressorOptions = {
     // style for buttons
     buttons?: { [key: string]: any } | null | undefined;
   } | null | undefined;
+  buttons: {
+    continue: {
+      className: string; // class name applied to the continue button
+      style?: { [key: string]: any } | null | undefined; // style applied to the continue button, or null to prevent styles
+    },
+    cancel: {
+      className: string; // class name applied to the cancel button
+      style?: { [key: string]: any } | null | undefined; // style applied to the cancel button, or null to prevent styles
+    },
+    moreInfo: {
+      className: string; // class name applied to the more info button
+      style?: { [key: string]: any } | null | undefined; // style applied to the more info button, or null to prevent styles
+    }
+  };
   text: {
     // text (or html) for the modal text content
     prompt: string;
@@ -132,6 +146,10 @@ export type LinkOptions = {
     className: string;
     // style applied to the modal dialog, or null to prevent styles
     dialogStyle?: { [key: string]: any } | null | undefined;
+    // class name for screen background mask
+    backgroundClassName: string | null | undefined;
+    // style for screen background mask
+    backgroundStyle?: { [key: string]: any } | null | undefined;
     // class name applied to the form element
     formClassName: string;
     // style applied to the form, or null to prevent styles
