@@ -7,6 +7,9 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 > [!IMPORTANT]
 > Before using this package, it's recommended to at least be familiar with the information covered in [Actions](#actions), [CSS](#css) and [Options](#options). If your Quill editor is scrollable, be sure to also read the notes in [Scrollable Editors](#scrollable-editors).
 
+> [!WARNING]
+> This package has been designed for, and tested with, the native Quill editor. It has **not** been tested with the Quill wrapper packages for React, Vue or Angular. If you use these packages and encounter a problem, I welcome fully tested PR's that will address the issue, but I cannot support each and every one of these. If you do get it to work with these packages and have some tips on the subject, I'm happy to include those here also.
+
 ## Contents
 
 - [What's New](#whats-new)
@@ -36,6 +39,26 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 - [Further Customisations](#further-customisations)
 
 ## What's New
+
+### Version 2.4
+
+**New actions added:**
+
+- **Link Action** allows editing of hyperlinks on images directly from the formatter toolbar. [More info](#link-action)
+- **Caret Action** introduces deselecting the formatter using left/right arrows and places the cursor in the corresponding editor location before or after the image. [More info](#caret-action)
+
+**Other improvements:**
+
+- Toolbar buttons now have tooltips (via `title` attribute). Configurable via options: `toolbar.tooltips`. Each key should match the corresponding action name. See [DefaultOptions](./src/DefaultOptions.ts) for examples.
+- Toolbar button active styling is now configured via options  `toolbar.buttonSelectedStyle` and `toolbar.buttonSelectedClassName`
+- Changed the behaviour of deselecting from mouse click so that if clicked directly to the left or right of the overlay, caret will be placed in the previous/next position.
+- Improved default styling for the Alt/Title modal form.
+
+### Version 2.3
+
+Functionality, this was a minor update that allows empty `alt` tags on images. Previouusly these were removed if encountered.
+
+This version saw upgrades to dependencies and target compiler module: `tsconfig.compilerOptions.module` updated from `commonjs` to `es2022`. 
 
 ### Version 2.2
 
@@ -204,7 +227,8 @@ Two options exist for **Align**:
 - `allowAligning: boolean` - turn aligning on or off. If `false`, no alignment buttons will be added to the toolbar. Default `true`.
 - `alignments: string[]` - alignments to use - must match toolbar icon name & be a member of align format whitelist. Default `['left', 'center', 'right']`.
 
-> :warning: **Updated in 2.2**
+> [!IMPORTANT] 
+> **Updated in 2.2**
 >
 > The toolbar and icons options were moved from the `align` branch of options to their own `toolbar` option category ([see below](#toolbar)). 
 >
@@ -279,7 +303,8 @@ A blot must be resized (i.e. have a width attribute) to use relative sizing.
 
 Relative sizing is not enabled by default.
 
-> :warning: ***Regardless of settings, blots will retain their original/current width attribute units until resized.*** A blot sizing will not change from absolute to relative (or vice versa) without first being resized or actively using the mode change `%` button. The only exception is an unsized image being aligned with `allowResizeModeChange = false` and `useRelativeSize = true` - in this case, the image will have a relative size set based on its natural width as a proportion of the editor width (up to 100%).
+> [!IMPORTANT] 
+> ***Regardless of settings, blots will retain their original/current width attribute units until resized.*** A blot sizing will not change from absolute to relative (or vice versa) without first being resized or actively using the mode change `%` button. The only exception is an unsized image being aligned with `allowResizeModeChange = false` and `useRelativeSize = true` - in this case, the image will have a relative size set based on its natural width as a proportion of the editor width (up to 100%).
 
 There are two ways to apply the rule to use relative (or absolute) sizing.
 
@@ -323,9 +348,9 @@ From version 2.1, `alt` and `title` image attributes can be edited from the **`T
 ![the attribute action alt/title modal form](/assets/blot-formatter-alt-title-editing.png)
 
 > [!CAUTION]
-> #### :exclamation: IMPORTANT NOTE REGARDING QUILL AND IMAGE TITLES :exclamation:
+> :exclamation: **IMPORTANT NOTE REGARDING QUILL AND IMAGE TITLES** :exclamation:
 >
->At the time of writing, the current version of Quill (v2.0.2) does not natively support storing the title attribute in the image delta. As such, when you reload the editor, the title attribute will be lost. There is a Quill [pull request](https://github.com/slab/quill/pull/4350) to address this. 
+> At the time of writing, the current version of Quill (v2.0.3) does not natively support storing the title attribute in the image delta. As such, when you reload the editor, the title attribute will be lost. There is a Quill [pull request](https://github.com/slab/quill/pull/4350) to address this. 
 > 
 > This package includes an updated Image blot that addresses this issue. 
 >
@@ -484,6 +509,83 @@ image: {
   - `nothingToDo` - text shown in the feedback box when there is no compression to do.
 - `icons` - Specify a string representation of an svg (without width/height attributes) or other suitable inner HTML for the buttons.
 
+### Link Action
+:warning: *New in version 2.4*
+
+This action manages hyperlinks on image blots. It is intended to facilitate placing links directly on images, especially useful for those images that have a floating style applied. 
+
+The link button is enabled by default. To hide the link button, set `allowLinkEdit`  to `false` (see **Options** below).
+
+![alt text](./assets/blot-formatter-link-action.png)
+
+- If the image has a link, the button will show active. 
+- Click the link button to display the form. The current value will be displayed if already set. 
+- Clear the input or click the bin icon to remove the link.
+
+> [!IMPORTANT] 
+> If a link spans an image, editing the link in the BlotFormatter may have unintended results including removing the link after the image and leaving the original link in front of the image. Only the image itself will take the new value. For spanning links, close the overlay and use the built-in Quill link editor instead.
+
+#### Options
+
+As with other modals, the styling is fully customisable via the options, either by setting styles or using css classes.
+
+```typescript
+image: {
+  allowLinkEdit: Boolean; // show link button for adding/editing links
+  modal: {
+    dialog: {
+      className: string; // class name applied to the link modal dialog
+      style?: { [key: string]: any } | null | undefined; // style applied to the modal dialog, or null to prevent styles
+    };
+    background: {
+      className: string; // class name for screen background mask
+      style?: { [key: string]: any } | null | undefined; // style for screen background mask
+    };
+    form: {
+      className: string; // class name applied to the form element
+      style?: { [key: string]: any } | null | undefined; // style applied to the form, or null to prevent styles
+    };
+    label: {
+      className: string; // class name applied to the label element
+      style?: { [key: string]: any } | null | undefined; // style applied to the label, or null to prevent styles
+      text: string; // text content for the label element
+    };
+    input: {
+      className: string; // class name applied to the input element
+      style?: { [key: string]: any } | null | undefined; // style applied to the input, or null to prevent styles
+      placeholder?: string | null | undefined; // placeholder text for the input
+    };
+    buttons: {
+      submit: {
+        className: string; // class name applied to the submit button
+        style?: { [key: string]: any } | null | undefined; // style applied to the submit button, or null to prevent styles
+        icon: string; // inner html for submit button (svg recommended)
+        tooltip: string; // tooltip text for submit button
+      },
+      cancel: {
+        className: string; // class name applied to the cancel button
+        style?: { [key: string]: any } | null | undefined; // style applied to the cancel button, or null to prevent styles
+        icon: string; // inner html for cancel button (svg recommended)
+        tooltip: string; // tooltip text for cancel button
+      },
+      remove: {
+        className: string; // class name applied to the remove button
+        style?: { [key: string]: any } | null | undefined; // style applied to the remove button, or null to prevent styles
+        icon: string; // inner html for remove button (svg recommended)
+        tooltip: string; // tooltip text for remove button
+      }
+    }
+  }
+}
+```
+
+### Caret Action
+:warning: *New in version 2.4*
+
+This action adds listeners to the left and right arrow keys to deactivate the blot formatter overlay and place the caret before or after the image. The response to the right arrow key relies on the browser API to position the caret correctly as Quill native methods will incorrectly position the caret inside the formatting span wrapper. If any of the blot formatter modals are open, the action is disabled.
+
+There are no options for this action.
+
 ## Included Custom Blots
 
 This package includes two custom blots, one each for `Image` and `Video` that override the Quill blot types of the same name. 
@@ -602,7 +704,7 @@ div.ql-editor [class^="ql-image-align-"] {
     max-width: 100%;
 }
 div.ql-editor [class^="ql-image-align-"]>img {
-    flex: 1;
+    flex: 1 1 auto;
 }
 /* left */
 div.ql-editor .ql-image-align-left,
@@ -918,6 +1020,12 @@ Called when the formatter has changed something on the blot. Use this to update 
 Called when the formatter is hidden by the user.
 
 See `actions` ([/src/actions](https://github.com/enzedonline/quill-blot-formatter2/tree/master/src/actions)) for the existing actions.
+
+> [!IMPORTANT]
+> If you create a custom action that requires a modal, include the dataset attribute `blotFormatterModal` on one of the modal elements and add the modal as a child of the overlay. This will disable the Blot Formatter keyboard listeners and context menu blocker on your modal. For example:
+> ```typescript
+> dialog.dataset.blotFormatterModal = '';
+> ```
 
 ### Toolbar
 > :warning: **New in version 2.2**

@@ -1,5 +1,37 @@
 # Changelog
 
+## [v2.4.0] - 2025-07-27
+### Changed
+#### New Actions
+- New `link` action allows setting hyperlink on images directly from formatter. Assists adding links to aligned images where selecting in the editor can be problematic. To disable link editing, use option `image.linkOptions.allowLinkEdit` set to `false`.
+- New `caret` keyboard action deselects overlay from left/arrow keys and moves caret to previous/next position.
+
+#### Improvements
+- Changed the behaviour of deselecting from mouse click so that if clicked directly to the left or right of the overlay, caret will be placed in the previous/next position.
+- Toolbar buttons now have tooltips (via `title` attribute). Configurable via options: `toolbar.tooltips`. Each key should match the corresponding action name. See [DefaultOptions](./src/DefaultOptions.ts) for examples.
+- Active button styling had previously been hardcoded using the `filter` styling attribute. Now set via options: `toolbar.buttonSelectedStyle` and `toolbar.buttonSelectedClassName`. As with other options, set the styling to null to use only class based styling. This change assists theming.
+- Improved default styling for the Alt/Title and Compress modal forms.
+- Activating Blot Formatter overlay now closes any open Quill tooltips (such as the link form). 
+
+#### Housekeeping
+- Split `DefaultOptions` from `Options` module.
+
+#### Bug fix
+- Adjusted flex mode in suggested css to prevent image size collapsing in certain cases on FireFox.
+
+### Updated dependencies
+```
+├── copy-webpack-plugin@12.0.2
+├── deepmerge@4.3.1
+├── quill@2.0.3
+├── rimraf@6.0.1
+├── terser-webpack-plugin@5.3.14
+├── ts-loader@9.5.2
+├── typescript@5.8.3
+├── webpack-cli@6.0.1
+└── webpack@5.100.2
+```
+
 ## [v2.3.0] - 2025-01-14
 ### Changed
 `AttributeAction` will now create an empty `alt` attribute if no value was passed. The optional custom ImageBlot was amended to support this.
