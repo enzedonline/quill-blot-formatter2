@@ -11,20 +11,24 @@ div.ql-editor [class^="ql-image-align-"] {
     width: var(--resize-width);
     max-width: 100%;
 }
+
 div.ql-editor [class^="ql-image-align-"]>img {
     flex: 1 1 auto;
 }
+
 /* left */
 div.ql-editor .ql-image-align-left,
 div.ql-editor .ql-iframe-align-left {
     margin: var(--blot-align-left-margin);
     float: left;
 }
+
 /* centre */
 div.ql-editor .ql-image-align-center,
 div.ql-editor .ql-iframe-align-center {
     margin: var(--blot-align-center-margin);
 }
+
 /* right */
 div.ql-editor .ql-image-align-right,
 div.ql-editor .ql-iframe-align-right {
@@ -37,6 +41,7 @@ div.ql-editor .ql-iframe-align-right {
 div.ql-editor [class^="ql-image-align-"][data-title] {
     margin-bottom: 0;
 }
+
 div.ql-editor [class^="ql-image-align-"][data-title]::after {
     content: attr(data-title);
     padding: 0.25rem 0.2rem;
@@ -45,18 +50,22 @@ div.ql-editor [class^="ql-image-align-"][data-title]::after {
     background-color: white;
     width: 100%;
 }
+
 /* remove text decoration on caption when image linked */
 a:has([class^="ql-image-align-"]>img) {
     text-decoration: none !important;
 }
+
 /* left */
 div.ql-editor .ql-image-align-left[data-title]::after {
     text-align: left;
 }
+
 /* center */
 div.ql-editor .ql-image-align-center[data-title]::after {
     text-align: center;
 }
+
 /* right */
 div.ql-editor .ql-image-align-right[data-title]::after {
     text-align: right;
