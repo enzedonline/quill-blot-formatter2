@@ -164,7 +164,7 @@ export const DefaultOptions: Options = {
           padding: 0,
           width: '2rem',
           height: '2rem',
-          fill: '#198754'
+          color: '#198754'
         },
         cancelButton: {
           display: 'flex',
@@ -309,7 +309,7 @@ export const DefaultOptions: Options = {
           border: '1px solid #ccc',
           borderRadius: '4px',
           fontSize: '13px',
-          height: '26px',
+          height: '25px',
           margin: 0,
           padding: '3px 5px',
           width: '100%',
