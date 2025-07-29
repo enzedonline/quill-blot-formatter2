@@ -99,7 +99,7 @@ export type CompressorOptions = {
   jpegQuality: number;
   // maximum width (px) for images with no width attribute, or for relative sized images
   maxWidth?: number | null; // leave null to disable this feature
-  styles? : {
+  styles?: {
     // style for screen background mask
     modalBackground?: { [key: string]: any } | null | undefined;
     // style for modal dialog
@@ -142,27 +142,28 @@ export type LinkOptions = {
   // show link button for adding/editing links
   allowLinkEdit: Boolean;
   modal: {
-    // class name applied to the link modal dialog
-    className: string;
-    // style applied to the modal dialog, or null to prevent styles
-    dialogStyle?: { [key: string]: any } | null | undefined;
-    // class name for screen background mask
-    backgroundClassName: string;
-    // style for screen background mask
-    backgroundStyle?: { [key: string]: any } | null | undefined;
-    // class name applied to the form element
-    formClassName: string;
-    // style applied to the form, or null to prevent styles
-    formStyle?: { [key: string]: any } | null | undefined;
-    // class name applied to the form element
-    labelText: string;
-    // style applied to the form, or null to prevent styles
-    labelStyle?: { [key: string]: any } | null | undefined;
-    // placeholder text for the input
-    inputPlaceholder?: string | null | undefined;
-    // style applied to the input, or null to prevent styles
-    inputStyle?: { [key: string]: any } | null | undefined;
-    // buttons
+    dialog: {
+      className: string; // class name applied to the link modal dialog
+      style?: { [key: string]: any } | null | undefined; // style applied to the modal dialog, or null to prevent styles
+    };
+    background: {
+      className: string; // class name for screen background mask
+      style?: { [key: string]: any } | null | undefined; // style for screen background mask
+    };
+    form: {
+      className: string; // class name applied to the form element
+      style?: { [key: string]: any } | null | undefined; // style applied to the form, or null to prevent styles
+    };
+    label: {
+      className: string; // class name applied to the label element
+      style?: { [key: string]: any } | null | undefined; // style applied to the label, or null to prevent styles
+      text: string; // text content for the label element
+    };
+    input: {
+      className: string; // class name applied to the input element
+      style?: { [key: string]: any } | null | undefined; // style applied to the input, or null to prevent styles
+      placeholder?: string | null | undefined; // placeholder text for the input
+    };
     buttons: {
       submit: {
         className: string; // class name applied to the submit button

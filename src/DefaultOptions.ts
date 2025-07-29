@@ -270,50 +270,62 @@ export const DefaultOptions: Options = {
     linkOptions: {
       allowLinkEdit: true,
       modal: {
-        className: 'blot-formatter__link-modal',
-        dialogStyle: { // NOTE: positioning handled programatically
-          margin: 0,
-          backgroundColor: '#fdfdfd',
-          border: '1px solid #ccc',
-          boxShadow: '6px 6px 5px #00000075',
-          color: '#444',
-          padding: '6px 13px 6px 10px',
-          whiteSpace: 'nowrap',
-          borderRadius: '5px',
-          minWidth: '300px',
-          maxWidth: '90%',
-          overflow: 'visible',
-          zIndex: 101, // Ensure it is above the background
+        dialog: {
+          className: 'blot-formatter__link-modal',
+          style: { // NOTE: positioning handled programatically
+            margin: 0,
+            backgroundColor: '#fdfdfd',
+            border: '1px solid #ccc',
+            boxShadow: '6px 6px 5px #00000075',
+            color: '#444',
+            padding: '6px 13px 6px 10px',
+            whiteSpace: 'nowrap',
+            borderRadius: '5px',
+            minWidth: '300px',
+            maxWidth: '90%',
+            overflow: 'visible',
+            zIndex: 101, // Ensure it is above the background
+          }
         },
-        backgroundClassName: 'blot-formatter__link-modal-background',
-        backgroundStyle: {
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 100,
+        background: {
+          className: 'blot-formatter__link-modal-background',
+          style: {
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 100,
+          }
         },
-        formClassName: 'blot-formatter__link-form',
-        formStyle: {
-          display: 'flex',
-          flexWrap: 'nowrap',
-          columnGap: '5px',
-          alignItems: 'baseline',
+        form: {
+          className: 'blot-formatter__link-form',
+          style: {
+            display: 'flex',
+            flexWrap: 'nowrap',
+            columnGap: '5px',
+            alignItems: 'baseline',
+          }
         },
-        labelText: 'URL:',
-        labelStyle: {
-          paddingRight: '5px',
-          fontSize: '13px',
+        label: {
+          className: 'blot-formatter__link-label',
+          style: {
+            paddingRight: '5px',
+            fontSize: '13px',
+          },
+          text: 'URL:',
         },
-        inputPlaceholder: 'https://example.com',
-        inputStyle: {
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          fontSize: '13px',
-          height: '25px',
-          margin: 0,
-          padding: '3px 5px',
-          width: '100%',
-          outline: '1px auto #df9001c2',
+        input: {
+          className: 'blot-formatter__link-input',
+          style: {
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '13px',
+            height: '25px',
+            margin: 0,
+            padding: '3px 5px',
+            width: '100%',
+            outline: '1px auto #df9001c2',
+          },
+          placeholder: 'https://example.com',
         },
         buttons: {
           submit: {
