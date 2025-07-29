@@ -147,7 +147,7 @@ export type LinkOptions = {
     // style applied to the modal dialog, or null to prevent styles
     dialogStyle?: { [key: string]: any } | null | undefined;
     // class name for screen background mask
-    backgroundClassName: string | null | undefined;
+    backgroundClassName: string;
     // style for screen background mask
     backgroundStyle?: { [key: string]: any } | null | undefined;
     // class name applied to the form element
