@@ -191,6 +191,9 @@ export default class LinkAction extends Action {
             this._positionModal(this.modal.dialog);
             // Show after positioning
             this.modal.dialog.style.visibility = "visible";
+            // Focus the input field
+            this.modal.input.focus();
+            this.modal.input.select();
         }
     }
 
@@ -214,7 +217,7 @@ export default class LinkAction extends Action {
     private _buildModal = (): typeof this.modal => {
         const dialog = document.createElement('dialog');
         dialog.className = this.linkOptions.modal.dialog.className;
-        dialog.setAttribute('data-blot-formatter-modal', '');
+        dialog.dataset.blotFormatterModal = '';
         Object.assign(dialog.style, this.linkOptions.modal.dialog.style);
 
         // Create form
@@ -246,18 +249,21 @@ export default class LinkAction extends Action {
         const okButton = document.createElement('button');
         okButton.type = 'submit';
         okButton.innerHTML = this.linkOptions.modal.buttons.submit.icon;
+        okButton.className = this.linkOptions.modal.buttons.submit.className;
         Object.assign(okButton.style, this.linkOptions.modal.buttons.submit.style);
 
         // Cancel button
         const cancelButton = document.createElement('button');
         cancelButton.type = 'button';
         cancelButton.innerHTML = this.linkOptions.modal.buttons.cancel.icon;
+        cancelButton.className = this.linkOptions.modal.buttons.cancel.className;
         Object.assign(cancelButton.style, this.linkOptions.modal.buttons.cancel.style);
 
         // Remove button
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
         removeButton.innerHTML = this.linkOptions.modal.buttons.remove.icon;
+        removeButton.className = this.linkOptions.modal.buttons.remove.className;
         Object.assign(removeButton.style, this.linkOptions.modal.buttons.remove.style);
 
         // Append modal
