@@ -154,6 +154,7 @@ export const DefaultOptions: Options = {
           padding: '5px',
           border: '1px solid lightgray',
           borderRadius: '4px',
+          boxSizing: 'border-box'
         },
         submitButton: {
           display: 'block',
@@ -256,7 +257,7 @@ export const DefaultOptions: Options = {
         }
       },
       text: {
-        prompt: `<h5>Compress image to its resized width?</h5>`,
+        prompt: `<p style="font-style: large;margin: 0 0 0.5em;">Compress image to its resized width?</p>`,
         moreInfo: `<p style="font-size: smaller; line-height: 1.2;">You can reduce the file size and save disk space by compressing pictures. The compression reduces both the file size and picture dimensions based on the width setting.</p><p style="font-size: smaller;"><strong>NOTE:</strong> This process cannot be undone.</p>`,
         reducedLabel: 'Reduced',
         nothingToDo: 'Image already optimised.'
@@ -302,7 +303,7 @@ export const DefaultOptions: Options = {
             display: 'flex',
             flexWrap: 'nowrap',
             columnGap: '5px',
-            alignItems: 'baseline',
+            alignItems: 'center',
           }
         },
         label: {
@@ -318,9 +319,10 @@ export const DefaultOptions: Options = {
           style: {
             border: '1px solid #ccc',
             borderRadius: '4px',
+            boxSizing: 'border-box',
             fontSize: '13px',
-            height: '25px',
-            margin: 0,
+            height: '26px',
+            margin: '0 0.2rem 0 0',
             padding: '3px 5px',
             width: '100%',
             outline: '1px auto #df9001c2',
@@ -338,7 +340,10 @@ export const DefaultOptions: Options = {
               background: 'transparent',
               width: '26px',
               height: '26px',
-              color: '#198754'
+              color: '#198754',
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'center',
             },
             icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/><path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>`,
             tooltip: 'Create Link'
@@ -373,6 +378,9 @@ export const DefaultOptions: Options = {
               width: '26px',
               height: '26px',
               fill: '#c54a47',
+              display: 'flex',
+              placeContent: 'center',
+              justifyContent: 'center',
             },
             icon: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M 6.265625,3.3457031 6.125,3.625 H 4.25 c -0.3457031,0 -0.625,0.2792969 -0.625,0.625 0,0.3457031 0.2792969,0.625 0.625,0.625 h 7.5 c 0.345703,0 0.625,-0.2792969 0.625,-0.625 0,-0.3457031 -0.279297,-0.625 -0.625,-0.625 H 9.875 L 9.734375,3.3457031 C 9.6289062,3.1328125 9.4121094,3 9.1757812,3 H 6.8242188 C 6.5878906,3 6.3710938,3.1328125 6.265625,3.3457031 Z M 11.75,5.5 h -7.5 l 0.4140625,6.621094 C 4.6953125,12.615234 5.1054688,13 5.5996094,13 h 4.8007816 c 0.49414,0 0.904297,-0.384766 0.935547,-0.878906 z" style="display:inline;stroke-width:0.0195312"/><path d="m 14,1 a 1,1 0 0 1 1,1 v 12 a 1,1 0 0 1 -1,1 H 2 A 1,1 0 0 1 1,14 V 2 A 1,1 0 0 1 2,1 Z M 2,0 A 2,2 0 0 0 0,2 v 12 a 2,2 0 0 0 2,2 h 12 a 2,2 0 0 0 2,-2 V 2 A 2,2 0 0 0 14,0 Z" style="display:inline"/></svg>`,
             tooltip: 'Remove Link'
