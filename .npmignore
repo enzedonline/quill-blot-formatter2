@@ -12,6 +12,9 @@ test
 *.spec.ts
 *.test.ts
 
+# Ignore demo or example files
+demo
+
 # Ignore config files that are not needed for the package
 tsconfig.json
 tslint.json
@@ -26,6 +29,7 @@ docs
 *.log
 *.tmp
 *.swp
+stats.html
 
 # Ignore any build scripts or tools
 scripts

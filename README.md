@@ -14,7 +14,15 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 
 - [What's New](#whats-new)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Usage](#usage-examples)
+  - [Node.js / CommonJS](#nodejs--commonjs)
+  - [ESM (React, Next.js, Angular, Vue, Vite, etc.)](#esm-react-nextjs-angular-vue-vite-etc)
+  - [Angular](#angular)
+  - [React / Next.js](#react--nextjs)
+  - [Script Module](#esm-in-a-script-typemodule-browser)
+  - [Script Tag](#umd-in-a-script-tag-browser)
+  - [Registering Blotformatter with Quill](#registering-blotformatter-with-quill)
+  - [Using Suggested Align Format Styling via CDN](#using-suggested-align-format-styling-via-cdn)
 - [Actions](#actions)
   - [Align Action](#align-action)
   - [Resize Action](#resize-action)
@@ -33,12 +41,26 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
   - [Suggested CSS](#suggested-css)
   - [Consideration for modal forms](#modals)
   - [Conditional Styling for Responsive Sites](#conditional-styling-for-responsive-sites)
+- [Quill Bug Fixes](#quill-bug-fixes)
+  - [registerArrowRightFix](#registerarrowrightfix)
+  -[containTooltipPosition](#containtooltipposition)
 - [Scrollable Editors](#scrollable-editors)
 - [Toolbar](#formatter-toolbar)
 - [Configuring Options](#configuring-options)
 - [Further Customisations](#further-customisations)
 
 ## What's New
+
+### Version 3.0
+ > [!WARNING]
+ > While there are minor changes to functionality with this release, there are significant changes under the hood, and changes to the build paths. If you are upgrading and have significant modifications in place with this package, test thoroughly before putting in production. This is particularly the case if you have modified the align format attributor classes. 
+ - ***ESM (es2022) build output now available as `index.ems.js`. UMD build is renamed to `index.js`. See [Installation](#installation) for details.*** 
+ - Corresponding map files are now output for each build and code has been doc-stringed throughout to ease developing / extending the BlotFormatter.
+ - Project is now compiled with vite, webpack has been discontinued.
+ - Internal references to the global Quill object have been replaced with the quill instance contructor. This *should* resolve issues in previous releases when using the React Quill wrapper, or with Angular & Vue.
+ - Debugging is now available by setting option `debug: true` - this is a verbose mode with output to the debug console.
+ - Formatter toolbar will now scroll into view in most cases if hidden when activating formatter overlay.
+ - Optional Quill tooltip fix will contain Quill's native tooltip within the bounds of the Quill editor element. This is intended for use on scrollable editors where Quill will display the tooltip outside if this rectangle in some cases causing clipping.
 
 ### Version 2.4
 
@@ -103,83 +125,106 @@ See notes below on usage, css and importantly, [supporting image titles in Quill
 
 ## Installation
 
-### Using npm:
+> [!WARNING] 
+> The installation and usage instructions changed significantly in version 3. It is recommend upgrading to 3+ if you are on a previous version, particularly for users of React, Angular etc..
 
+Install the package via npm:
+
+```bash
+npm install @enzedonline/quill-blot-formatter2@^3.0.0
 ```
-npm install --save @enzedonline/quill-blot-formatter2
+
+## Usage Examples
+### Node.js / CommonJS
+
+```js
+const BlotFormatter = require('@enzedonline/quill-blot-formatter2').default;
+// or for named exports (for example, Options):
+const { Options } = require('@enzedonline/quill-blot-formatter2');
 ```
 
-## Compiled JS & CSS
+### ESM (React, Next.js, Angular, Vue, Vite, etc.)
+```js
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
+// or for named exports (for example, Options):
+import { Options } from '@enzedonline/quill-blot-formatter2';
+```
 
-Download both from the [dist folder](https://github.com/enzedonline/quill-blot-formatter2) in this repository, or use jsdelivr CDN's:
+### Angular
+Add to your project as above, then import in your component or service:
+```js
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
+```
 
-```html
-<script 
-  src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2.3/dist/js/quill-blot-formatter2.min.js">
+### React / Next.js
+Import in your component or module:
+```js
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
+```
+
+### ESM in a `<script type="module">` (Browser)
+```js
+<script type="module">
+  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0/dist/index.esm.js';
+  // Use BlotFormatter here
 </script>
-<link
-  rel="stylesheet" 
-  href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2.3/dist/css/quill-blot-formatter2.css"
->
 ```
 
-## Usage
-### As Module
-```typescript
-import Quill from 'quill';
+### UMD in a `<script>` Tag (Browser)
+```js
+<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0/dist/index.js"></script>
+<script>
+  // The global variable is QuillBlotFormatter2
+  const BlotFormatter = QuillBlotFormatter2.default;
+  // Use BlotFormatter here
+</script>
+```
 
-Quill.register('modules/blotFormatter2', BlotFormatter2);
+### Registering Blotformatter with Quill
 
-const quill = new Quill(..., {
-  modules: {
-    ...
-    blotFormatter2: {
-      // see config options below
-    }
-  }
+```js
+const quill = new Quill("#quill-editor", {
+    modules: {
+        ....,
+        blotFormatter2: {
+          // options
+        }
+    },
+    ....
 });
 ```
 
-### Script Tag
-`quill-blot-formatter2.min.js` is provided which exports the same modules as `index.js` under the global `QuillBlotFormatter2`.
-
+### Using Suggested Align Format Styling via CDN
 ```html
-<script src="<quill>"></script>
-<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2.3/dist/js/quill-blot-formatter2.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2.3/dist/css/quill-blot-formatter2.css">
-<script>
-  Quill.register('modules/blotFormatter2', QuillBlotFormatter2.default);
-  const quill = new Quill(..., {
-      modules: {
-          ...
-          blotFormatter2: {
-            // see config options below
-          }
-      }
-    }
-  );
-</script>
+<link 
+  rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css"
+>
 ```
-**[Code Pen](https://codepen.io/enzedonline/pen/bGPgqeG)**
+
+**Example [Code Pen](https://codepen.io/enzedonline/pen/bGPgqeG)**
 
 ## Actions
 
-There are three common actions plus an additional two for image blots. These are enabled with the following options:
+There are three common actions plus an additional three for image blots. These are enabled with the following options:
 
 ```typescript
 blotFormatter2: {
   align: {
-    allowAligning: true,
+    allowAligning: true, // default true
   },
   resize: {
-    allowResizing: true,
+    allowResizing: true, // default true
   },
   delete: {
-    allowKeyboardDelete: true,
+    allowKeyboardDelete: true, // default true
   },
   image: {
-    allowAltTitleEdit: true,
-    allowCompressor: true
+    allowAltTitleEdit: true, // default true
+    allowCompressor: true, // default false, enable with true
+    linkOptions: {
+      allowLinkEdit: true //default true
+    }
   }
 }
 ```
@@ -277,7 +322,7 @@ Styling of the size information box is possible via `options.overlay.sizeInfoSty
 
 There are five settings most likely of interest:
 
-```typescript
+```js 
   resize: {
     allowResizing: true,
     allowResizeModeChange: false,
@@ -516,7 +561,7 @@ This action manages hyperlinks on image blots. It is intended to facilitate plac
 
 The link button is enabled by default. To hide the link button, set `allowLinkEdit`  to `false` (see **Options** below).
 
-![alt text](./assets/blot-formatter-link-action.png)
+![blot formatter link action](./assets/blot-formatter-link-action.png)
 
 - If the image has a link, the button will show active. 
 - Click the link button to display the form. The current value will be displayed if already set. 
@@ -650,7 +695,9 @@ This blot also fixes a [Quill bug](https://github.com/slab/quill/issues/4289) wh
 >
 > Custom aspect ratios are now supported for iframes.
 >
-> Each iframe now gets a unique proxy image for touch screen compatibility. Proxy images now exist in the Quill container rather than the end of the document body for compatibility with scrollable editors. If you use a scrollable editor, make sure to set the container overflow to `hidden`. See [Scrollable Editors](#scrollable-editors) below for mre information.
+> Each iframe now gets a unique proxy image for touch screen compatibility. Proxy images now exist in the Quill container rather than the end of the document body for compatibility with scrollable editors. 
+
+:warning: If you use a scrollable editor, make sure to set the container overflow to `hidden`. See [Scrollable Editors](#scrollable-editors) below for more information.
 
 When adding a video to the editor content, blot-formatter-2 will assign it a transparent 'proxy-image' mask to prevent interaction with the iframe content. Clicking this proxy image will activate the formatter overlay for that video.
 
@@ -682,7 +729,7 @@ Proxy image positions are maintained whenever one of the following occurs: Quill
 Suggested css can be found in [src/css/quill-blot-formatter2.css](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/css/quill-blot-formatter2.css) (shown below). This is also exported to the dist folder and published via npm:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@2.2/dist/css/quill-blot-formatter2.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css">
 ```
 
 **These styles are not loaded automatically**, it is up to you to load the styles relevant to your site.
@@ -705,6 +752,7 @@ div.ql-editor [class^="ql-image-align-"] {
 }
 div.ql-editor [class^="ql-image-align-"]>img {
     flex: 1 1 auto;
+    z-index: 1; /* prevents clipping by neighbouring text margin in some cases */
 }
 /* left */
 div.ql-editor .ql-image-align-left,
@@ -848,6 +896,54 @@ Example css below progressively expands relative-sized images by 20% up to a max
 > [!IMPORTANT]
 > It's recommended to only apply these responsive styles outside of the editor (or when the editor is set to read-only) as otherwise this would interfere with the ability to resize blots at those screen sizes.
 
+## Quill Bug Fixes
+
+There are two Quill bug fixes available through BlotFormatter. 
+
+### registerArrowRightFix
+
+- Registers a keyboard binding that fixes a Quill bug where the cursor disappears when moved by right arrow into the `span` tag for the image.
+
+Enabled by default, disable in options with:
+
+```typescript
+  image: {
+    registerArrowRightFix: false
+  },
+```
+
+### containTooltipPosition
+:warning: *new in version 3.0*
+
+- Prevents Quill rendering the tooltip element outside of the Quill container. This is especially useful for scrollable Quill editors where the `quill.container` methed has `overflow: hidden` or `overflow: clip`. If Quill tries to places the tooltip outside of the container bounds, this fix will place inside with a small margin.
+- This fix is intended for use with scrollable Quill containers.
+
+<figure>
+<img src="./assets/tooltip-without-fix.png">
+<figcaption>Without tooltip fix
+</figure>
+
+<figure>
+<img src="./assets/tooltip-with-fix.png">
+<figcaption>With tooltip fix
+</figure>
+
+**Disabled by default**. Enable in options with:
+```typescript
+  tooltip: {
+    containTooltipPosition: true
+  }
+```
+
+> [!NOTE]
+> This fix is also available via an exported class with static methods. Both methods take the `quill` instance. You can also add `true` as an additional parameter to get verbose feedback to the debug console.
+>
+> ```typescript
+> TooltipContainPosition.watchTooltip(quill); // start watching changes to the tooltip element, reposition if necessary
+> TooltipContainPosition.removeTooltipWatcher(quill); // stop watching changes to the tooltip element
+> ```
+
+
 ## Scrollable Editors
 
 > [!IMPORTANT] 
@@ -857,7 +953,7 @@ Example css below progressively expands relative-sized images by 20% up to a max
 
 If your Quill root element is scrollable, any active overlay will scroll with the target element. The overlay element and proxy images sit in the Quill container element however and will be visible outside of the bounds of your editor. The proxy image can scroll off the available window and cause that to overflow while potentially masking elements outside of the editor. 
 
-For these reasons, ***you must set the overflow on your Quill container to hidden***.
+For these reasons, ***you must set the overflow on your Quill container to clip or hidden***. I recommend using the [containTooltipPosition](#containtooltipposition) Quill fix when doing this to avoid Quill rendering the tooltip element in the clipped/hidden region.
 
 For example:
 ```css
@@ -959,10 +1055,19 @@ const quill = new Quill(..., {
 });
 ```
 
+To enable verbose mode with logging to the debug console, set the following option:
+
+```typescript
+blotFormatter2: {
+  debug: true;
+}
+```
+
 > [!TIP]
-> For all supported options as well as the default see ([`Options`](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/Options.ts)).<br>
+> For all supported options, see [`Options`](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/Options.ts).<br>
+> For default option values, see [`DefaultOptions`](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/DefaultOptions.ts).<br>
 > Object properties are merged, but array properties override the defaults.<br>
-> To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`
+> To completely disable styles (`overlay.style`, `resize.handleStyle`, etc) set those to `null`.
 
 <hr>
 
@@ -975,6 +1080,8 @@ const quill = new Quill(..., {
 > If you create any custom actions that may move or change the content in any way, it is recommended to call `formatter.update()` where `formatter` is the current instance of `BlotFormatter`. This ensures the overlay and proxy positions & sizes are maintained. 
 >
 > Proxy positions will update on Quill's `text_change` event in any case. For other Quill extensions, they should be raising the `text_change` event when inserting/changing content.
+
+If you are forking this project, use `npm run build` to output the UMD & ESM builds, `use npm run dev` to start the Vite server with live changes on the default page and additional pages to test the builds.
 
 ### BlotSpec
 

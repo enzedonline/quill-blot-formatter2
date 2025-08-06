@@ -1,6 +1,6 @@
-import Options from './Options';
 import IframeVideoSpec from './specs/IframeVideoSpec';
 import ImageSpec from './specs/ImageSpec';
+import type { Options } from './Options';
 
 const closeButtonIcon = `<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>`;
 const okButtonIcon = `<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>`;
@@ -73,7 +73,7 @@ export const DefaultOptions: Options = {
       center: 'Align Center',
       right: 'Align Right',
       attribute: 'Set Alt/Title',
-      resizeMode: 'Resize Relative/Absolute',
+      resizeMode: 'Use Relative (%)/Absolute (px) Sizing',
       compress: 'Compress Image',
       link: 'Add/Edit Link',
     },

@@ -23,8 +23,8 @@ import type { LinkOptions } from '../Options';
  */
 export default class LinkAction extends Action {
     targetElement: HTMLElement | null | undefined = null;
+    currentBlot: Blot | null | undefined = null;
     toolbarButton: ToolbarButton;
-    currentBlot: Blot | null | undefined
     linkOptions: LinkOptions;
     modal?: {
         dialog: HTMLDialogElement;
@@ -39,7 +39,6 @@ export default class LinkAction extends Action {
 
     constructor(formatter: BlotFormatter) {
         super(formatter);
-        this.currentBlot = this.formatter.currentSpec?.getTargetBlot();
         this.linkOptions = this.formatter.options.image.linkOptions;
         this.toolbarButton = new ToolbarButton(
             'link',
@@ -51,6 +50,7 @@ export default class LinkAction extends Action {
             return !!this.getLink();
         };
         this.toolbarButtons = [this.toolbarButton];
+        (window as any).LinkAction = this; // For debugging purposes
     }
 
     /**
@@ -58,8 +58,9 @@ export default class LinkAction extends Action {
      * Retrieves the target element from the current formatter specification, if available.
      * This method is typically called when the action is created.
      */
-    onCreate(): void {
+    onCreate = (): void => {
         this.targetElement = this.formatter.currentSpec?.getTargetElement();
+        this.currentBlot = this.formatter.currentSpec?.getTargetBlot();
     }
 
     /**
@@ -68,7 +69,7 @@ export default class LinkAction extends Action {
      * - Removes any attached event listeners.
      * - Hides the link modal if it is visible.
      */
-    onDestroy(): void {
+    onDestroy = (): void => {
         this.targetElement = null;
         this._removeEventListeners();
         this.hideLinkModal();
@@ -86,9 +87,7 @@ export default class LinkAction extends Action {
      */
     private _addEventListeners = (): void => {
         if (this.modal) {
-            this.modal.dialog.addEventListener('keyup', this._blockKeyEvent);
             this.modal.form.addEventListener('submit', this._formSubmitHandler);
-            this.modal.input.addEventListener('input', this._blockKeyEvent);
             this.modal.cancelButton.addEventListener('click', this.hideLinkModal);
             this.modal.removeButton.addEventListener('click', this.removeLink);
             this.modal.background.addEventListener('click', this._onBackgroundClick);
@@ -107,25 +106,12 @@ export default class LinkAction extends Action {
      */
     private _removeEventListeners = (): void => {
         if (this.modal) {
-            this.modal.dialog.removeEventListener('keyup', this._blockKeyEvent);
             this.modal.form.removeEventListener('submit', this._formSubmitHandler);
-            this.modal.input.removeEventListener('input', this._blockKeyEvent);
             this.modal.cancelButton.removeEventListener('click', this.hideLinkModal);
             this.modal.removeButton.removeEventListener('click', this.removeLink);
             this.modal.background.removeEventListener('click', this._onBackgroundClick);
             this.modal.input.removeEventListener('contextmenu', this._trapContextEvent);
         }
-    }
-
-    /**
-     * Handles and blocks a keyboard or input event by stopping its immediate propagation
-     * and preventing the default browser behavior.
-     *
-     * @param e - The event to be blocked.
-     */
-    private _blockKeyEvent = (e: Event): void => {
-        e.stopImmediatePropagation();
-        e.preventDefault();
     }
 
     /**
@@ -147,7 +133,7 @@ export default class LinkAction extends Action {
      * @remarks
      * This handler is typically bound to a UI element to allow users to edit or add links.
      */
-    private _onClickHandler: EventListener = () => {
+    private _onClickHandler: EventListener = (): void => {
         this.showLinkModal();
     }
 
@@ -164,6 +150,9 @@ export default class LinkAction extends Action {
             e.stopImmediatePropagation();
             e.preventDefault();
             this.hideLinkModal();
+            if (this.debug) {
+                console.debug('LinkAction modal background clicked, hiding modal');
+            }   
         }
     }
 
@@ -298,12 +287,12 @@ export default class LinkAction extends Action {
      * The method calculates the overlay and Quill root bounding rectangles,
      * determines the dialog's dimensions, and computes the appropriate
      * `left` and `top` CSS properties to center the dialog over the overlay.
-     * The horizontal position is clamped so the dialog does not overflow
+     * The horizontal & vertical position is clamped so the dialog does not overflow
      * the Quill root element.
      *
      * @param dialog - The HTMLDialogElement to position.
      */
-    private _positionModal(dialog: HTMLDialogElement): void {
+    private _positionModal = (dialog: HTMLDialogElement): void => {
         const overlayRect = this.formatter.overlay.getBoundingClientRect();
         const quillRect = this.formatter.quill.root.getBoundingClientRect();
         const offsetParentRect = dialog.offsetParent?.getBoundingClientRect() ?? { top: 0, left: 0 };
@@ -319,6 +308,10 @@ export default class LinkAction extends Action {
         const minLeft = quillRect.left - offsetParentRect.left;
         const maxLeft = quillRect.right - dialogWidth - offsetParentRect.left;
         left = Math.min(Math.max(left, minLeft), maxLeft);
+
+        const minTop = quillRect.top - offsetParentRect.top;
+        const maxTop = quillRect.bottom - dialogHeight - offsetParentRect.top;
+        top = Math.min(Math.max(top, minTop), maxTop);
 
         // Apply positioning
         dialog.style.position = "absolute";
@@ -354,7 +347,9 @@ export default class LinkAction extends Action {
         const form = event.target as HTMLFormElement;
         const formData = new FormData(form);
         const url = (formData.get('url') as string).trim();
-
+        if (this.debug) {
+            console.debug('LinkAction form submitted with URL:', url);
+        }
         if (this.currentBlot) {
             if (url) {
                 this.applyLink(url);
@@ -378,6 +373,9 @@ export default class LinkAction extends Action {
         if (!blot || !blot.domNode) return null;
         const index = this.formatter.quill.getIndex(blot);
         const formats = this.formatter.quill.getFormat(index, 1, Quill.sources.SILENT);
+        if (this.debug) {
+            console.debug('LinkAction getLink called, formats:', formats);
+        }
         return formats.link || null;
     }
 
@@ -402,6 +400,9 @@ export default class LinkAction extends Action {
                 break;
             }
             wrapperBlot = wrapperBlot.parent;
+        }
+        if (this.debug) {
+            console.debug('LinkAction removeLink called, removed link from blot:', wrapperBlot);
         }
         this.hideLinkModal();
         this.toolbarButton.selected = false;

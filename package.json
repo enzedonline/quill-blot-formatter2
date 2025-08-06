@@ -2,8 +2,20 @@
   "name": "@enzedonline/quill-blot-formatter2",
   "version": "2.4.1",
   "description": "An update for quill-blot-formatter to make quilljs v2 compatible.",
+  "type": "module",
   "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    },
+    "./dist/css/quill-blot-formatter2.css": "./dist/css/quill-blot-formatter2.css"
+  },
+  "unpkg": "./dist/index.js",
+  "jsdelivr": "./dist/index.js",
   "homepage": "https://github.com/enzedonline/quill-blot-formatter2",
   "bugs": {
     "url": "https://github.com/enzedonline/quill-blot-formatter2/issues"
@@ -33,21 +45,21 @@
     "deepmerge": "^4.3.1"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^12.0.2",
+    "@types/node": "^24.2.0",
+    "ajv": "^8.17.1",
     "quill": "^2.0.3",
     "rimraf": "^6.0.1",
-    "terser-webpack-plugin": "^5.3.11",
-    "ts-loader": "^9.5.2",
-    "typescript": "^5.7.3",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "rollup-plugin-visualizer": "^6.0.3",
+    "typescript": "^5.9.2",
+    "vite": "^7.0.6",
+    "vite-plugin-dts": "^4.5.4"
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run build:ts && npm run build:webpack",
-    "build:ts": "tsc",
-    "build:webpack": "webpack --mode production --progress",
-    "dev:webpack": "webpack --mode development --progress --watch",
-    "prepublishOnly": "npm run build"
+    "build": "npm run clean && vite build",
+    "prepublishOnly": "npm run build",
+    "dev": "vite --host 0.0.0.0 --port 3000",
+    "preview": "vite preview",
+    "preinstall": "node ./check-upgrade.js"
   }
 }

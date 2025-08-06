@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ESM Blot Formatter Demo</title>
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0/dist/quill.snow.css" rel="stylesheet">
+        <link rel="stylesheet" href="../dist/css/quill-blot-formatter2.css">
+        <style>
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+            }
+
+            #quill-editor {
+                overflow: clip;
+                height: 400px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>ESM Blot Formatter Demo</h1>
+        <a href="index.html">Node Version</a> |
+        <a href="index-umd.html">UMD Version</a>
+        <hr>
+        <div id="quill-editor"></div>
+        <script type="module">
+            import Quill from 'https://cdn.skypack.dev/quill@2.0.3';
+            import QuillBlotFormatter2 from '../dist/index.esm.js';
+
+            Quill.register('modules/blotFormatter2', QuillBlotFormatter2);
+            window.quill = new Quill("#quill-editor", {
+                modules: {
+                    toolbar: [
+                        [{ header: [1, 2, false] }],
+                        ["bold", "italic", "underline"],
+                        ["image", "video"]
+                    ],
+                    blotFormatter2: {
+                        video: {
+                            registerCustomVideoBlot: true
+                        },
+                        resize: {
+                            useRelativeSize: true,
+                            allowResizeModeChange: true,
+                            imageOversizeProtection: true
+                        },
+                        image: {
+                            registerImageTitleBlot: true,
+                            allowCompressor: true,
+                            compressorOptions: {
+                                jpegQuality: 0.7,
+                                maxWidth: 1000
+                            }
+                        },
+                        tooltip: {
+                            adjust: true // enable tooltip position adjustment
+                        },
+                        debug: true
+                    }
+                },
+                placeholder: "Compose an epic...",
+                theme: "snow" // or 'bubble'
+            });
+        </script>
+    </body>
+
+</html>

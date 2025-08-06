@@ -1,5 +1,36 @@
 # Changelog
 
+## [v3.0.0] 
+
+This is a minor change in functionality, but includes breaking changes from previous versions addressing issues when importing to certain platforms.
+
+***This is the earliest version that has an ESM output build.***
+
+### :warning: Breaking Changes
+
+Webpack has been discontinued form this project in favour of Vite. This has allowed a much smoother development path and identification of underlying issue when importing into certain platforms such as React, angular etc. 
+
+While making this change, I've added an ESM output and changed the published build path from the original, legbut as class factories acy project to meet standards. A warning will be displayed in the console if upgrading from version 2.x there. see the [Installation](README.md#installation) section for more details. Corresponding map files are now output for each build and code has been doc-stringed throughout to ease developing / extending the BlotFormatter.
+
+The biggest change under the hood is removing references to the Quill global static methods in favour of using the quill instance constructor. For that reason, the image and iframe align formats are no longer exported as classes but as class factories `createIframeAlignAttributor` and `createImageAlignAttributor`.
+
+### Other Changes
+ - Debugging is now available by setting option `debug: true` - this is a verbose mode with output to the debug console.
+ - Formatter toolbar will now scroll into view in most cases if hidden when activating formatter overlay.
+ - Optional Quill tooltip fix will contain Quill's native tooltip within the bounds of the Quill editor element. This is intended for use on scrollable editors where Quill will display the tooltip outside if this rectangle in some cases causing clipping. See [containTooltipPosition](./README.md#containtooltipposition).
+
+#### Updated devDependencies
+```
+├── "@types/node": "^24.2.0",
+├── "ajv": "^8.17.1",
+├── "quill": "^2.0.3",
+├── "rimraf": "^6.0.1",
+├── "rollup-plugin-visualizer": "^6.0.3",
+├── "typescript": "^5.9.2",
+├── "vite": "^7.0.6",
+└── "vite-plugin-dts": "^4.5.4"
+```
+
 ## [v2.4.0] - 2025-07-27
 ### Changed
 #### New Actions
@@ -19,10 +50,9 @@
 #### Bug fix
 - Adjusted flex mode in suggested css to prevent image size collapsing in certain cases on FireFox.
 
-### Updated dependencies
+### Updated devDependencies
 ```
 ├── copy-webpack-plugin@12.0.2
-├── deepmerge@4.3.1
 ├── quill@2.0.3
 ├── rimraf@6.0.1
 ├── terser-webpack-plugin@5.3.14
@@ -30,6 +60,11 @@
 ├── typescript@5.8.3
 ├── webpack-cli@6.0.1
 └── webpack@5.100.2
+```
+
+### Update dependencies
+```
+└── deepmerge@4.3.1
 ```
 
 ## [v2.3.0] - 2025-01-14

@@ -7,17 +7,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    },
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "declaration": true, 
     "declarationDir": "./dist", 
-    "outDir": "./dist" 
+    "outDir": "./dist",
+    "sourceMap": true
   },
   "include": [
     "src/**/*.ts"

@@ -25,7 +25,7 @@ export default class CaretAction extends Action {
    *
    * @param n - The number of characters to move the caret back. Defaults to 1.
    */
-  static sendCaretBack(n = 1): void {
+  static sendCaretBack = (n = 1, debug = false): void => {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
@@ -46,6 +46,9 @@ export default class CaretAction extends Action {
       range.collapse(true);
       selection.removeAllRanges();
       selection.addRange(range);
+      if (debug) {
+        console.debug('Caret moved back by', n, 'characters');
+      }
     }
   }
 
@@ -55,9 +58,12 @@ export default class CaretAction extends Action {
    * @param quill - The Quill editor instance.
    * @param targetBlot - The blot before which the caret should be placed.
    */
-  static placeCaretBeforeBlot(quill: any, targetBlot: Blot): void {
+  static placeCaretBeforeBlot = (quill: any, targetBlot: Blot, debug = false): void => {
     const index = quill.getIndex(targetBlot);
     quill.setSelection(index, 0, "user");
+    if (debug) {
+      console.debug('Caret placed before blot at index:', index, targetBlot);
+    }
   }
 
   /**
@@ -72,7 +78,7 @@ export default class CaretAction extends Action {
    * @param quill - The Quill editor instance.
    * @param targetBlot - The blot after which the caret should be placed.
    */
-  static placeCaretAfterBlot(quill: any, targetBlot: Blot): void {
+  static placeCaretAfterBlot = (quill: any, targetBlot: Blot, debug = false): void => {
     quill.setSelection(null); // Clear selection first
     quill.root.focus(); // Ensure the editor is focused
     const index = quill.getIndex(targetBlot);
@@ -82,11 +88,17 @@ export default class CaretAction extends Action {
     if (index + 1 >= documentLength - 1) {
       // For the last blot, place cursor at the very end
       quill.setSelection(documentLength - 1, 0, "user");
+      if (debug) {
+        console.debug('Caret placed at the end of the document after blot:', targetBlot);
+      }
     } else {
       // overshoot by one then use native browser API to send caret back one
       // without this, caret will be placed inside formatting span wrapper
+      if (debug) {
+        console.debug('Caret placed after character following blot at index:', index, targetBlot);
+      } 
       quill.setSelection(index + 2, 0, "user");
-      this.sendCaretBack(1); // Move cursor back by 1 character
+      this.sendCaretBack(1, debug); // Move cursor back by 1 character
     }
   }
 
@@ -139,10 +151,10 @@ export default class CaretAction extends Action {
     // if left arrow, place cursor before targetBlot
     // if right arrow, place cursor after targetBlot
     if (e.code === 'ArrowLeft') {
-      CaretAction.placeCaretBeforeBlot(this.formatter.quill, targetBlot);
+      CaretAction.placeCaretBeforeBlot(this.formatter.quill, targetBlot, this.debug);
       this.formatter.hide();
     } else if (e.code === 'ArrowRight') {
-      CaretAction.placeCaretAfterBlot(this.formatter.quill, targetBlot);
+      CaretAction.placeCaretAfterBlot(this.formatter.quill, targetBlot, this.debug);
       this.formatter.hide();
     }
   };

@@ -217,7 +217,12 @@ export type VideoOptions = {
   proxyStyle: { [key: string]: any };
 }
 
-type Options = {
+export type TooltipOptions = {
+  // contain tooltip position within the editor container
+  containTooltipPosition: boolean;
+}
+
+export type Options = {
   // the BlotSpecs supported
   specs: Array<Constructor<BlotSpec>>,
   overlay: OverlayOptions,
@@ -227,7 +232,8 @@ type Options = {
   toolbar: ToolbarOptions,
   image: ImageOptions,
   video: VideoOptions,
+  tooltip?: TooltipOptions,
+  debug?: boolean, // enable debug logging
 };
 
-export default Options;
 

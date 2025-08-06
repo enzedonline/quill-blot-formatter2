@@ -1,6 +1,10 @@
 // core
-export { default as DefaultOptions } from './Options';
-export { default } from './BlotFormatter';
+import BlotFormatter from './BlotFormatter';
+export default BlotFormatter;
+
+// Options
+export type { Options as Options } from './Options';
+export { DefaultOptions as DefaultOptions } from './DefaultOptions';
 
 // actions
 export { default as Action } from './actions/Action';
@@ -22,6 +26,9 @@ export { default as ImageSpec } from './specs/ImageSpec';
 export { default as UnclickableBlotSpec } from './specs/UnclickableBlotSpec';
 export { default as IframeVideoSpec } from './specs/IframeVideoSpec';
 
-// formats
-export { ImageAlign as ImageAlignFormat } from './actions/align/AlignFormats';
-export { IframeAlign as IframeAlignFormat } from './actions/align/AlignFormats';
+// format factories
+export { createIframeAlignAttributor } from './actions/align/AlignFormats';
+export { createImageAlignAttributor } from './actions/align/AlignFormats';
+
+// tooltip
+export { default as TooltipContainPosition } from './tooltip/TooltipContainPosition';
