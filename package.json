@@ -32,7 +32,8 @@
     "url": "https://github.com/enzedonline/quill-blot-formatter2"
   },
   "files": [
-    "dist"
+    "dist",
+    "check-upgrade.js"
   ],
   "keywords": [
     "quill",

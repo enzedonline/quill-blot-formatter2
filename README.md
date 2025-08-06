@@ -169,14 +169,14 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 ### ESM in a `<script type="module">` (Browser)
 ```html
 <script type="module">
-  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.0/dist/index.ems.js';
+  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.1/dist/index.ems.js';
   // Use BlotFormatter here
 </script>
 ```
 
 ### UMD in a `<script>` Tag (Browser)
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.0/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.1/dist/index.js"></script>
 <script>
   // The global variable is QuillBlotFormatter2
   const BlotFormatter = QuillBlotFormatter2.default;
