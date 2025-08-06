@@ -1,5 +1,9 @@
 # Quill Blot Formatter 2 (quill-blot-formatter2)
 
+> [!WARNING]
+> ***THIS README IS FOR THE 3.0.0-beta ONLY - see the [readme](https://www.npmjs.com/package/@enzedonline/quill-blot-formatter2?activeTab=readme) on NPM for the v2.x readme***
+
+
 An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos. Supports editing alt & title values for images. It can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
 
 ![the new toolbar with alt title editing button](/assets/blot-formatter-image-overlay.png)
@@ -131,7 +135,7 @@ See notes below on usage, css and importantly, [supporting image titles in Quill
 Install the package via npm:
 
 ```bash
-npm install @enzedonline/quill-blot-formatter2@^3.0.0
+npm install @enzedonline/quill-blot-formatter2@beta
 ```
 
 ## Usage Examples
@@ -163,16 +167,16 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 ```
 
 ### ESM in a `<script type="module">` (Browser)
-```js
+```html
 <script type="module">
-  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0/dist/index.esm.js';
+  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.0/dist/index.ems.js';
   // Use BlotFormatter here
 </script>
 ```
 
 ### UMD in a `<script>` Tag (Browser)
-```js
-<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0/dist/index.js"></script>
+```html
+<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.0/dist/index.js"></script>
 <script>
   // The global variable is QuillBlotFormatter2
   const BlotFormatter = QuillBlotFormatter2.default;
@@ -183,6 +187,7 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 ### Registering Blotformatter with Quill
 
 ```js
+Quill.register('modules/blotFormatter2', BlotFormatter);
 const quill = new Quill("#quill-editor", {
     modules: {
         ....,
