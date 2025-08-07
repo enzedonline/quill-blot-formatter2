@@ -102,8 +102,8 @@ export default class BlotFormatter {
     const IframeAlignClass = createIframeAlignAttributor(this.Quill);
 
     // Create instances of the classes
-    this.ImageAlign = new ImageAlignClass();
-    this.IframeAlign = new IframeAlignClass();
+    this.ImageAlign = new ImageAlignClass(options.debug);
+    this.IframeAlign = new IframeAlignClass(options.debug);
 
     // Register the align formats with Quill
     if (options.debug) console.debug('Registering custom align formats', this.ImageAlign, this.IframeAlign);

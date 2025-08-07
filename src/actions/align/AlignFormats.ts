@@ -60,7 +60,7 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
   return class IframeAlignAttributor extends ClassAttributor {
     static attrName = 'iframeAlign';
 
-    constructor() {
+    constructor(private debug = false) {
       super('iframeAlign', 'ql-iframe-align', {
         scope: Scope.BLOCK,
         whitelist: ['left', 'center', 'right'],
@@ -83,6 +83,9 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
      * @returns `true` if the formatting was successfully applied to an HTMLElement, otherwise `false`.
      */
     add = (node: Element, value: IframeAlignValue): boolean => {
+      if (this.debug) {
+        console.debug('IframeAlignAttributor.add', node, value);
+      }
       if (node instanceof HTMLElement) {
         if (typeof value === 'object') {
           super.add(node, value.align);
@@ -103,8 +106,14 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
           node.style.removeProperty('--resize-width');
           node.dataset.relativeSize = 'false';
         }
+        if (this.debug) {
+          console.debug('IframeAlignAttributor.add - node:', node, 'aligned with:', value);
+        }
         return true;
       } else {
+        if (this.debug) {
+          console.debug('IframeAlignAttributor.add - node is not an HTMLElement, skipping alignment');
+        }
         return false;
       }
     }
@@ -119,6 +128,9 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
      * @param node - The DOM element from which to remove the alignment formatting.
      */
     remove = (node: Element): void => {
+      if (this.debug) {
+        console.debug('IframeAlignAttributor.remove', node);
+      }
       if (node instanceof HTMLElement) {
         super.remove(node);
         delete node.dataset.blotAlign;
@@ -140,11 +152,15 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
       const width = (node instanceof HTMLElement) ?
         node.style.getPropertyValue('--resize-width') || node.getAttribute('width') || '' :
         '';
-      return {
+      const value = {
         align: className,
         width: width,
         relativeSize: `${width.endsWith('%')}`
       };
+      if (this.debug) {
+        console.debug('IframeAlignAttributor.value', node, value);
+      }
+      return value;
     }
 
   }
@@ -183,7 +199,7 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
     static tagName = 'SPAN';
     static attrName = 'imageAlign';
 
-    constructor() {
+    constructor(private debug = false) {
       super('imageAlign', 'ql-image-align', {
         scope: Scope.INLINE,
         whitelist: ['left', 'center', 'right'],
@@ -206,6 +222,9 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
      * @returns `true` if formatting was applied or handled, `false` otherwise.
      */
     add = (node: Element, value: ImageAlignInputValue | string): boolean => {
+      if (this.debug) {
+        console.debug('ImageAlignAttributor.add', node, value);
+      }
       if (node instanceof HTMLSpanElement && value) {
         let imageElement = node.querySelector('img') as HTMLImageElement;
         if (typeof value === 'object' && value.align) {
@@ -220,10 +239,19 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
           if (value.align) {
             imageElement.dataset.blotAlign = value.align;
           }
+          if (this.debug) {
+            console.debug('ImageAlignAttributor.add - imageElement:', imageElement, 'aligned with:', value.align);
+          }
         } else if (typeof value === 'string') {
           super.add(node, value);
           imageElement.dataset.blotAlign = value;
+          if (this.debug) {
+            console.debug('ImageAlignAttributor.add - imageElement:', imageElement, 'aligned with:', value);
+          }
         } else {
+          if (this.debug) {
+            console.debug('ImageAlignAttributor.add - no value provided, skipping alignment');
+          }
           return false;
         }
         // set width style property on wrapper if image and has imageAlign format
@@ -242,7 +270,9 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
           // Use QuillConstructor.find to find the image blot, using global Quill static methods will always return null 
           //   in some environments such as vite, react, etc.
           const imageBlot = QuillConstructor.find(imageElement) as any;
-          console.log('imageBlot', imageBlot);
+          if (this.debug) {
+            console.debug('ImageAlignAttributor.add - found image blot:', imageBlot);
+          }
           if (
             imageBlot &&
             (
@@ -251,6 +281,9 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
             )
           ) {
             imageBlot.format('imageAlign', value);
+            if (this.debug) {
+              console.debug('ImageAlignAttributor.add - reapplying imageAlign format to image blot:', value, imageBlot);
+            }
           }
           return true;
         }
@@ -268,6 +301,9 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
      * @param node - The DOM element from which to remove alignment formatting.
      */
     remove = (node: Element): void => {
+      if (this.debug) {
+        console.debug('ImageAlignAttributor.remove', node);
+      }
       if (node instanceof HTMLElement) {
         super.remove(node);
         if (node.firstChild && (node.firstChild instanceof HTMLElement)) {
@@ -306,13 +342,17 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
           }
         }
       }
-      return {
+      const value = {
         align: align,
         title: title,
         width: width,
         contenteditable: 'false',
         relativeSize: `${width.endsWith('%')}`
       };
+      if (this.debug) {
+        console.debug('ImageAlignAttributor.value', node, value);
+      }
+      return value;
     }
 
     /**

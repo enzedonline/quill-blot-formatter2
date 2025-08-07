@@ -82,7 +82,6 @@ export default class DefaultAligner implements Aligner {
     if (blot != null) {
       if (blot.domNode.tagName === 'IMG') {
         if (blot.parent !== null && blot.parent.domNode.tagName === 'SPAN') {
-          console.log('clear format', blot, this.formatter.ImageAlign.attrName);
           blot.parent.format(this.formatter.ImageAlign.attrName, false)
           if (this.debug) {
             console.debug('Cleared image alignment from parent span:', blot.parent);
