@@ -117,9 +117,9 @@ class _ extends v {
 function W(h) {
   return h && h.__esModule && Object.prototype.hasOwnProperty.call(h, "default") ? h.default : h;
 }
-var S, I;
+var E, I;
 function D() {
-  if (I) return S;
+  if (I) return E;
   I = 1;
   var h = function(c) {
     return t(c) && !e(c);
@@ -146,21 +146,21 @@ function D() {
       return r(y, d);
     });
   }
-  function g(a, c) {
+  function p(a, c) {
     if (!c.customMerge)
       return x;
     var d = c.customMerge(a);
     return typeof d == "function" ? d : x;
   }
-  function u(a) {
+  function m(a) {
     return Object.getOwnPropertySymbols ? Object.getOwnPropertySymbols(a).filter(function(c) {
       return Object.propertyIsEnumerable.call(a, c);
     }) : [];
   }
-  function m(a) {
-    return Object.keys(a).concat(u(a));
+  function u(a) {
+    return Object.keys(a).concat(m(a));
   }
-  function p(a, c) {
+  function g(a, c) {
     try {
       return c in a;
     } catch {
@@ -168,14 +168,14 @@ function D() {
     }
   }
   function b(a, c) {
-    return p(a, c) && !(Object.hasOwnProperty.call(a, c) && Object.propertyIsEnumerable.call(a, c));
+    return g(a, c) && !(Object.hasOwnProperty.call(a, c) && Object.propertyIsEnumerable.call(a, c));
   }
   function H(a, c, d) {
     var y = {};
-    return d.isMergeableObject(a) && m(a).forEach(function(f) {
+    return d.isMergeableObject(a) && u(a).forEach(function(f) {
       y[f] = r(a[f], d);
-    }), m(c).forEach(function(f) {
-      b(a, f) || (p(a, f) && d.isMergeableObject(c[f]) ? y[f] = g(f, d)(a[f], c[f], d) : y[f] = r(c[f], d));
+    }), u(c).forEach(function(f) {
+      b(a, f) || (g(a, f) && d.isMergeableObject(c[f]) ? y[f] = p(f, d)(a[f], c[f], d) : y[f] = r(c[f], d));
     }), y;
   }
   function x(a, c, d) {
@@ -191,7 +191,7 @@ function D() {
     }, {});
   };
   var N = x;
-  return S = N, S;
+  return E = N, E;
 }
 var j = D();
 const P = /* @__PURE__ */ W(j), $ = w.import("formats/image"), M = ["alt", "height", "width", "title"];
@@ -246,7 +246,7 @@ class B {
   };
 }
 const F = w.import("formats/video");
-class E extends F {
+class S extends F {
   static aspectRatio = "16 / 9 auto";
   static create(t) {
     const e = super.create(t);
@@ -259,13 +259,13 @@ class E extends F {
 const U = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
-    static attrName = "iframeAlign";
-    constructor() {
+    constructor(o = !1) {
       super("iframeAlign", "ql-iframe-align", {
         scope: i.BLOCK,
         whitelist: ["left", "center", "right"]
-      });
+      }), this.debug = o;
     }
+    static attrName = "iframeAlign";
     /**
      * Adds alignment and width-related formatting to the specified HTML element node.
      *
@@ -282,12 +282,12 @@ const U = (h) => {
      * @returns `true` if the formatting was successfully applied to an HTMLElement, otherwise `false`.
      */
     add = (o, n) => {
-      if (o instanceof HTMLElement) {
+      if (this.debug && console.debug("IframeAlignAttributor.add", o, n), o instanceof HTMLElement) {
         typeof n == "object" ? (super.add(o, n.align), o.dataset.blotAlign = n.align) : (super.add(o, n), o.dataset.blotAlign = n);
         let r = o.getAttribute("width");
-        return r ? (isNaN(Number(r.trim().slice(-1))) || (r = `${r}px`), o.style.setProperty("--resize-width", r), o.dataset.relativeSize = `${r.endsWith("%")}`) : (o.style.removeProperty("--resize-width"), o.dataset.relativeSize = "false"), !0;
+        return r ? (isNaN(Number(r.trim().slice(-1))) || (r = `${r}px`), o.style.setProperty("--resize-width", r), o.dataset.relativeSize = `${r.endsWith("%")}`) : (o.style.removeProperty("--resize-width"), o.dataset.relativeSize = "false"), this.debug && console.debug("IframeAlignAttributor.add - node:", o, "aligned with:", n), !0;
       } else
-        return !1;
+        return this.debug && console.debug("IframeAlignAttributor.add - node is not an HTMLElement, skipping alignment"), !1;
     };
     /**
      * Removes the alignment formatting from the specified DOM element.
@@ -299,7 +299,7 @@ const U = (h) => {
      * @param node - The DOM element from which to remove the alignment formatting.
      */
     remove = (o) => {
-      o instanceof HTMLElement && (super.remove(o), delete o.dataset.blotAlign);
+      this.debug && console.debug("IframeAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), delete o.dataset.blotAlign);
     };
     /**
      * Extracts alignment and width information from a given DOM element.
@@ -312,25 +312,25 @@ const U = (h) => {
      *   - `relativeSize`: A string indicating whether the width ends with a '%' character, representing a relative size.
      */
     value = (o) => {
-      const n = super.value(o), r = o instanceof HTMLElement && (o.style.getPropertyValue("--resize-width") || o.getAttribute("width")) || "";
-      return {
+      const n = super.value(o), r = o instanceof HTMLElement && (o.style.getPropertyValue("--resize-width") || o.getAttribute("width")) || "", l = {
         align: n,
         width: r,
         relativeSize: `${r.endsWith("%")}`
       };
+      return this.debug && console.debug("IframeAlignAttributor.value", o, l), l;
     };
   };
 }, V = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
-    static tagName = "SPAN";
-    static attrName = "imageAlign";
-    constructor() {
+    constructor(o = !1) {
       super("imageAlign", "ql-image-align", {
         scope: i.INLINE,
         whitelist: ["left", "center", "right"]
-      });
+      }), this.debug = o;
     }
+    static tagName = "SPAN";
+    static attrName = "imageAlign";
     /**
      * Adds or updates alignment and related formatting for an image wrapper node.
      *
@@ -347,21 +347,21 @@ const U = (h) => {
      * @returns `true` if formatting was applied or handled, `false` otherwise.
      */
     add = (o, n) => {
-      if (o instanceof HTMLSpanElement && n) {
+      if (this.debug && console.debug("ImageAlignAttributor.add", o, n), o instanceof HTMLSpanElement && n) {
         let r = o.querySelector("img");
         if (typeof n == "object" && n.align)
-          super.add(o, n.align), o.setAttribute("contenteditable", "false"), n.title ? o.setAttribute("data-title", n.title) : o.removeAttribute("data-title"), n.align && (r.dataset.blotAlign = n.align);
+          super.add(o, n.align), o.setAttribute("contenteditable", "false"), n.title ? o.setAttribute("data-title", n.title) : o.removeAttribute("data-title"), n.align && (r.dataset.blotAlign = n.align), this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n.align);
         else if (typeof n == "string")
-          super.add(o, n), r.dataset.blotAlign = n;
+          super.add(o, n), r.dataset.blotAlign = n, this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n);
         else
-          return !1;
+          return this.debug && console.debug("ImageAlignAttributor.add - no value provided, skipping alignment"), !1;
         let l = this.getImageWidth(r);
         return o.setAttribute("data-relative-size", `${l?.endsWith("%")}`), !0;
       } else {
         const r = o.querySelector("img");
         if (r instanceof HTMLImageElement) {
           const l = h.find(r);
-          return console.log("imageBlot", l), l && (o.firstChild instanceof HTMLSpanElement || !r.parentElement?.matches('span[class^="ql-image-align-"]')) && l.format("imageAlign", n), !0;
+          return this.debug && console.debug("ImageAlignAttributor.add - found image blot:", l), l && (o.firstChild instanceof HTMLSpanElement || !r.parentElement?.matches('span[class^="ql-image-align-"]')) && (l.format("imageAlign", n), this.debug && console.debug("ImageAlignAttributor.add - reapplying imageAlign format to image blot:", n, l)), !0;
         }
         return !1;
       }
@@ -376,7 +376,7 @@ const U = (h) => {
      * @param node - The DOM element from which to remove alignment formatting.
      */
     remove = (o) => {
-      o instanceof HTMLElement && (super.remove(o), o.firstChild && o.firstChild instanceof HTMLElement && delete o.firstChild.dataset.blotAlign);
+      this.debug && console.debug("ImageAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), o.firstChild && o.firstChild instanceof HTMLElement && delete o.firstChild.dataset.blotAlign);
     };
     /**
      * Retrieves alignment and metadata information for an image element within a given DOM node.
@@ -393,17 +393,19 @@ const U = (h) => {
     value = (o) => {
       const n = o.querySelector("img");
       if (!n) return null;
-      const r = n.parentElement, l = super.value(r), g = n.getAttribute("title") || "";
-      let u = n.getAttribute("width") || "";
-      return parseFloat(u) || (n.complete ? u = this.getImageWidth(n) : n.onload = (m) => {
-        u = this.getImageWidth(m.target);
-      }), {
+      const r = n.parentElement, l = super.value(r), p = n.getAttribute("title") || "";
+      let m = n.getAttribute("width") || "";
+      parseFloat(m) || (n.complete ? m = this.getImageWidth(n) : n.onload = (g) => {
+        m = this.getImageWidth(g.target);
+      });
+      const u = {
         align: l,
-        title: g,
-        width: u,
+        title: p,
+        width: m,
         contenteditable: "false",
-        relativeSize: `${u.endsWith("%")}`
+        relativeSize: `${m.endsWith("%")}`
       };
+      return this.debug && console.debug("ImageAlignAttributor.value", o, u), u;
     };
     /**
      * Retrieves the width of the given HTMLImageElement, ensuring it is set as an attribute and formatted with 'px' units.
@@ -454,7 +456,7 @@ class X {
    * @param blot - The blot to clear alignment formatting from, or `null` if none.
    */
   clear = (t) => {
-    t != null && (t.domNode.tagName === "IMG" ? t.parent !== null && t.parent.domNode.tagName === "SPAN" && (console.log("clear format", t, this.formatter.ImageAlign.attrName), t.parent.format(this.formatter.ImageAlign.attrName, !1), this.debug && console.debug("Cleared image alignment from parent span:", t.parent)) : t.domNode.tagName === "IFRAME" && (t.format(this.formatter.IframeAlign.attrName, !1), this.debug && console.debug("Cleared iframe alignment:", t)));
+    t != null && (t.domNode.tagName === "IMG" ? t.parent !== null && t.parent.domNode.tagName === "SPAN" && (t.parent.format(this.formatter.ImageAlign.attrName, !1), this.debug && console.debug("Cleared image alignment from parent span:", t.parent)) : t.domNode.tagName === "IFRAME" && (t.format(this.formatter.IframeAlign.attrName, !1), this.debug && console.debug("Cleared iframe alignment:", t)));
   };
   /**
    * Determines whether the given blot is an inline blot.
@@ -575,7 +577,7 @@ class X {
       ));
   };
 }
-class A {
+class k {
   action;
   icon;
   onClick;
@@ -684,7 +686,7 @@ class Y extends v {
    */
   _createAlignmentButtons = () => {
     for (const e of Object.values(this.aligner.alignments))
-      this.alignButtons[e.name] = new A(
+      this.alignButtons[e.name] = new k(
         e.name,
         this.onClickHandler,
         this.formatter.options.toolbar
@@ -1139,8 +1141,8 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
       if (n) {
         const r = parseFloat(n);
         if (r !== t) {
-          const l = t / e, g = Math.round(r / l);
-          o = `${n} x ${g}px (${o})`;
+          const l = t / e, p = Math.round(r / l);
+          o = `${n} x ${p}px (${o})`;
         }
       } else if (this._target instanceof HTMLImageElement) {
         const { naturalWidth: r, naturalHeight: l } = this._target;
@@ -1164,7 +1166,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    * @returns {ToolbarButton} The configured resize mode toolbar button.
    */
   _createResizeModeButton = () => {
-    const t = new A(
+    const t = new k(
       "resizeMode",
       this._onResizeModeClickHandler,
       this.formatter.options.toolbar
@@ -1507,7 +1509,7 @@ class tt extends v {
   currentBlot = null;
   constructor(t) {
     super(t), this.toolbarButtons = [
-      new A(
+      new k(
         "attribute",
         this._onClickHandler,
         this.formatter.options.toolbar
@@ -1603,7 +1605,7 @@ class tt extends v {
   _createModal = () => {
     const t = Array.from(
       crypto.getRandomValues(new Uint8Array(5)),
-      (p) => String.fromCharCode(97 + p % 26)
+      (g) => String.fromCharCode(97 + g % 26)
     ).join(""), e = document.createElement("div");
     e.id = `${t}-modal`, e.setAttribute("data-blot-formatter-modal", "");
     const i = document.createElement("div"), s = document.createElement("form");
@@ -1616,15 +1618,15 @@ class tt extends v {
     r.setAttribute("for", "title"), r.textContent = this.formatter.options.overlay.labels?.title || this.formatter.options.image.altTitleModalOptions.labels.title;
     const l = document.createElement("textarea");
     l.name = "title", l.rows = 3;
-    const g = document.createElement("div"), u = document.createElement("button");
-    u.type = "submit", u.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.submitButton, g.appendChild(u), s.appendChild(o), s.appendChild(n), s.appendChild(r), s.appendChild(l), s.appendChild(g);
-    const m = document.createElement("button");
-    return m.id = `${t}-cancel`, m.type = "button", m.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.cancelButton, this.formatter.options.image.altTitleModalOptions.styles && (Object.assign(e.style, this.formatter.options.image.altTitleModalOptions.styles.modalBackground), Object.assign(i.style, this.formatter.options.image.altTitleModalOptions.styles.modalContainer), Object.assign(o.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(n.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(r.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(l.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(u.style, this.formatter.options.image.altTitleModalOptions.styles.submitButton), Object.assign(m.style, this.formatter.options.image.altTitleModalOptions.styles.cancelButton)), i.appendChild(s), i.appendChild(m), e.appendChild(i), s.addEventListener("submit", this._onSubmitHandler), s.addEventListener("cancel", this._hideAltTitleModal), e.addEventListener("pointerdown", this._onPointerDownHandler), m.addEventListener("click", this._hideAltTitleModal), {
+    const p = document.createElement("div"), m = document.createElement("button");
+    m.type = "submit", m.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.submitButton, p.appendChild(m), s.appendChild(o), s.appendChild(n), s.appendChild(r), s.appendChild(l), s.appendChild(p);
+    const u = document.createElement("button");
+    return u.id = `${t}-cancel`, u.type = "button", u.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.cancelButton, this.formatter.options.image.altTitleModalOptions.styles && (Object.assign(e.style, this.formatter.options.image.altTitleModalOptions.styles.modalBackground), Object.assign(i.style, this.formatter.options.image.altTitleModalOptions.styles.modalContainer), Object.assign(o.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(n.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(r.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(l.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(m.style, this.formatter.options.image.altTitleModalOptions.styles.submitButton), Object.assign(u.style, this.formatter.options.image.altTitleModalOptions.styles.cancelButton)), i.appendChild(s), i.appendChild(u), e.appendChild(i), s.addEventListener("submit", this._onSubmitHandler), s.addEventListener("cancel", this._hideAltTitleModal), e.addEventListener("pointerdown", this._onPointerDownHandler), u.addEventListener("click", this._hideAltTitleModal), {
       element: e,
       form: s,
       altInput: n,
       titleInput: l,
-      cancelButton: m
+      cancelButton: u
     };
   };
   _onSubmitHandler = (t) => {
@@ -1634,7 +1636,7 @@ class tt extends v {
     t.target === this.modal.element && this._hideAltTitleModal();
   };
 }
-class k extends v {
+class A extends v {
   options;
   modal;
   targetElement = null;
@@ -1663,7 +1665,7 @@ class k extends v {
   };
   constructor(t) {
     super(t), this.options = this.formatter.options.image.compressorOptions, this.toolbarButtons = [
-      new A(
+      new k(
         "compress",
         this._onClickHandler,
         this.formatter.options.toolbar
@@ -1679,7 +1681,7 @@ class k extends v {
    */
   onCreate = () => {
     this.targetElement = this.formatter.currentSpec?.getTargetElement();
-    const t = k.isEligibleForCompression(this.targetElement, this.debug);
+    const t = A.isEligibleForCompression(this.targetElement, this.debug);
     this.toolbarButtons[0].initialVisibility = t, this.debug && console.debug("CompressAction initialized with target element:", this.targetElement, "is eligible:", t);
   };
   /**
@@ -1795,7 +1797,7 @@ class k extends v {
       targetWidth: e,
       targetHeight: i,
       size: this._getImageSize(t),
-      canCompress: !!(e && i && e < t.naturalWidth && k.isEligibleForCompression(t, this.debug))
+      canCompress: !!(e && i && e < t.naturalWidth && A.isEligibleForCompression(t, this.debug))
     };
     return this.debug && console.debug("Image details:", {
       element: t,
@@ -1826,7 +1828,7 @@ class k extends v {
         i.width = this.imageDetails.targetWidth, i.height = this.imageDetails.targetHeight, i.getContext("2d").drawImage(e, 0, 0, i.width, i.height);
         const o = i.toDataURL("image/jpeg", this.options.jpegQuality), n = new TextEncoder().encode(t.src).length, r = new TextEncoder().encode(o).length;
         r < n && (t.src = o);
-        const l = `${Math.ceil((this.imageDetails.size - this._getImageSize(t)) / 1024)}kB`, g = `${this.options.text.reducedLabel}: ${l}<br>
+        const l = `${Math.ceil((this.imageDetails.size - this._getImageSize(t)) / 1024)}kB`, p = `${this.options.text.reducedLabel}: ${l}<br>
                             ${this.imageDetails.naturalWidth} x ${this.imageDetails.naturalHeight}px → ${i.width} x ${Math.round(i.height)}px
                         `;
         return this.debug && console.debug("Image compressed:", {
@@ -1834,7 +1836,7 @@ class k extends v {
           "resized size": r,
           "size diff": l,
           "new dimensions": { width: i.width, height: Math.round(i.height) }
-        }), this._displayFeedback(g), !0;
+        }), this._displayFeedback(p), !0;
       }, e.onerror = (i) => (console.error("Image loading failed:", i), this._displayFeedback(`Image loading failed: ${i}`), !1);
     } else
       this._displayFeedback(this.options.text.nothingToDo);
@@ -1883,7 +1885,7 @@ class et extends v {
   linkOptions;
   modal;
   constructor(t) {
-    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new A(
+    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new k(
       "link",
       this._onClickHandler,
       this.formatter.options.toolbar
@@ -2038,10 +2040,10 @@ class et extends v {
   _positionModal = (t) => {
     const e = this.formatter.overlay.getBoundingClientRect(), i = this.formatter.quill.root.getBoundingClientRect(), s = t.offsetParent?.getBoundingClientRect() ?? { top: 0, left: 0 }, o = t.offsetWidth, n = t.offsetHeight;
     let r = e.left + e.width / 2 - o / 2 - s.left, l = e.top + e.height / 2 - n / 2 - s.top;
-    const g = i.left - s.left, u = i.right - o - s.left;
-    r = Math.min(Math.max(r, g), u);
-    const m = i.top - s.top, p = i.bottom - n - s.top;
-    l = Math.min(Math.max(l, m), p), t.style.position = "absolute", t.style.left = `${r}px`, t.style.top = `${l}px`;
+    const p = i.left - s.left, m = i.right - o - s.left;
+    r = Math.min(Math.max(r, p), m);
+    const u = i.top - s.top, g = i.bottom - n - s.top;
+    l = Math.min(Math.max(l, u), g), t.style.position = "absolute", t.style.left = `${r}px`, t.style.top = `${l}px`;
   };
   /**
    * Hides and cleans up the link modal dialog.
@@ -2137,7 +2139,7 @@ class it extends O {
    */
   getActions = () => {
     const t = super.getActions();
-    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new et(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new tt(this.formatter)), this.formatter.options.image.allowCompressor && k.isEligibleForCompression(this.img) && t.push(new k(this.formatter)), t;
+    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new et(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new tt(this.formatter)), this.formatter.options.image.allowCompressor && A.isEligibleForCompression(this.img) && t.push(new A(this.formatter)), t;
   };
   /**
    * Returns the target HTML element associated with this instance.
@@ -2585,10 +2587,10 @@ class C {
   static _repositionTooltip = (t, e, i = !1) => {
     const s = t.getBoundingClientRect(), o = e.getBoundingClientRect();
     let n = s.left - o.left, r = s.top - o.top;
-    const l = s.width, g = s.height, u = e.clientWidth, m = e.clientHeight;
-    let p = !1;
+    const l = s.width, p = s.height, m = e.clientWidth, u = e.clientHeight;
+    let g = !1;
     const b = {};
-    r < 0 && (b.top = `${s.height}px`, p = !0), r + g > m && (b.top = `${m - g}px`, p = !0), n < 0 && (b.left = "0px", p = !0), n + l > u && (b.left = `${u - l}px`, p = !0), p ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
+    r < 0 && (b.top = `${s.height}px`, g = !0), r + p > u && (b.top = `${u - p}px`, g = !0), n < 0 && (b.left = "0px", g = !0), n + l > m && (b.left = `${m - l}px`, g = !0), g ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
   };
   // Static property to store observers
   static observers = /* @__PURE__ */ new WeakMap();
@@ -2667,7 +2669,7 @@ class ct {
   constructor(t, e = {}) {
     this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this);
     const i = V(this.Quill), s = U(this.Quill);
-    if (this.ImageAlign = new i(), this.IframeAlign = new s(), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
+    if (this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
       "formats/imageAlign": this.ImageAlign,
       "attributors/class/imageAlign": this.ImageAlign,
       "formats/iframeAlign": this.IframeAlign,
@@ -2996,9 +2998,9 @@ class ct {
     if (t.touches.length === 1) {
       const e = t.touches[0], i = this._startX - e.clientX, s = this._startY - e.clientY;
       if (Math.abs(i) < 2 && Math.abs(s) < 2) return;
-      const o = this.quill.root, n = o.scrollTop === 0, r = o.scrollTop + o.clientHeight === o.scrollHeight, l = o.scrollLeft === 0, g = o.scrollLeft + o.clientWidth === o.scrollWidth, u = Math.abs(s) > Math.abs(i), m = Math.abs(i) > Math.abs(s);
-      let p = !1;
-      u && !(n && s < 0) && !(r && s > 0) && (p = !0, o.scrollTop += s), m && !(l && i < 0) && !(g && i > 0) && (p = !0, o.scrollLeft += i), p && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter touch scroll end", `X: ${this._startX}, Y: ${this._startY}`);
+      const o = this.quill.root, n = o.scrollTop === 0, r = o.scrollTop + o.clientHeight === o.scrollHeight, l = o.scrollLeft === 0, p = o.scrollLeft + o.clientWidth === o.scrollWidth, m = Math.abs(s) > Math.abs(i), u = Math.abs(i) > Math.abs(s);
+      let g = !1;
+      m && !(n && s < 0) && !(r && s > 0) && (g = !0, o.scrollTop += s), u && !(l && i < 0) && !(p && i > 0) && (g = !0, o.scrollLeft += i), g && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter touch scroll end", `X: ${this._startX}, Y: ${this._startY}`);
     }
   };
   /**
@@ -3014,7 +3016,7 @@ class ct {
    * @private
    */
   _registerCustomBlots = () => {
-    this.options.image.registerImageTitleBlot && (this.options.debug && console.debug("Registering custom Image blot", z), w.register(z, !0)), this.options.video.registerCustomVideoBlot && (this.options.debug && (console.debug("Registering custom Video blot", E), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), E.aspectRatio = this.options.video.defaultAspectRatio, w.register(E, !0));
+    this.options.image.registerImageTitleBlot && (this.options.debug && console.debug("Registering custom Image blot", z), w.register(z, !0)), this.options.video.registerCustomVideoBlot && (this.options.debug && (console.debug("Registering custom Video blot", S), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), S.aspectRatio = this.options.video.defaultAspectRatio, w.register(S, !0));
   };
   /**
    * Registers custom keyboard bindings to address specific Quill editor issues and enhance user experience.
@@ -3121,7 +3123,7 @@ export {
   et as LinkAction,
   Q as ResizeAction,
   B as Toolbar,
-  A as ToolbarButton,
+  k as ToolbarButton,
   C as TooltipContainPosition,
   G as UnclickableBlotSpec,
   U as createIframeAlignAttributor,

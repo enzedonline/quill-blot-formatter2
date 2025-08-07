@@ -265,7 +265,9 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
         // bug fix - Quill's inline styles merge elements and remove span element if styles nested
         // for the first outer style, reapply imageAlign format on image 
         // for subsequent outer styles, skip reformat and just return true - will nest multiple span wrappers otherwise
-        const imageElement = node.querySelector('img');
+        const imageElement = node instanceof HTMLImageElement ? node : node.querySelector('img');
+        if (this.debug)
+          console.debug(`ImageAlignAttributor.add - ${node.tagName} is not a span, checking for image:`, imageElement);
         if (imageElement instanceof HTMLImageElement) {
           // Use QuillConstructor.find to find the image blot, using global Quill static methods will always return null 
           //   in some environments such as vite, react, etc.
