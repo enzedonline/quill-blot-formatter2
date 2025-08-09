@@ -1,6 +1,6 @@
 import Action from './Action';
 import BlotFormatter from '../BlotFormatter';
-import Quill from 'quill';
+import type Quill from 'quill';
 import ToolbarButton from './toolbar/ToolbarButton';
 import type { Blot } from '../specs/BlotSpec';
 import type { LinkOptions } from '../Options';
@@ -372,7 +372,7 @@ export default class LinkAction extends Action {
         const blot = this.currentBlot;
         if (!blot || !blot.domNode) return null;
         const index = this.formatter.quill.getIndex(blot);
-        const formats = this.formatter.quill.getFormat(index, 1, Quill.sources.SILENT);
+        const formats = this.formatter.quill.getFormat(index, 1, this.formatter.Quill.sources.SILENT);
         if (this.debug) {
             console.debug('LinkAction getLink called, formats:', formats);
         }

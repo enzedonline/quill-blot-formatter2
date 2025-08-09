@@ -2,15 +2,15 @@ import Action from './actions/Action';
 import BlotSpec from './specs/BlotSpec';
 import CaretAction from './actions/CaretAction';
 import deepmerge from 'deepmerge';
-import Image from './blots/Image';
-import Quill from 'quill';
+import type Quill from 'quill';
 import Toolbar from './actions/toolbar/Toolbar';
-import VideoResponsive from './blots/Video';
+import TooltipContainPosition from './tooltip/TooltipContainPosition';
 import type { AttributorClass } from './actions/align/AlignFormats';
+import { createAltTitleImageBlotClass } from './blots/Image';
 import { createIframeAlignAttributor, createImageAlignAttributor } from './actions/align/AlignFormats';
+import { createResponsiveVideoBlotClass } from './blots/Video';
 import { DefaultOptions } from './DefaultOptions';
 import type { Options } from './Options';
-import TooltipContainPosition from './tooltip/TooltipContainPosition';
 
 const dontMerge = (destination: Array<any>, source: Array<any>) => source;
 
@@ -716,18 +716,26 @@ export default class BlotFormatter {
   private _registerCustomBlots = (): void => {
     // register image bot with title attribute support
     if (this.options.image.registerImageTitleBlot) {
-      if (this.options.debug) console.debug('Registering custom Image blot', Image);
-      Quill.register(Image, true);
+      const ImageAltTitleBlot = createAltTitleImageBlotClass(this.Quill);
+      if (this.options.debug) console.debug('Registering custom Image blot', ImageAltTitleBlot);
+      this.Quill.register({ 'formats/image': ImageAltTitleBlot }, true);
+      if (this.options.debug) {
+        console.debug('formats/image after register:', this.Quill.import('formats/image'));
+      }
     }
     // register custom video blot with initial width 100% & aspect ratio from options
     if (this.options.video.registerCustomVideoBlot) {
+      const VideoResponsive = createResponsiveVideoBlotClass(this.Quill);
       if (this.options.debug) {
         console.debug('Registering custom Video blot', VideoResponsive);
         console.debug('Setting default aspect ratio for Video blot', this.options.video.defaultAspectRatio);
       }
       // set default aspect ratio for video responsive blot
       VideoResponsive.aspectRatio = this.options.video.defaultAspectRatio;
-      Quill.register(VideoResponsive, true);
+      this.Quill.register({ 'formats/video': VideoResponsive }, true);
+      if (this.options.debug) {
+        console.debug('formats/video after register:', this.Quill.import('formats/video'));
+      }
     }
   }
 

@@ -3,7 +3,6 @@ import AlignAction from '../actions/align/AlignAction';
 import BlotFormatter from '../BlotFormatter';
 import CaretAction from '../actions/CaretAction';
 import DeleteAction from '../actions/DeleteAction';
-import Quill from 'quill';
 import ResizeAction from '../actions/ResizeAction';
 
 export interface Blot {
@@ -54,7 +53,6 @@ export default class BlotSpec {
 
   constructor(formatter: BlotFormatter) {
     this.formatter = formatter;
-    (window as any).Quill = Quill;
   }
 
   /**

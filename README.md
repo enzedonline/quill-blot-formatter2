@@ -687,6 +687,16 @@ This is a modified `Image` blot (*[source](/src/blots/Image.ts)*) that adds `tit
 
 This blot will not remove an empty `alt` attribute. This for accessibilty compatibility and allows editors to set a blank `alt` to tell screenreaders to ignore the image.
 
+A factory method to create the class object is exported as `createAltTitleImageBlotClass`.
+
+**Usage**
+```js
+const ImageAltTitleBlot = createAltTitleImageBlotClass(Quill);
+Quill.register({ 'formats/image': ImageAltTitleBlot }, true);
+```
+
+This is done by `BlotFormatter2` if you use the `registerImageTitleBlot` option.
+
 ### Video
 
 This is a modified `Video` blot (*[source](/src/blots/Video.ts)*) that will add the video with aspect ratio of 16:9 (the default for YouTube) and an initial width of 100% instead of the default 350x150px. 
@@ -701,6 +711,16 @@ video: {
 ```
 
 This blot also fixes a [Quill bug](https://github.com/slab/quill/issues/4289) where the video embed is outputted as a hyperlink when using `quill.getSemanticHTML()`. Using this custom blot, the iframe will be replicated exactly as it is in the editor.
+
+A factory method to create the class object is exported as `createResponsiveVideoBlotClass`.
+
+**Usage**
+```js
+const VideoResponsive = createResponsiveVideoBlotClass(Quill);
+Quill.register({ 'formats/video': VideoResponsive }, true);
+```
+
+This is done by `BlotFormatter2` if you use the `registerCustomVideoBlot` option.
 
 ## Formatting Images
 

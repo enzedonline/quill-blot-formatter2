@@ -1,4 +1,3 @@
-import w from "quill";
 class v {
   formatter;
   toolbarButtons = [];
@@ -114,13 +113,13 @@ class _ extends v {
     i && (t.code === "ArrowLeft" ? (_.placeCaretBeforeBlot(this.formatter.quill, i, this.debug), this.formatter.hide()) : t.code === "ArrowRight" && (_.placeCaretAfterBlot(this.formatter.quill, i, this.debug), this.formatter.hide()));
   };
 }
-function W(h) {
+function O(h) {
   return h && h.__esModule && Object.prototype.hasOwnProperty.call(h, "default") ? h.default : h;
 }
-var C, I;
-function D() {
-  if (I) return C;
-  I = 1;
+var C, S;
+function H() {
+  if (S) return C;
+  S = 1;
   var h = function(c) {
     return t(c) && !e(c);
   };
@@ -170,7 +169,7 @@ function D() {
   function b(a, c) {
     return g(a, c) && !(Object.hasOwnProperty.call(a, c) && Object.propertyIsEnumerable.call(a, c));
   }
-  function H(a, c, d) {
+  function B(a, c, d) {
     var y = {};
     return d.isMergeableObject(a) && u(a).forEach(function(f) {
       y[f] = r(a[f], d);
@@ -180,8 +179,8 @@ function D() {
   }
   function x(a, c, d) {
     d = d || {}, d.arrayMerge = d.arrayMerge || l, d.isMergeableObject = d.isMergeableObject || h, d.cloneUnlessOtherwiseSpecified = r;
-    var y = Array.isArray(c), f = Array.isArray(a), q = y === f;
-    return q ? y ? d.arrayMerge(a, c, d) : H(a, c, d) : r(c, d);
+    var y = Array.isArray(c), f = Array.isArray(a), R = y === f;
+    return R ? y ? d.arrayMerge(a, c, d) : B(a, c, d) : r(c, d);
   }
   x.all = function(c, d) {
     if (!Array.isArray(c))
@@ -190,23 +189,12 @@ function D() {
       return x(y, f, d);
     }, {});
   };
-  var N = x;
-  return C = N, C;
+  var T = x;
+  return C = T, C;
 }
-var j = D();
-const P = /* @__PURE__ */ W(j), $ = w.import("formats/image"), M = ["alt", "height", "width", "title"];
-let z = class extends $ {
-  static formats(t) {
-    return M.reduce(
-      (e, i) => (t.hasAttribute(i) && (e[i] = t.getAttribute(i)), e),
-      {}
-    );
-  }
-  format(t, e) {
-    M.indexOf(t) > -1 ? e || t === "alt" ? this.domNode.setAttribute(t, e) : this.domNode.removeAttribute(t) : super.format(t, e);
-  }
-};
-class B {
+var N = H();
+const q = /* @__PURE__ */ O(N);
+class I {
   formatter;
   element;
   buttons = {};
@@ -245,18 +233,108 @@ class B {
     this.buttons = {}, this.element.innerHTML = "", this.formatter.options.debug && console.debug("Toolbar destroyed");
   };
 }
-const F = w.import("formats/video");
-class S extends F {
-  static aspectRatio = "16 / 9 auto";
-  static create(t) {
-    const e = super.create(t);
-    return e.setAttribute("width", "100%"), e.style.aspectRatio = this.aspectRatio, e;
+class k {
+  /**
+   * Initializes the tooltip adjustment watcher when the action is created.
+   * Searches for the tooltip element within the Quill container and, if found,
+   * sets up observation for tooltip adjustments. Logs a warning if the tooltip
+   * element is not present.
+   *
+   * @remarks
+   * This method should be called during the creation lifecycle of the action.
+   */
+  constructor(t, e = !1) {
+    this.quill = t, this.debug = e;
+    const i = t.container.querySelector(".ql-tooltip");
+    console.debug("tooltip:", i), i ? (k.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
   }
-  html() {
-    return this.domNode.outerHTML;
+  /**
+   * Repositions a tooltip element within a given container to ensure it does not overflow
+   * the container's boundaries. Adjusts the tooltip's `top` and `left` CSS properties if
+   * necessary to keep it fully visible. Optionally logs debug information about the repositioning.
+   *
+   * @param tooltip - The tooltip HTMLDivElement to reposition.
+   * @param container - The container HTMLElement within which the tooltip should remain visible.
+   * @param debug - If true, logs debug information to the console. Defaults to false.
+   */
+  static _repositionTooltip = (t, e, i = !1) => {
+    const s = t.getBoundingClientRect(), o = e.getBoundingClientRect();
+    let n = s.left - o.left, r = s.top - o.top;
+    const l = s.width, p = s.height, m = e.clientWidth, u = e.clientHeight;
+    let g = !1;
+    const b = {};
+    r < 0 && (b.top = `${s.height}px`, g = !0), r + p > u && (b.top = `${u - p}px`, g = !0), n < 0 && (b.left = "0px", g = !0), n + l > m && (b.left = `${m - l}px`, g = !0), g ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
+  };
+  // Static property to store observers
+  static observers = /* @__PURE__ */ new WeakMap();
+  /**
+   * Observes changes to the tooltip's attributes and triggers repositioning when necessary.
+   *
+   * @param quill - The Quill editor instance containing the tooltip.
+   * @param debug - Optional flag to enable debug logging of attribute mutations.
+   *
+   * @remarks
+   * Uses a MutationObserver to monitor changes to the tooltip's `style` and `class` attributes.
+   * When a mutation is detected, the tooltip is repositioned within the container.
+   * If `debug` is true, mutation details are logged to the console.
+   */
+  static watchTooltip(t, e = !1) {
+    const i = t.container.querySelector(".ql-tooltip"), s = t.container;
+    if (!i) {
+      console.warn("No tooltip found to watch for adjustments.");
+      return;
+    }
+    this.removeTooltipWatcher(i, e);
+    let o = !1;
+    const n = new MutationObserver((r) => {
+      if (!o) {
+        if (e)
+          for (const l of r)
+            console.debug("Tooltip mutation:", l.attributeName, i.getAttribute(l.attributeName));
+        o = !0, this._repositionTooltip(i, s, e), setTimeout(() => {
+          o = !1;
+        }, 0);
+      }
+    });
+    n.observe(i, {
+      attributes: !0,
+      attributeFilter: ["style", "class"]
+    }), this.observers.set(i, n);
   }
+  /**
+   * Removes the MutationObserver for the specified tooltip element.
+   *
+   * @param tooltip - The HTMLDivElement or Quill instance to stop watching.
+   *                  If a Quill instance is provided, finds the tooltip within its container.
+   */
+  static removeTooltipWatcher(t, e = !1) {
+    let i = null;
+    t instanceof HTMLDivElement ? i = t : i = t.container.querySelector(".ql-tooltip"), i && this.observers.has(i) && (this.observers.get(i)?.disconnect(), this.observers.delete(i), e && console.debug("Tooltip watcher removed for:", i));
+  }
+  /**
+   * Cleans up resources when the action is destroyed.
+   * Specifically, it finds the tooltip element within the Quill editor container
+   * and removes its associated watcher if the tooltip exists.
+   */
+  destroy = () => {
+    this.quill.container.querySelector(".ql-tooltip") && (k.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
+  };
 }
-const U = (h) => {
+const W = (h) => {
+  const t = h.import("formats/image"), e = ["alt", "height", "width", "title"];
+  return class extends t {
+    static blotName = "image";
+    static formats(s) {
+      return e.reduce(
+        (o, n) => (s.hasAttribute(n) && (o[n] = s.getAttribute(n)), o),
+        {}
+      );
+    }
+    format(s, o) {
+      e.indexOf(s) > -1 ? o || s === "alt" ? this.domNode.setAttribute(s, o) : this.domNode.removeAttribute(s) : super.format(s, o);
+    }
+  };
+}, D = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
     constructor(o = !1) {
@@ -281,14 +359,14 @@ const U = (h) => {
      * @param value - The alignment value, either as a string or an object with an `align` property.
      * @returns `true` if the formatting was successfully applied to an HTMLElement, otherwise `false`.
      */
-    add = (o, n) => {
+    add(o, n) {
       if (this.debug && console.debug("IframeAlignAttributor.add", o, n), o instanceof HTMLElement) {
         typeof n == "object" ? (super.add(o, n.align), o.dataset.blotAlign = n.align) : (super.add(o, n), o.dataset.blotAlign = n);
         let r = o.getAttribute("width");
         return r ? (isNaN(Number(r.trim().slice(-1))) || (r = `${r}px`), o.style.setProperty("--resize-width", r), o.dataset.relativeSize = `${r.endsWith("%")}`) : (o.style.removeProperty("--resize-width"), o.dataset.relativeSize = "false"), this.debug && console.debug("IframeAlignAttributor.add - node:", o, "aligned with:", n), !0;
       } else
         return this.debug && console.debug("IframeAlignAttributor.add - node is not an HTMLElement, skipping alignment"), !1;
-    };
+    }
     /**
      * Removes the alignment formatting from the specified DOM element.
      * 
@@ -298,9 +376,9 @@ const U = (h) => {
      *
      * @param node - The DOM element from which to remove the alignment formatting.
      */
-    remove = (o) => {
+    remove(o) {
       this.debug && console.debug("IframeAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), delete o.dataset.blotAlign);
-    };
+    }
     /**
      * Extracts alignment and width information from a given DOM element.
      *
@@ -311,16 +389,16 @@ const U = (h) => {
      *     its 'width' attribute, or an empty string if not present.
      *   - `relativeSize`: A string indicating whether the width ends with a '%' character, representing a relative size.
      */
-    value = (o) => {
+    value(o) {
       const n = super.value(o), r = o instanceof HTMLElement && (o.style.getPropertyValue("--resize-width") || o.getAttribute("width")) || "", l = {
         align: n,
         width: r,
         relativeSize: `${r.endsWith("%")}`
       };
       return this.debug && console.debug("IframeAlignAttributor.value", o, l), l;
-    };
+    }
   };
-}, V = (h) => {
+}, j = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
     constructor(o = !1) {
@@ -346,7 +424,7 @@ const U = (h) => {
      * @param value - The alignment value, which can be a string or an object containing alignment and optional title.
      * @returns `true` if formatting was applied or handled, `false` otherwise.
      */
-    add = (o, n) => {
+    add(o, n) {
       if (this.debug && console.debug("ImageAlignAttributor.add", o, n), o instanceof HTMLSpanElement && n) {
         let r = o.querySelector("img");
         if (typeof n == "object" && n.align)
@@ -365,7 +443,7 @@ const U = (h) => {
         }
         return !1;
       }
-    };
+    }
     /**
      * Removes alignment formatting from the given DOM node.
      *
@@ -375,9 +453,9 @@ const U = (h) => {
      *
      * @param node - The DOM element from which to remove alignment formatting.
      */
-    remove = (o) => {
+    remove(o) {
       this.debug && console.debug("ImageAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), o.firstChild && o.firstChild instanceof HTMLElement && delete o.firstChild.dataset.blotAlign);
-    };
+    }
     /**
      * Retrieves alignment and metadata information for an image element within a given DOM node.
      *
@@ -390,7 +468,7 @@ const U = (h) => {
      * @param node - The DOM element to search for an image and extract alignment and metadata from.
      * @returns An object containing the image's alignment, title, width, contenteditable status, and relative size flag.
      */
-    value = (o) => {
+    value(o) {
       const n = o.querySelector("img");
       if (!n) return null;
       const r = n.parentElement, l = super.value(r), p = n.getAttribute("title") || "";
@@ -406,7 +484,7 @@ const U = (h) => {
         relativeSize: `${m.endsWith("%")}`
       };
       return this.debug && console.debug("ImageAlignAttributor.value", o, u), u;
-    };
+    }
     /**
      * Retrieves the width of the given HTMLImageElement, ensuring it is set as an attribute and formatted with 'px' units.
      * 
@@ -417,13 +495,26 @@ const U = (h) => {
      * @param imageElement - The HTMLImageElement whose width is to be retrieved and set.
      * @returns The width of the image as a string with 'px' units.
      */
-    getImageWidth = (o) => {
+    getImageWidth(o) {
       let n = o.getAttribute("width");
       return n ? isNaN(Number(n.trim().slice(-1))) || (n = `${n}px`, o.setAttribute("width", n)) : (n = `${o.naturalWidth}px`, o.setAttribute("width", n)), o.parentElement.style.setProperty("--resize-width", n), n;
-    };
+    }
+  };
+}, P = (h) => {
+  const t = h.import("formats/video");
+  return class extends t {
+    static blotName = "video";
+    static aspectRatio = "16 / 9 auto";
+    static create(i) {
+      const s = super.create(i);
+      return s.setAttribute("width", "100%"), s.style.aspectRatio = this.aspectRatio, s;
+    }
+    html() {
+      return this.domNode.outerHTML;
+    }
   };
 };
-class X {
+class $ {
   alignments = {};
   options;
   formatter;
@@ -577,7 +668,7 @@ class X {
       ));
   };
 }
-class k {
+class A {
   action;
   icon;
   onClick;
@@ -668,11 +759,11 @@ class k {
     }
   };
 }
-class Y extends v {
+class F extends v {
   aligner;
   alignButtons = {};
   constructor(t) {
-    super(t), this.aligner = new X(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
+    super(t), this.aligner = new $(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
   }
   /**
    * Creates alignment toolbar buttons for each available alignment option.
@@ -686,7 +777,7 @@ class Y extends v {
    */
   _createAlignmentButtons = () => {
     for (const e of Object.values(this.aligner.alignments))
-      this.alignButtons[e.name] = new k(
+      this.alignButtons[e.name] = new A(
         e.name,
         this.onClickHandler,
         this.formatter.options.toolbar
@@ -752,7 +843,7 @@ class Y extends v {
     this.alignButtons = {}, this.toolbarButtons = [], this.formatter.options.debug && console.debug("AlignAction alignment buttons destroyed");
   };
 }
-class K extends v {
+class U extends v {
   /**
    * Initializes event listeners for the delete action.
    * 
@@ -800,7 +891,7 @@ class K extends v {
     }
   };
 }
-class Q extends v {
+class V extends v {
   _topLeftHandle;
   _topRightHandle;
   _bottomRightHandle;
@@ -1166,7 +1257,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    * @returns {ToolbarButton} The configured resize mode toolbar button.
    */
   _createResizeModeButton = () => {
-    const t = new k(
+    const t = new A(
       "resizeMode",
       this._onResizeModeClickHandler,
       this.formatter.options.toolbar
@@ -1253,12 +1344,12 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    */
   _isSvgImage = () => this._target instanceof HTMLImageElement ? this._target.src.startsWith("data:image/") ? this._target.src.includes("image/svg+xml") : this._target.src.endsWith(".svg") : !1;
 }
-class O {
+class z {
   // abstract class for Blot specifications
   formatter;
   isUnclickable = !1;
   constructor(t) {
-    this.formatter = t, window.Quill = w;
+    this.formatter = t;
   }
   /**
    * Initializes the blot specification.
@@ -1284,7 +1375,7 @@ class O {
    */
   getActions() {
     const t = [];
-    return this.formatter.options.align.allowAligning && t.push(new Y(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new Q(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new K(this.formatter)), t.push(new _(this.formatter)), t;
+    return this.formatter.options.align.allowAligning && t.push(new F(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new V(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new U(this.formatter)), t.push(new _(this.formatter)), t;
   }
   /**
    * Returns the target HTML element associated with this blot.
@@ -1337,8 +1428,8 @@ class O {
   onHide = () => {
   };
 }
-const Z = "blot-formatter__proxy-image";
-class G extends O {
+const X = "blot-formatter__proxy-image";
+class Y extends z {
   selector;
   unclickable;
   proxyContainer;
@@ -1428,7 +1519,7 @@ class G extends O {
     const i = document.createElement("canvas"), s = i.getContext("2d");
     s && (s.globalAlpha = 0, s.fillRect(0, 0, 1, 1));
     const o = document.createElement("img");
-    o.src = i.toDataURL("image/png"), o.classList.add(Z), o.dataset.blotFormatterId = e;
+    o.src = i.toDataURL("image/png"), o.classList.add(X), o.dataset.blotFormatterId = e;
     const n = {
       ...this.formatter.options.video.proxyStyle,
       position: "absolute",
@@ -1498,18 +1589,18 @@ class G extends O {
     return t.classList.add("proxy-container"), this.formatter.quill.container.appendChild(t), t;
   };
 }
-class J extends G {
+class K extends Y {
   constructor(t) {
     super(t);
   }
 }
-class tt extends v {
+class Q extends v {
   modal;
   targetElement = null;
   currentBlot = null;
   constructor(t) {
     super(t), this.toolbarButtons = [
-      new k(
+      new A(
         "attribute",
         this._onClickHandler,
         this.formatter.options.toolbar
@@ -1636,7 +1727,7 @@ class tt extends v {
     t.target === this.modal.element && this._hideAltTitleModal();
   };
 }
-class A extends v {
+class w extends v {
   options;
   modal;
   targetElement = null;
@@ -1665,7 +1756,7 @@ class A extends v {
   };
   constructor(t) {
     super(t), this.options = this.formatter.options.image.compressorOptions, this.toolbarButtons = [
-      new k(
+      new A(
         "compress",
         this._onClickHandler,
         this.formatter.options.toolbar
@@ -1681,7 +1772,7 @@ class A extends v {
    */
   onCreate = () => {
     this.targetElement = this.formatter.currentSpec?.getTargetElement();
-    const t = A.isEligibleForCompression(this.targetElement, this.debug);
+    const t = w.isEligibleForCompression(this.targetElement, this.debug);
     this.toolbarButtons[0].initialVisibility = t, this.debug && console.debug("CompressAction initialized with target element:", this.targetElement, "is eligible:", t);
   };
   /**
@@ -1797,7 +1888,7 @@ class A extends v {
       targetWidth: e,
       targetHeight: i,
       size: this._getImageSize(t),
-      canCompress: !!(e && i && e < t.naturalWidth && A.isEligibleForCompression(t, this.debug))
+      canCompress: !!(e && i && e < t.naturalWidth && w.isEligibleForCompression(t, this.debug))
     };
     return this.debug && console.debug("Image details:", {
       element: t,
@@ -1878,14 +1969,14 @@ class A extends v {
     t.stopImmediatePropagation(), t.target === this.modal.element && (this.debug && console.debug("Modal background clicked, hiding modal"), this._hideModal());
   };
 }
-class et extends v {
+class Z extends v {
   targetElement = null;
   currentBlot = null;
   toolbarButton;
   linkOptions;
   modal;
   constructor(t) {
-    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new k(
+    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new A(
       "link",
       this._onClickHandler,
       this.formatter.options.toolbar
@@ -2079,7 +2170,7 @@ class et extends v {
   getLink = () => {
     const t = this.currentBlot;
     if (!t || !t.domNode) return null;
-    const e = this.formatter.quill.getIndex(t), i = this.formatter.quill.getFormat(e, 1, w.sources.SILENT);
+    const e = this.formatter.quill.getIndex(t), i = this.formatter.quill.getFormat(e, 1, this.formatter.Quill.sources.SILENT);
     return this.debug && console.debug("LinkAction getLink called, formats:", i), i.link || null;
   };
   /**
@@ -2115,7 +2206,7 @@ class et extends v {
     t !== this.getLink() && (this.removeLink(), this.currentBlot?.format("link", t), this.toolbarButton.selected = !!t), this.hideLinkModal();
   };
 }
-class it extends O {
+class G extends z {
   img;
   constructor(t) {
     super(t), this.img = null;
@@ -2139,7 +2230,7 @@ class it extends O {
    */
   getActions = () => {
     const t = super.getActions();
-    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new et(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new tt(this.formatter)), this.formatter.options.image.allowCompressor && A.isEligibleForCompression(this.img) && t.push(new A(this.formatter)), t;
+    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new Z(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new Q(this.formatter)), this.formatter.options.image.allowCompressor && w.isEligibleForCompression(this.img) && t.push(new w(this.formatter)), t;
   };
   /**
    * Returns the target HTML element associated with this instance.
@@ -2167,10 +2258,10 @@ class it extends O {
     e instanceof HTMLImageElement && (t.stopImmediatePropagation(), t.preventDefault(), this.img = e, this.formatter.show(this));
   };
 }
-const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>', T = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>', ot = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>', R = {
+const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>', L = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>', J = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>', M = {
   specs: [
-    it,
-    J
+    G,
+    K
   ],
   overlay: {
     className: "blot-formatter__overlay",
@@ -2211,7 +2302,8 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
       backgroundColor: "white",
       border: "1px solid #777",
       boxSizing: "border-box",
-      opacity: "0.80"
+      opacity: "0.80",
+      zIndex: 999
     },
     useRelativeSize: !1,
     minimumWidthPx: 25
@@ -2345,8 +2437,8 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
         }
       },
       icons: {
-        submitButton: T,
-        cancelButton: L
+        submitButton: L,
+        cancelButton: E
       },
       labels: {
         alt: "Alt Text",
@@ -2424,9 +2516,9 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
         nothingToDo: "Image already optimised."
       },
       icons: {
-        cancel: `<span style="color: rgb(197, 74, 71);">${L}</span>`,
-        moreInfo: ot,
-        continue: T
+        cancel: `<span style="color: rgb(197, 74, 71);">${E}</span>`,
+        moreInfo: J,
+        continue: L
       }
     },
     linkOptions: {
@@ -2466,7 +2558,8 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
             display: "flex",
             flexWrap: "nowrap",
             columnGap: "5px",
-            alignItems: "center"
+            alignItems: "center",
+            margin: 0
           }
         },
         label: {
@@ -2528,7 +2621,7 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
               alignItems: "center",
               color: "rgb(197, 74, 71)"
             },
-            icon: L,
+            icon: E,
             tooltip: "Cancel"
           },
           remove: {
@@ -2559,96 +2652,8 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
     defaultAspectRatio: "16/9 auto",
     proxyStyle: {}
   }
-};
-class E {
-  /**
-   * Initializes the tooltip adjustment watcher when the action is created.
-   * Searches for the tooltip element within the Quill container and, if found,
-   * sets up observation for tooltip adjustments. Logs a warning if the tooltip
-   * element is not present.
-   *
-   * @remarks
-   * This method should be called during the creation lifecycle of the action.
-   */
-  constructor(t, e = !1) {
-    this.quill = t, this.debug = e;
-    const i = t.container.querySelector(".ql-tooltip");
-    console.debug("tooltip:", i), i ? (E.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
-  }
-  /**
-   * Repositions a tooltip element within a given container to ensure it does not overflow
-   * the container's boundaries. Adjusts the tooltip's `top` and `left` CSS properties if
-   * necessary to keep it fully visible. Optionally logs debug information about the repositioning.
-   *
-   * @param tooltip - The tooltip HTMLDivElement to reposition.
-   * @param container - The container HTMLElement within which the tooltip should remain visible.
-   * @param debug - If true, logs debug information to the console. Defaults to false.
-   */
-  static _repositionTooltip = (t, e, i = !1) => {
-    const s = t.getBoundingClientRect(), o = e.getBoundingClientRect();
-    let n = s.left - o.left, r = s.top - o.top;
-    const l = s.width, p = s.height, m = e.clientWidth, u = e.clientHeight;
-    let g = !1;
-    const b = {};
-    r < 0 && (b.top = `${s.height}px`, g = !0), r + p > u && (b.top = `${u - p}px`, g = !0), n < 0 && (b.left = "0px", g = !0), n + l > m && (b.left = `${m - l}px`, g = !0), g ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
-  };
-  // Static property to store observers
-  static observers = /* @__PURE__ */ new WeakMap();
-  /**
-   * Observes changes to the tooltip's attributes and triggers repositioning when necessary.
-   *
-   * @param quill - The Quill editor instance containing the tooltip.
-   * @param debug - Optional flag to enable debug logging of attribute mutations.
-   *
-   * @remarks
-   * Uses a MutationObserver to monitor changes to the tooltip's `style` and `class` attributes.
-   * When a mutation is detected, the tooltip is repositioned within the container.
-   * If `debug` is true, mutation details are logged to the console.
-   */
-  static watchTooltip(t, e = !1) {
-    const i = t.container.querySelector(".ql-tooltip"), s = t.container;
-    if (!i) {
-      console.warn("No tooltip found to watch for adjustments.");
-      return;
-    }
-    this.removeTooltipWatcher(i, e);
-    let o = !1;
-    const n = new MutationObserver((r) => {
-      if (!o) {
-        if (e)
-          for (const l of r)
-            console.debug("Tooltip mutation:", l.attributeName, i.getAttribute(l.attributeName));
-        o = !0, this._repositionTooltip(i, s, e), setTimeout(() => {
-          o = !1;
-        }, 0);
-      }
-    });
-    n.observe(i, {
-      attributes: !0,
-      attributeFilter: ["style", "class"]
-    }), this.observers.set(i, n);
-  }
-  /**
-   * Removes the MutationObserver for the specified tooltip element.
-   *
-   * @param tooltip - The HTMLDivElement or Quill instance to stop watching.
-   *                  If a Quill instance is provided, finds the tooltip within its container.
-   */
-  static removeTooltipWatcher(t, e = !1) {
-    let i = null;
-    t instanceof HTMLDivElement ? i = t : i = t.container.querySelector(".ql-tooltip"), i && this.observers.has(i) && (this.observers.get(i)?.disconnect(), this.observers.delete(i), e && console.debug("Tooltip watcher removed for:", i));
-  }
-  /**
-   * Cleans up resources when the action is destroyed.
-   * Specifically, it finds the tooltip element within the Quill editor container
-   * and removes its associated watcher if the tooltip exists.
-   */
-  destroy = () => {
-    this.quill.container.querySelector(".ql-tooltip") && (E.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
-  };
-}
-const st = (h, t) => t;
-class ct {
+}, tt = (h, t) => t;
+class nt {
   Quill;
   quill;
   options;
@@ -2668,19 +2673,19 @@ class ct {
   IframeAlign;
   constructor(t, e = {}) {
     this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this);
-    const i = V(this.Quill), s = U(this.Quill);
+    const i = j(this.Quill), s = D(this.Quill);
     if (this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
       "formats/imageAlign": this.ImageAlign,
       "attributors/class/imageAlign": this.ImageAlign,
       "formats/iframeAlign": this.IframeAlign,
       "attributors/class/iframeAlign": this.IframeAlign
     }, !0), t.options.readOnly) {
-      this.options = R, this.toolbar = new B(this), this.specs = [], this.overlay = document.createElement("div"), this.sizeInfo = document.createElement("div"), e.debug && console.debug("BlotFormatter disabled in read-only mode");
+      this.options = M, this.toolbar = new I(this), this.specs = [], this.overlay = document.createElement("div"), this.sizeInfo = document.createElement("div"), e.debug && console.debug("BlotFormatter disabled in read-only mode");
       return;
     }
-    this.options = P(R, e, { arrayMerge: st }), e.debug && console.debug("BlotFormatter options", this.options), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new B(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
+    this.options = q(M, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new I(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
       (o) => new o(this)
-    ), this.specs.forEach((o) => o.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new E(this.quill, this.options.debug));
+    ), this.specs.forEach((o) => o.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(this.quill, this.options.debug));
   }
   /**
    * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
@@ -3016,7 +3021,14 @@ class ct {
    * @private
    */
   _registerCustomBlots = () => {
-    this.options.image.registerImageTitleBlot && (this.options.debug && console.debug("Registering custom Image blot", z), w.register(z, !0)), this.options.video.registerCustomVideoBlot && (this.options.debug && (console.debug("Registering custom Video blot", S), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), S.aspectRatio = this.options.video.defaultAspectRatio, w.register(S, !0));
+    if (this.options.image.registerImageTitleBlot) {
+      const t = W(this.Quill);
+      this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, !0), this.options.debug && console.debug("formats/image after register:", this.Quill.import("formats/image"));
+    }
+    if (this.options.video.registerCustomVideoBlot) {
+      const t = P(this.Quill);
+      this.options.debug && (console.debug("Registering custom Video blot", t), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, !0), this.options.debug && console.debug("formats/video after register:", this.Quill.import("formats/video"));
+    }
   };
   /**
    * Registers custom keyboard bindings to address specific Quill editor issues and enhance user experience.
@@ -3111,23 +3123,25 @@ class ct {
 }
 export {
   v as Action,
-  Y as AlignAction,
-  tt as AttributeAction,
-  O as BlotSpec,
+  F as AlignAction,
+  Q as AttributeAction,
+  z as BlotSpec,
   _ as CaretAction,
-  X as DefaultAligner,
-  R as DefaultOptions,
-  K as DeleteAction,
-  J as IframeVideoSpec,
-  it as ImageSpec,
-  et as LinkAction,
-  Q as ResizeAction,
-  B as Toolbar,
-  k as ToolbarButton,
-  E as TooltipContainPosition,
-  G as UnclickableBlotSpec,
-  U as createIframeAlignAttributor,
-  V as createImageAlignAttributor,
-  ct as default
+  $ as DefaultAligner,
+  M as DefaultOptions,
+  U as DeleteAction,
+  K as IframeVideoSpec,
+  G as ImageSpec,
+  Z as LinkAction,
+  V as ResizeAction,
+  I as Toolbar,
+  A as ToolbarButton,
+  k as TooltipContainPosition,
+  Y as UnclickableBlotSpec,
+  W as createAltTitleImageBlotClass,
+  D as createIframeAlignAttributor,
+  j as createImageAlignAttributor,
+  P as createResponsiveVideoBlotClass,
+  nt as default
 };
 //# sourceMappingURL=index.esm.js.map

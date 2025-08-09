@@ -830,6 +830,28 @@ declare type CompressorOptions = {
 declare type Constructor<T> = new (...args: any[]) => T;
 
 /**
+ * Factory function to create a custom Quill Image blot class supporting additional attributes.
+ *
+ * This function returns a class extending Quill's native Image blot, adding support for the `title` attribute
+ * (in addition to `alt`, `height`, and `width`). The returned class overrides the static `formats` method
+ * to extract these attributes from the DOM node, and the instance `format` method to set or remove them.
+ *
+ * @param QuillConstructor - The Quill constructor or instance used to import the base Image blot.
+ * @returns A custom Image blot class supporting `alt`, `height`, `width`, and `title` attributes.
+ *
+ * @remarks
+ * - This is useful for enabling the `title` attribute on images in Quill editors, which is not supported by default.
+ * - See https://github.com/slab/quill/pull/4350 for related discussion.
+ *
+ * @example
+ * ```typescript
+ * const CustomImageBlot = createAltTitleImageBlotClass(Quill);
+ * Quill.register(CustomImageBlot);
+ * ```
+ */
+export declare const createAltTitleImageBlotClass: (QuillConstructor: any) => any;
+
+/**
  * Creates a custom Quill Attributor class for handling iframe alignment.
  *
  * This attributor allows alignment of iframe elements within the Quill editor by
@@ -881,6 +903,24 @@ export declare const createIframeAlignAttributor: (QuillConstructor: any) => Att
  * - The `remove` and `value` methods ensure proper cleanup and retrieval of alignment state.
  */
 export declare const createImageAlignAttributor: (QuillConstructor: any) => AttributorClass;
+
+/**
+ * Factory function to create a custom Quill video blot class with responsive styling.
+ *
+ * @param QuillConstructor - The Quill constructor or instance used to import the base video format.
+ * @returns A class extending Quill's VideoEmbed, enforcing a 16:9 aspect ratio and full width for embedded videos.
+ *
+ * @remarks
+ * The returned class, `VideoResponsive`, overrides the default video blot to ensure videos are displayed responsively.
+ * The aspect ratio is controlled via the static `aspectRatio` property and applied to the video element's style.
+ *
+ * @example
+ * ```typescript
+ * const VideoResponsive = createResponsiveVideoBlotClass(Quill);
+ * Quill.register(VideoResponsive);
+ * ```
+ */
+export declare const createResponsiveVideoBlotClass: (QuillConstructor: any) => any;
 
 /**
  * The `DefaultAligner` class provides alignment management for Quill editor blots (such as images and iframes).

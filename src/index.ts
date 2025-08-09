@@ -30,5 +30,9 @@ export { default as IframeVideoSpec } from './specs/IframeVideoSpec';
 export { createIframeAlignAttributor } from './actions/align/AlignFormats';
 export { createImageAlignAttributor } from './actions/align/AlignFormats';
 
+// blot factories
+export { createAltTitleImageBlotClass } from './blots/Image';
+export { createResponsiveVideoBlotClass } from './blots/Video';
+
 // tooltip
 export { default as TooltipContainPosition } from './tooltip/TooltipContainPosition';
