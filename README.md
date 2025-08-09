@@ -4,15 +4,21 @@
 > ***THIS README IS FOR THE 3.0.0-beta ONLY - see the [readme](https://www.npmjs.com/package/@enzedonline/quill-blot-formatter2?activeTab=readme) on NPM for the v2.x readme***
 
 
-An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos. Supports editing alt & title values for images. It can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
+An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos. For images, it supports link management and editing alt & title values. It can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
 
 ![the new toolbar with alt title editing button](/assets/blot-formatter-image-overlay.png)
 
 > [!IMPORTANT]
 > Before using this package, it's recommended to at least be familiar with the information covered in [Actions](#actions), [CSS](#css) and [Options](#options). If your Quill editor is scrollable, be sure to also read the notes in [Scrollable Editors](#scrollable-editors).
+<hr>
 
 > [!WARNING]
-> This package has been designed for, and tested with, the native Quill editor. It has **not** been tested with the Quill wrapper packages for React, Vue or Angular. If you use these packages and encounter a problem, I welcome fully tested PR's that will address the issue, but I cannot support each and every one of these. If you do get it to work with these packages and have some tips on the subject, I'm happy to include those here also.
+> This package has been designed for, and tested with, the native Quill editor. It has **not** been tested with the Quill wrapper packages for Vue or Angular. If you use these packages and encounter a problem, I welcome fully tested PR's that will address the issue, but I cannot support each and every one of these. If you do get it to work with these packages and have some tips on the subject, I'm happy to include those here also.
+<hr>
+
+> [!CAUTION]
+> Note that BlotFormatter2 ***is NOT*** compatible with React wrapper library (`react-quilljs`). See [Demos](#demos) below for a working example using the native Quill object with Blotformatter2 and React.
+<hr>
 
 ## Contents
 
@@ -26,7 +32,10 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
   - [Script Module](#esm-in-a-script-typemodule-browser)
   - [Script Tag](#umd-in-a-script-tag-browser)
   - [Registering Blotformatter with Quill](#registering-blotformatter-with-quill)
-  - [Using Suggested Align Format Styling via CDN](#using-suggested-align-format-styling-via-cdn)
+  - [Using Suggested Align Format Styling](#using-suggested-align-format-styling)
+    - [via CDN](#via-cdn)
+    - [via import](#via-import-react-etc)
+  - [Demos](#demos)
 - [Actions](#actions)
   - [Align Action](#align-action)
   - [Resize Action](#resize-action)
@@ -47,7 +56,7 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
   - [Conditional Styling for Responsive Sites](#conditional-styling-for-responsive-sites)
 - [Quill Bug Fixes](#quill-bug-fixes)
   - [registerArrowRightFix](#registerarrowrightfix)
-  -[containTooltipPosition](#containtooltipposition)
+  - [containTooltipPosition](#containtooltipposition)
 - [Scrollable Editors](#scrollable-editors)
 - [Toolbar](#formatter-toolbar)
 - [Configuring Options](#configuring-options)
@@ -56,9 +65,10 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 ## What's New
 
 ### Version 3.0
- > [!WARNING]
+ > [!CAUTION]
  > While there are minor changes to functionality with this release, there are significant changes under the hood, and changes to the build paths. If you are upgrading and have significant modifications in place with this package, test thoroughly before putting in production. This is particularly the case if you have modified the align format attributor classes. 
- - ***ESM (es2022) build output now available as `index.ems.js`. UMD build is renamed to `index.js`. See [Installation](#installation) for details.*** 
+ - ***ESM (es2022) build output now available as `index.ems.js`.***
+ - ***UMD build is renamed to `index.js`. See [Installation](#installation) for details.*** 
  - Corresponding map files are now output for each build and code has been doc-stringed throughout to ease developing / extending the BlotFormatter.
  - Project is now compiled with vite, webpack has been discontinued.
  - Internal references to the global Quill object have been replaced with the quill instance contructor. This *should* resolve issues in previous releases when using the React Quill wrapper, or with Angular & Vue.
@@ -131,6 +141,11 @@ See notes below on usage, css and importantly, [supporting image titles in Quill
 
 > [!WARNING] 
 > The installation and usage instructions changed significantly in version 3. It is recommend upgrading to 3+ if you are on a previous version, particularly for users of React, Angular etc..
+<hr>
+
+> [!CAUTION]
+> This package ***IS NOT*** compatible with the React wrapper library (`react-quilljs`). See [Demos](#demos) below for a working example using native Quill with BlotFormatter2 and React.
+<hr>
 
 Install the package via npm:
 
@@ -153,6 +168,8 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 // or for named exports (for example, Options):
 import { Options } from '@enzedonline/quill-blot-formatter2';
 ```
+
+:warning: Do not use the `react-quilljs` wrapper in combination with BlotFormatter, they are incompatible. See [Demos](#demos).
 
 ### Angular
 Add to your project as above, then import in your component or service:
@@ -186,6 +203,8 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 
 ### Registering Blotformatter with Quill
 
+Register `BlotFormatter` *before* creating the Quill editor instance.
+
 ```js
 Quill.register('modules/blotFormatter2', BlotFormatter);
 const quill = new Quill("#quill-editor", {
@@ -199,7 +218,12 @@ const quill = new Quill("#quill-editor", {
 });
 ```
 
-### Using Suggested Align Format Styling via CDN
+### Using Suggested Align Format Styling
+#### via import (React etc.)
+```js
+import "@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css"; // align styles
+```
+#### via CDN
 ```html
 <link 
   rel="stylesheet" 
@@ -207,7 +231,11 @@ const quill = new Quill("#quill-editor", {
 >
 ```
 
-**Example [Code Pen](https://codepen.io/enzedonline/pen/bGPgqeG)**
+### Demos
+
+ - [Code Pen](https://codepen.io/enzedonline/pen/bGPgqeG) - using Quill and blotformatter2 in a script module
+ - [Playcode](https://playcode.io/2492969) - using Quill with React and blotformatter2. This example shows you how to use the native Quill object with React and avoid the bugs that come with the wrapper library (`react-quilljs`).
+ - [Vite](./demo/index.html) - fork or clone this repository and use `npm run dev` to run this site, or copy these html files and amend the imports to run in your own environment.
 
 ## Actions
 
@@ -741,6 +769,8 @@ Suggested css can be found in [src/css/quill-blot-formatter2.css](https://github
 
 ### Suggested CSS
 
+This is available via [CDN](#via-cdn) or via [import](#via-import-react-etc) if your environment supports this.
+
 ```css
 div.ql-editor {
     --blot-align-left-margin: 0.5rem 1rem 0.5rem 0;
@@ -1078,7 +1108,8 @@ blotFormatter2: {
 
 ## Further Customisations
 > [!NOTE]
-> The notes from here on are here only for those who wish to customise the default behaviour and/or work with custom blots. <br>
+> The notes from here on are here only for those who wish to customise the default behaviour and/or work with custom blots.
+>
 > `blotFormatter2` is already compatible with Quill `Image` and `Video` blots, no custom blots or actions need be registered to work with this package, though you will need to use the included [custom `Image` blot](#attribute-action-image-blots-only) (or create your own with `title` support) to use the alt/title editing feature.
 
 > [!IMPORTANT] 
