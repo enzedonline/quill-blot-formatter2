@@ -186,7 +186,7 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 ### ESM in a `<script type="module">` (Browser)
 ```html
 <script type="module">
-  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.1/dist/index.ems.js';
+  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.1/dist/index.esm.js';
   // Use BlotFormatter here
 </script>
 ```
