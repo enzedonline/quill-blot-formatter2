@@ -82,7 +82,7 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
      * @param value - The alignment value, either as a string or an object with an `align` property.
      * @returns `true` if the formatting was successfully applied to an HTMLElement, otherwise `false`.
      */
-    add = (node: Element, value: IframeAlignValue): boolean => {
+    add(node: Element, value: IframeAlignValue): boolean {
       if (this.debug) {
         console.debug('IframeAlignAttributor.add', node, value);
       }
@@ -127,7 +127,7 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
      *
      * @param node - The DOM element from which to remove the alignment formatting.
      */
-    remove = (node: Element): void => {
+    remove(node: Element): void {
       if (this.debug) {
         console.debug('IframeAlignAttributor.remove', node);
       }
@@ -147,7 +147,7 @@ export const createIframeAlignAttributor = (QuillConstructor: any): AttributorCl
      *     its 'width' attribute, or an empty string if not present.
      *   - `relativeSize`: A string indicating whether the width ends with a '%' character, representing a relative size.
      */
-    value = (node: Element): IframeAlignValue => {
+    value(node: Element): IframeAlignValue {
       const className = super.value(node);
       const width = (node instanceof HTMLElement) ?
         node.style.getPropertyValue('--resize-width') || node.getAttribute('width') || '' :
@@ -221,7 +221,7 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
      * @param value - The alignment value, which can be a string or an object containing alignment and optional title.
      * @returns `true` if formatting was applied or handled, `false` otherwise.
      */
-    add = (node: Element, value: ImageAlignInputValue | string): boolean => {
+    add(node: Element, value: ImageAlignInputValue | string): boolean {
       if (this.debug) {
         console.debug('ImageAlignAttributor.add', node, value);
       }
@@ -302,7 +302,7 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
      *
      * @param node - The DOM element from which to remove alignment formatting.
      */
-    remove = (node: Element): void => {
+    remove(node: Element): void {
       if (this.debug) {
         console.debug('ImageAlignAttributor.remove', node);
       }
@@ -326,7 +326,7 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
      * @param node - The DOM element to search for an image and extract alignment and metadata from.
      * @returns An object containing the image's alignment, title, width, contenteditable status, and relative size flag.
      */
-    value = (node: Element): ImageAlignValue => {
+    value(node: Element): ImageAlignValue {
       // in case nested style, find image element and span wrapper
       const imageElement = node.querySelector('img') as HTMLImageElement;
       if (!imageElement) return null as any; // this can happen during certain 'undo' operations
@@ -367,7 +367,7 @@ export const createImageAlignAttributor = (QuillConstructor: any): AttributorCla
      * @param imageElement - The HTMLImageElement whose width is to be retrieved and set.
      * @returns The width of the image as a string with 'px' units.
      */
-    getImageWidth = (imageElement: HTMLImageElement) => {
+    getImageWidth(imageElement: HTMLImageElement) {
       let width = imageElement.getAttribute('width');
       if (!width) {
         width = `${imageElement.naturalWidth}px`;
