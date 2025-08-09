@@ -22,7 +22,7 @@ export default defineConfig({
                 copyFileSync('src/css/quill-blot-formatter2.css', 'dist/css/quill-blot-formatter2.css');
             }
         },
-        visualizer({ open: true, filename: 'stats.html' }) 
+        // visualizer({ open: true, filename: 'stats.html' }) 
     ],
     build: {
         lib: {
