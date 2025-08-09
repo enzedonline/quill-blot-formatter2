@@ -51,6 +51,7 @@ export const DefaultOptions: Options = {
       border: '1px solid #777',
       boxSizing: 'border-box',
       opacity: '0.80',
+      zIndex: 999
     },
     useRelativeSize: false,
     minimumWidthPx: 25,
@@ -304,6 +305,7 @@ export const DefaultOptions: Options = {
             flexWrap: 'nowrap',
             columnGap: '5px',
             alignItems: 'center',
+            margin: 0
           }
         },
         label: {
