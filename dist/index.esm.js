@@ -117,9 +117,9 @@ class _ extends v {
 function W(h) {
   return h && h.__esModule && Object.prototype.hasOwnProperty.call(h, "default") ? h.default : h;
 }
-var E, I;
+var C, I;
 function D() {
-  if (I) return E;
+  if (I) return C;
   I = 1;
   var h = function(c) {
     return t(c) && !e(c);
@@ -191,7 +191,7 @@ function D() {
     }, {});
   };
   var N = x;
-  return E = N, E;
+  return C = N, C;
 }
 var j = D();
 const P = /* @__PURE__ */ W(j), $ = w.import("formats/image"), M = ["alt", "height", "width", "title"];
@@ -358,8 +358,8 @@ const U = (h) => {
         let l = this.getImageWidth(r);
         return o.setAttribute("data-relative-size", `${l?.endsWith("%")}`), !0;
       } else {
-        const r = o.querySelector("img");
-        if (r instanceof HTMLImageElement) {
+        const r = o instanceof HTMLImageElement ? o : o.querySelector("img");
+        if (this.debug && console.debug(`ImageAlignAttributor.add - ${o.tagName} is not a span, checking for image:`, r), r instanceof HTMLImageElement) {
           const l = h.find(r);
           return this.debug && console.debug("ImageAlignAttributor.add - found image blot:", l), l && (o.firstChild instanceof HTMLSpanElement || !r.parentElement?.matches('span[class^="ql-image-align-"]')) && (l.format("imageAlign", n), this.debug && console.debug("ImageAlignAttributor.add - reapplying imageAlign format to image blot:", n, l)), !0;
         }
@@ -2560,7 +2560,7 @@ const L = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
     proxyStyle: {}
   }
 };
-class C {
+class E {
   /**
    * Initializes the tooltip adjustment watcher when the action is created.
    * Searches for the tooltip element within the Quill container and, if found,
@@ -2573,7 +2573,7 @@ class C {
   constructor(t, e = !1) {
     this.quill = t, this.debug = e;
     const i = t.container.querySelector(".ql-tooltip");
-    console.debug("tooltip:", i), i ? (C.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
+    console.debug("tooltip:", i), i ? (E.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
   }
   /**
    * Repositions a tooltip element within a given container to ensure it does not overflow
@@ -2644,7 +2644,7 @@ class C {
    * and removes its associated watcher if the tooltip exists.
    */
   destroy = () => {
-    this.quill.container.querySelector(".ql-tooltip") && (C.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
+    this.quill.container.querySelector(".ql-tooltip") && (E.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
   };
 }
 const st = (h, t) => t;
@@ -2680,7 +2680,7 @@ class ct {
     }
     this.options = P(R, e, { arrayMerge: st }), e.debug && console.debug("BlotFormatter options", this.options), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new B(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
       (o) => new o(this)
-    ), this.specs.forEach((o) => o.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new C(this.quill, this.options.debug));
+    ), this.specs.forEach((o) => o.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new E(this.quill, this.options.debug));
   }
   /**
    * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
@@ -3124,7 +3124,7 @@ export {
   Q as ResizeAction,
   B as Toolbar,
   k as ToolbarButton,
-  C as TooltipContainPosition,
+  E as TooltipContainPosition,
   G as UnclickableBlotSpec,
   U as createIframeAlignAttributor,
   V as createImageAlignAttributor,
