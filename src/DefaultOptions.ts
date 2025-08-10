@@ -18,7 +18,8 @@ export const DefaultOptions: Options = {
       boxSizing: 'border-box',
       border: '1px dashed #444',
       backgroundColor: 'rgba(255, 255, 255, 0.35)',
-      maxWidth: "100%"
+      maxWidth: "100%",
+      zIndex: 9999
     },
     sizeInfoStyle: {
       position: 'absolute',
