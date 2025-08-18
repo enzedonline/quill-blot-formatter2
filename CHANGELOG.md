@@ -2,20 +2,20 @@
 
 ## [v3.0.0] 
 
-This is a minor change in functionality, but includes breaking changes from previous versions addressing issues when importing to certain platforms.
+This is a minor change in functionality, but includes breaking changes from previous versions that address issues when importing to certain platforms. **Build paths have changed from 2.x**.
 
 ***This is the earliest version that has an ESM output build.***
 
 ### :warning: Breaking Changes
 
-Webpack has been discontinued form this project in favour of Vite. This has allowed a much smoother development path and identification of underlying issue when importing into certain platforms such as React, angular etc. 
+Webpack has been discontinued form this project in favour of Vite. This has allowed a much smoother development path and identification of an underlying issue when importing into certain platforms such as React, angular etc. 
 
-While making this change, I've added an ESM output and changed the published build path from the original, legbut as class factories acy project to meet standards. A warning will be displayed in the console if upgrading from version 2.x there. see the [Installation](README.md#installation) section for more details. Corresponding map files are now output for each build and code has been doc-stringed throughout to ease developing / extending the BlotFormatter.
+While making this change, I've added an ESM output and changed the published build path from the original, legacy project to meet standards. A warning will be displayed in the console if upgrading from version 2.x there. See the [Installation](README.md#installation) section for more details. Corresponding map files are now output for each build and code has been doc-stringed throughout to ease developing / extending the BlotFormatter.
 
 The biggest change under the hood is removing references to the Quill global static methods in favour of using the quill instance constructor. For that reason, the image and iframe align formats are no longer exported as classes but as class factories `createIframeAlignAttributor` and `createImageAlignAttributor`.
 
 ### Other Changes
- - Debugging is now available by setting option `debug: true` - this is a verbose mode with output to the debug console.
+ - Debugging is now available by setting option `debug: true` - this is a verbose mode with output to the debug console. This mode will also add the blotFormatter instance to the global window object.
  - Formatter toolbar will now scroll into view in most cases if hidden when activating formatter overlay.
  - Optional Quill tooltip fix will contain Quill's native tooltip within the bounds of the Quill editor element. This is intended for use on scrollable editors where Quill will display the tooltip outside if this rectangle in some cases causing clipping. See [containTooltipPosition](./README.md#containtooltipposition).
 

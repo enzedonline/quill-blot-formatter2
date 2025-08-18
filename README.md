@@ -1,8 +1,7 @@
 # Quill Blot Formatter 2 (quill-blot-formatter2)
 
 > [!WARNING]
-> ***THIS README IS FOR THE 3.0.0-beta ONLY - see the [readme](https://www.npmjs.com/package/@enzedonline/quill-blot-formatter2?activeTab=readme) on NPM for the v2.x readme***
-
+> ***THIS README IS FOR v3.x ONLY - see [NPM](https://www.npmjs.com/package/@enzedonline/quill-blot-formatter2?activeTab=versions) for documentation on previous versions***
 
 An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos. For images, it supports link management and editing alt & title values. It can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
 
@@ -71,7 +70,7 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
  - ***UMD build is renamed to `index.js`. See [Installation](#installation) for details.*** 
  - Corresponding map files are now output for each build and code has been doc-stringed throughout to ease developing / extending the BlotFormatter.
  - Project is now compiled with vite, webpack has been discontinued.
- - Internal references to the global Quill object have been replaced with the quill instance contructor. This *should* resolve issues in previous releases when using the React Quill wrapper, or with Angular & Vue.
+ - Internal references to the global Quill object have been replaced with the quill instance contructor. This *should* resolve issues in previous releases when used with React (but not the `react-quilljs` wrapper), or with Angular & Vue.
  - Debugging is now available by setting option `debug: true` - this is a verbose mode with output to the debug console.
  - Formatter toolbar will now scroll into view in most cases if hidden when activating formatter overlay.
  - Optional Quill tooltip fix will contain Quill's native tooltip within the bounds of the Quill editor element. This is intended for use on scrollable editors where Quill will display the tooltip outside if this rectangle in some cases causing clipping.
@@ -150,7 +149,7 @@ See notes below on usage, css and importantly, [supporting image titles in Quill
 Install the package via npm:
 
 ```bash
-npm install @enzedonline/quill-blot-formatter2@beta
+npm install @enzedonline/quill-blot-formatter2
 ```
 
 ## Usage Examples
@@ -186,14 +185,14 @@ import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 ### ESM in a `<script type="module">` (Browser)
 ```html
 <script type="module">
-  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.1/dist/index.esm.js';
+  import BlotFormatter from 'https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0/dist/index.esm.js';
   // Use BlotFormatter here
 </script>
 ```
 
 ### UMD in a `<script>` Tag (Browser)
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0.0-beta.1/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2@3.0/dist/index.js"></script>
 <script>
   // The global variable is QuillBlotFormatter2
   const BlotFormatter = QuillBlotFormatter2.default;
