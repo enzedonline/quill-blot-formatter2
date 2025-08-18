@@ -2270,7 +2270,8 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
       boxSizing: "border-box",
       border: "1px dashed #444",
       backgroundColor: "rgba(255, 255, 255, 0.35)",
-      maxWidth: "100%"
+      maxWidth: "100%",
+      zIndex: 9999
     },
     sizeInfoStyle: {
       position: "absolute",
