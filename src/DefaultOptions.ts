@@ -390,7 +390,8 @@ export const DefaultOptions: Options = {
           }
         }
       }
-    }
+    },
+    autoHeight: true
   },
   video: {
     selector: 'iframe.ql-video',

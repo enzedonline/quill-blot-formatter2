@@ -127,7 +127,7 @@ export default class ResizeAction extends Action {
     this._isSVG = false;
     this._setCursor('');
     [
-      this._topLeftHandle, this._topRightHandle, 
+      this._topLeftHandle, this._topRightHandle,
       this._bottomRightHandle, this._bottomLeftHandle
     ].forEach(handle => { handle.remove(); });
     this.formatter.overlay.removeEventListener('mousedown', this._onOverlayMouseDown);
@@ -540,11 +540,16 @@ export default class ResizeAction extends Action {
       // set fixed height to unclickable if using absolute size mode and no aspect ratio given
       if (this._isUnclickable) {
         if (!this._useRelativeSize && this._computedAspectRatio === 'auto') {
-          this._target.setAttribute('height', `${(newWidth / this._calculatedAspectRatio) | 0}px`)
+          this._target.setAttribute('height', `${newHeight | 0}px`);
         }
         this._target.style.setProperty('--resize-width', this._formattedWidth);
-      } else if (!this._isUnclickable && this.isAligned && !!this._target.parentElement) {
-        this._target.parentElement.style.setProperty('--resize-width', this._formattedWidth);
+      } else {
+        if (this.isAligned && !!this._target.parentElement) {
+          this._target.parentElement.style.setProperty('--resize-width', this._formattedWidth);
+        }
+        if (!this._useRelativeSize && !this.formatter.options.image.autoHeight) {
+          this._target.setAttribute('height', `${newHeight | 0}px`);
+        }
       }
       // updates overlay position
       this.formatter.update();
@@ -690,14 +695,18 @@ export default class ResizeAction extends Action {
       this._editorWidth = this.formatter.quill.root.clientWidth -
         parseFloat(this._editorStyle.paddingLeft) -
         parseFloat(this._editorStyle.paddingRight);
-      let newWidth: string;
+      let newWidth, newHeight: string;
       if (this.isRelative) {
         newWidth = `${Math.round(rect.width)}px`;
+        newHeight = this.formatter.options.image.autoHeight 
+          ? 'auto' 
+          : `${Math.round(rect.height)}px`;
       } else {
         newWidth = `${Math.round(100 * rect.width / this._editorWidth)}%`;
+        newHeight = 'auto';
       }
       this._target.setAttribute('width', `${newWidth}`);
-      this._target.setAttribute('height', 'auto');
+      this._target.setAttribute('height', `${newHeight}`);
       if (this.formatter.currentSpec?.isUnclickable) {
         this._target.style.setProperty('--resize-width', `${newWidth}`);
         this._target.dataset.relativeSize = `${this.isRelative}`;

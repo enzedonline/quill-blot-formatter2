@@ -202,6 +202,8 @@ export type ImageOptions = {
   compressorOptions: CompressorOptions;
   // options for the link action
   linkOptions: LinkOptions;
+  // always use 'auto' for image height (when resizing absolute only)
+  autoHeight: boolean;
 }
 
 export type VideoOptions = {
