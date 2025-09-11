@@ -2,7 +2,7 @@
 
 ## [v3.0.1] - 2025-09-11
 ### Changed
-A minor update to add option to use px sizing on images when sizing in absolute mode. Adds option `image: { autoheight: boolean }`. When set to false and sizing in absolute mode, image height will be set in px rather than default `auto` - adresses requirement for PDF output. Using relative sizing, the image height will be `auto` regardless of this setting. 
+A minor update to add option to use px sizing on images when sizing in absolute mode. Adds option `image: { autoheight: boolean }`. When set to false and sizing in absolute mode, image height will be set in px rather than default `auto` - addresses requirement for PDF output. Using relative sizing, the image height will be `auto` regardless of this setting. 
 
 ## [v3.0.0] - 2025-08-19
 ### Changed

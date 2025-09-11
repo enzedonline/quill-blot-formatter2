@@ -500,7 +500,7 @@ const W = (h) => {
       return n ? isNaN(Number(n.trim().slice(-1))) || (n = `${n}px`, o.setAttribute("width", n)) : (n = `${o.naturalWidth}px`, o.setAttribute("width", n)), o.parentElement.style.setProperty("--resize-width", n), n;
     }
   };
-}, P = (h) => {
+}, $ = (h) => {
   const t = h.import("formats/video");
   return class extends t {
     static blotName = "video";
@@ -514,7 +514,7 @@ const W = (h) => {
     }
   };
 };
-class $ {
+class P {
   alignments = {};
   options;
   formatter;
@@ -763,7 +763,7 @@ class F extends v {
   aligner;
   alignButtons = {};
   constructor(t) {
-    super(t), this.aligner = new $(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
+    super(t), this.aligner = new P(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
   }
   /**
    * Creates alignment toolbar buttons for each available alignment option.
@@ -1186,7 +1186,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
     try {
       t = Math.min(this._naturalWidth ?? 1 / 0, t);
       const e = t / this._calculatedAspectRatio;
-      this._updateSizeInfo(t, e), this.formatter._useRelative(this._target) ? this._formattedWidth = `${100 * t / this._editorWidth}%` : this._formattedWidth = `${t}px`, this._target.setAttribute("width", this._formattedWidth), this._target.setAttribute("height", "auto"), this._isUnclickable ? (!this._useRelativeSize && this._computedAspectRatio === "auto" && this._target.setAttribute("height", `${t / this._calculatedAspectRatio | 0}px`), this._target.style.setProperty("--resize-width", this._formattedWidth)) : !this._isUnclickable && this.isAligned && this._target.parentElement && this._target.parentElement.style.setProperty("--resize-width", this._formattedWidth), this.formatter.update();
+      this._updateSizeInfo(t, e), this.formatter._useRelative(this._target) ? this._formattedWidth = `${100 * t / this._editorWidth}%` : this._formattedWidth = `${t}px`, this._target.setAttribute("width", this._formattedWidth), this._target.setAttribute("height", "auto"), this._isUnclickable ? (!this._useRelativeSize && this._computedAspectRatio === "auto" && this._target.setAttribute("height", `${e | 0}px`), this._target.style.setProperty("--resize-width", this._formattedWidth)) : (this.isAligned && this._target.parentElement && this._target.parentElement.style.setProperty("--resize-width", this._formattedWidth), !this._useRelativeSize && !this.formatter.options.image.autoHeight && this._target.setAttribute("height", `${e | 0}px`)), this.formatter.update();
     } catch (e) {
       console.error("ResizeAction: Error resizing target element:", e);
     }
@@ -1285,8 +1285,8 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
     if (this._target) {
       const e = this._target.getBoundingClientRect();
       this._editorStyle = getComputedStyle(this.formatter.quill.root), this._editorWidth = this.formatter.quill.root.clientWidth - parseFloat(this._editorStyle.paddingLeft) - parseFloat(this._editorStyle.paddingRight);
-      let i;
-      this.isRelative ? i = `${Math.round(e.width)}px` : i = `${Math.round(100 * e.width / this._editorWidth)}%`, this._target.setAttribute("width", `${i}`), this._target.setAttribute("height", "auto"), this.formatter.currentSpec?.isUnclickable ? (this._target.style.setProperty("--resize-width", `${i}`), this._target.dataset.relativeSize = `${this.isRelative}`) : this.isAligned && this._target.parentElement && (this._target.parentElement.style.setProperty("--resize-width", `${i}`), this._target.parentElement.dataset.relativeSize = `${this.isRelative}`), this.formatter.toolbar.buttons.resizeMode.selected = this.isRelative, this.formatter.update(), t && (this._showSizeInfo(!0, e.width, e.height), this._showSizeInfo(!1)), this.debug && console.debug("ResizeAction resize mode swapped:", {
+      let i, s;
+      this.isRelative ? (i = `${Math.round(e.width)}px`, s = this.formatter.options.image.autoHeight ? "auto" : `${Math.round(e.height)}px`) : (i = `${Math.round(100 * e.width / this._editorWidth)}%`, s = "auto"), this._target.setAttribute("width", `${i}`), this._target.setAttribute("height", `${s}`), this.formatter.currentSpec?.isUnclickable ? (this._target.style.setProperty("--resize-width", `${i}`), this._target.dataset.relativeSize = `${this.isRelative}`) : this.isAligned && this._target.parentElement && (this._target.parentElement.style.setProperty("--resize-width", `${i}`), this._target.parentElement.dataset.relativeSize = `${this.isRelative}`), this.formatter.toolbar.buttons.resizeMode.selected = this.isRelative, this.formatter.update(), t && (this._showSizeInfo(!0, e.width, e.height), this._showSizeInfo(!1)), this.debug && console.debug("ResizeAction resize mode swapped:", {
         target: this._target,
         newWidth: i,
         isRelative: this.isRelative,
@@ -2644,7 +2644,8 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
           }
         }
       }
-    }
+    },
+    autoHeight: !0
   },
   video: {
     selector: "iframe.ql-video",
@@ -3027,7 +3028,7 @@ class nt {
       this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, !0), this.options.debug && console.debug("formats/image after register:", this.Quill.import("formats/image"));
     }
     if (this.options.video.registerCustomVideoBlot) {
-      const t = P(this.Quill);
+      const t = $(this.Quill);
       this.options.debug && (console.debug("Registering custom Video blot", t), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, !0), this.options.debug && console.debug("formats/video after register:", this.Quill.import("formats/video"));
     }
   };
@@ -3128,7 +3129,7 @@ export {
   Q as AttributeAction,
   z as BlotSpec,
   _ as CaretAction,
-  $ as DefaultAligner,
+  P as DefaultAligner,
   M as DefaultOptions,
   U as DeleteAction,
   K as IframeVideoSpec,
@@ -3142,7 +3143,7 @@ export {
   W as createAltTitleImageBlotClass,
   D as createIframeAlignAttributor,
   j as createImageAlignAttributor,
-  P as createResponsiveVideoBlotClass,
+  $ as createResponsiveVideoBlotClass,
   nt as default
 };
 //# sourceMappingURL=index.esm.js.map

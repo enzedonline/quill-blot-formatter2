@@ -1122,6 +1122,7 @@ declare type ImageOptions = {
     allowCompressor: Boolean;
     compressorOptions: CompressorOptions;
     linkOptions: LinkOptions;
+    autoHeight: boolean;
 };
 
 /**
