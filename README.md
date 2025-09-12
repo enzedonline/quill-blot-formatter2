@@ -234,7 +234,7 @@ import "@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css"; 
 ### Demos
 
  - [Script Tag](https://codepen.io/enzedonline/pen/bGPgqeG) - using Quill and BlotFormatter2 UMD build in a script tag.
- - [Script Module](https://codepen.io/enzedonline/pen/zxvdeGE) - using Quill and BlotFormatter2 EMS build in a script module.
+ - [Script Module](https://codepen.io/enzedonline/pen/zxvdeGE) - using Quill and BlotFormatter2 ESM build in a script module.
  - [React](https://playcode.io/2492969) - using Quill with React and BlotFormatter2. This example shows you how to use the native Quill object with React and avoid the bugs that come with the wrapper library (`react-quilljs`).
  - [Vite](./demo/index.html) - fork or clone this repository and use `npm run dev` to run this site, or copy these html files and amend the imports to run in your own environment.
 
