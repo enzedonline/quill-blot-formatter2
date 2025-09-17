@@ -113,11 +113,11 @@ class _ extends v {
     i && (t.code === "ArrowLeft" ? (_.placeCaretBeforeBlot(this.formatter.quill, i, this.debug), this.formatter.hide()) : t.code === "ArrowRight" && (_.placeCaretAfterBlot(this.formatter.quill, i, this.debug), this.formatter.hide()));
   };
 }
-function O(h) {
+function T(h) {
   return h && h.__esModule && Object.prototype.hasOwnProperty.call(h, "default") ? h.default : h;
 }
 var C, S;
-function H() {
+function R() {
   if (S) return C;
   S = 1;
   var h = function(c) {
@@ -169,7 +169,7 @@ function H() {
   function b(a, c) {
     return g(a, c) && !(Object.hasOwnProperty.call(a, c) && Object.propertyIsEnumerable.call(a, c));
   }
-  function B(a, c, d) {
+  function M(a, c, d) {
     var y = {};
     return d.isMergeableObject(a) && u(a).forEach(function(f) {
       y[f] = r(a[f], d);
@@ -179,8 +179,8 @@ function H() {
   }
   function x(a, c, d) {
     d = d || {}, d.arrayMerge = d.arrayMerge || l, d.isMergeableObject = d.isMergeableObject || h, d.cloneUnlessOtherwiseSpecified = r;
-    var y = Array.isArray(c), f = Array.isArray(a), R = y === f;
-    return R ? y ? d.arrayMerge(a, c, d) : B(a, c, d) : r(c, d);
+    var y = Array.isArray(c), f = Array.isArray(a), B = y === f;
+    return B ? y ? d.arrayMerge(a, c, d) : M(a, c, d) : r(c, d);
   }
   x.all = function(c, d) {
     if (!Array.isArray(c))
@@ -189,12 +189,12 @@ function H() {
       return x(y, f, d);
     }, {});
   };
-  var T = x;
-  return C = T, C;
+  var z = x;
+  return C = z, C;
 }
-var N = H();
-const q = /* @__PURE__ */ O(N);
-class I {
+var O = R();
+const H = /* @__PURE__ */ T(O);
+class N {
   formatter;
   element;
   buttons = {};
@@ -320,7 +320,7 @@ class k {
     this.quill.container.querySelector(".ql-tooltip") && (k.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
   };
 }
-const W = (h) => {
+const q = (h) => {
   const t = h.import("formats/image"), e = ["alt", "height", "width", "title"];
   return class extends t {
     static blotName = "image";
@@ -334,7 +334,7 @@ const W = (h) => {
       e.indexOf(s) > -1 ? o || s === "alt" ? this.domNode.setAttribute(s, o) : this.domNode.removeAttribute(s) : super.format(s, o);
     }
   };
-}, D = (h) => {
+}, W = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
     constructor(o = !1) {
@@ -398,7 +398,7 @@ const W = (h) => {
       return this.debug && console.debug("IframeAlignAttributor.value", o, l), l;
     }
   };
-}, j = (h) => {
+}, D = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
     constructor(o = !1) {
@@ -500,7 +500,7 @@ const W = (h) => {
       return n ? isNaN(Number(n.trim().slice(-1))) || (n = `${n}px`, o.setAttribute("width", n)) : (n = `${o.naturalWidth}px`, o.setAttribute("width", n)), o.parentElement.style.setProperty("--resize-width", n), n;
     }
   };
-}, $ = (h) => {
+}, j = (h) => {
   const t = h.import("formats/video");
   return class extends t {
     static blotName = "video";
@@ -514,7 +514,7 @@ const W = (h) => {
     }
   };
 };
-class P {
+class $ {
   alignments = {};
   options;
   formatter;
@@ -759,11 +759,11 @@ class A {
     }
   };
 }
-class F extends v {
+class P extends v {
   aligner;
   alignButtons = {};
   constructor(t) {
-    super(t), this.aligner = new P(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
+    super(t), this.aligner = new $(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
   }
   /**
    * Creates alignment toolbar buttons for each available alignment option.
@@ -843,7 +843,7 @@ class F extends v {
     this.alignButtons = {}, this.toolbarButtons = [], this.formatter.options.debug && console.debug("AlignAction alignment buttons destroyed");
   };
 }
-class U extends v {
+class F extends v {
   /**
    * Initializes event listeners for the delete action.
    * 
@@ -891,7 +891,7 @@ class U extends v {
     }
   };
 }
-class V extends v {
+class U extends v {
   _topLeftHandle;
   _topRightHandle;
   _bottomRightHandle;
@@ -1344,7 +1344,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    */
   _isSvgImage = () => this._target instanceof HTMLImageElement ? this._target.src.startsWith("data:image/") ? this._target.src.includes("image/svg+xml") : this._target.src.endsWith(".svg") : !1;
 }
-class z {
+class I {
   // abstract class for Blot specifications
   formatter;
   isUnclickable = !1;
@@ -1375,7 +1375,7 @@ class z {
    */
   getActions() {
     const t = [];
-    return this.formatter.options.align.allowAligning && t.push(new F(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new V(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new U(this.formatter)), t.push(new _(this.formatter)), t;
+    return this.formatter.options.align.allowAligning && t.push(new P(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new U(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new F(this.formatter)), t.push(new _(this.formatter)), t;
   }
   /**
    * Returns the target HTML element associated with this blot.
@@ -1428,8 +1428,8 @@ class z {
   onHide = () => {
   };
 }
-const X = "blot-formatter__proxy-image";
-class Y extends z {
+const V = "blot-formatter__proxy-image";
+class X extends I {
   selector;
   unclickable;
   proxyContainer;
@@ -1519,7 +1519,7 @@ class Y extends z {
     const i = document.createElement("canvas"), s = i.getContext("2d");
     s && (s.globalAlpha = 0, s.fillRect(0, 0, 1, 1));
     const o = document.createElement("img");
-    o.src = i.toDataURL("image/png"), o.classList.add(X), o.dataset.blotFormatterId = e;
+    o.src = i.toDataURL("image/png"), o.classList.add(V), o.dataset.blotFormatterId = e;
     const n = {
       ...this.formatter.options.video.proxyStyle,
       position: "absolute",
@@ -1589,12 +1589,12 @@ class Y extends z {
     return t.classList.add("proxy-container"), this.formatter.quill.container.appendChild(t), t;
   };
 }
-class K extends Y {
+class Y extends X {
   constructor(t) {
     super(t);
   }
 }
-class Q extends v {
+class K extends v {
   modal;
   targetElement = null;
   currentBlot = null;
@@ -1969,7 +1969,7 @@ class w extends v {
     t.stopImmediatePropagation(), t.target === this.modal.element && (this.debug && console.debug("Modal background clicked, hiding modal"), this._hideModal());
   };
 }
-class Z extends v {
+class Q extends v {
   targetElement = null;
   currentBlot = null;
   toolbarButton;
@@ -2206,7 +2206,7 @@ class Z extends v {
     t !== this.getLink() && (this.removeLink(), this.currentBlot?.format("link", t), this.toolbarButton.selected = !!t), this.hideLinkModal();
   };
 }
-class G extends z {
+class Z extends I {
   img;
   constructor(t) {
     super(t), this.img = null;
@@ -2230,7 +2230,7 @@ class G extends z {
    */
   getActions = () => {
     const t = super.getActions();
-    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new Z(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new Q(this.formatter)), this.formatter.options.image.allowCompressor && w.isEligibleForCompression(this.img) && t.push(new w(this.formatter)), t;
+    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new Q(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new K(this.formatter)), this.formatter.options.image.allowCompressor && w.isEligibleForCompression(this.img) && t.push(new w(this.formatter)), t;
   };
   /**
    * Returns the target HTML element associated with this instance.
@@ -2258,10 +2258,10 @@ class G extends z {
     e instanceof HTMLImageElement && (t.stopImmediatePropagation(), t.preventDefault(), this.img = e, this.formatter.show(this));
   };
 }
-const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>', L = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>', J = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>', M = {
+const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>', L = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>', G = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>', J = {
   specs: [
-    G,
-    K
+    Z,
+    Y
   ],
   overlay: {
     className: "blot-formatter__overlay",
@@ -2518,7 +2518,7 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
       },
       icons: {
         cancel: `<span style="color: rgb(197, 74, 71);">${E}</span>`,
-        moreInfo: J,
+        moreInfo: G,
         continue: L
       }
     },
@@ -2665,6 +2665,7 @@ class nt {
   toolbar;
   sizeInfo;
   actions;
+  _enabled = !0;
   _startX = 0;
   // touch scroll tracking
   _startY = 0;
@@ -2675,19 +2676,17 @@ class nt {
   IframeAlign;
   constructor(t, e = {}) {
     this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this);
-    const i = j(this.Quill), s = D(this.Quill);
-    if (this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
+    const i = D(this.Quill), s = W(this.Quill);
+    this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
       "formats/imageAlign": this.ImageAlign,
       "attributors/class/imageAlign": this.ImageAlign,
       "formats/iframeAlign": this.IframeAlign,
       "attributors/class/iframeAlign": this.IframeAlign
-    }, !0), t.options.readOnly) {
-      this.options = M, this.toolbar = new I(this), this.specs = [], this.overlay = document.createElement("div"), this.sizeInfo = document.createElement("div"), e.debug && console.debug("BlotFormatter disabled in read-only mode");
-      return;
-    }
-    this.options = q(M, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new I(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
-      (o) => new o(this)
-    ), this.specs.forEach((o) => o.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(this.quill, this.options.debug));
+    }, !0), this.options = H(J, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains("ql-disabled"));
+    const o = document.createElement("style");
+    o.innerHTML = ".ql-disabled .blot-formatter__proxy-image {display: none;}", document.head.appendChild(o), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new N(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
+      (n) => new n(this)
+    ), this.specs.forEach((n) => n.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(this.quill, this.options.debug));
   }
   /**
    * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
@@ -2702,6 +2701,58 @@ class nt {
       console.error("BlotFormatter.destroy error:", t);
     }
   };
+  /**
+   * Indicates whether the blot formatter is currently active.
+   *
+   * When `true`, formatting controls and interactions are available.
+   * When `false`, the formatter is disabled and will not react to user input. Proxy images are hidden by css.
+   *
+   * @returns True if the formatter is enabled; otherwise false.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  /**
+   * Enables or disables the blot formatter UI.
+   *
+   * When set to false, any currently visible formatter interface (such as
+   * overlays, resize handles, or toolbars) is immediately hidden via `hide()`.
+   * While disabled, user interactions that would normally trigger the formatter
+   * are ignored until re-enabled.
+   *
+   * @param value True to enable the formatter; false to disable it and hide all active UI.
+   */
+  set enabled(t) {
+    t || this.hide(), this._enabled = t;
+  }
+  /**
+   * MutationObserver monitoring the Quill editor container's class attribute to track disabled state.
+   *
+   * When the container gains or loses the 'ql-disabled' CSS class, this observer updates the
+   * formatter's `enabled` property accordingly, ensuring the formatter UI is automatically
+   * disabled/enabled in sync with the editor.
+   *
+   * Behavior:
+   * - Listens only for attribute mutations on the 'class' attribute.
+   * - Sets `this.enabled` to false if 'ql-disabled' is present; true otherwise.
+   *
+   * Rationale:
+   * Centralizes Quill's disabled state propagation without requiring explicit event hooks or
+   * modifications to Quill's core. This avoids polling and keeps formatter state consistent.
+   *
+   * Lifecycle:
+   * - Should be started after the editor container is available.
+   * - Must be disconnected during teardown (e.g., in a destroy/dispose method) to prevent memory leaks.
+   *
+   * Caveats:
+   * - Assumes the presence and semantic meaning of the 'ql-disabled' class as used by Quill.
+   * - If external code mutates classes frequently, this may fire often; the handler is intentionally lightweight.
+   */
+  _qlDisabledObserver = new MutationObserver((t) => {
+    t.forEach((e) => {
+      e.type === "attributes" && e.attributeName === "class" && (this.enabled = !this.quill.container.classList.contains("ql-disabled"));
+    });
+  });
   /**
    * Displays the blot formatter overlay for the specified blot.
    *
@@ -2723,6 +2774,7 @@ class nt {
    */
   show = (t) => {
     try {
+      if (!this.enabled) return;
       this.quill.container.querySelectorAll(".ql-tooltip:not(.ql-hidden)").forEach(
         (e) => {
           e.classList.add("ql-hidden");
@@ -2860,6 +2912,8 @@ class nt {
    * - For the Quill root:
    *   - Repositions the overlay on scroll and resize events.
    *   - Dismisses the overlay when clicking on the Quill root.
+   * - For the quill container
+   *   - Observes class attribute changes to detect disabled state.
    *
    * This method ensures proper interaction and synchronization between the overlay
    * and the Quill editor, handling user input and UI updates.
@@ -2869,7 +2923,10 @@ class nt {
   _addEventListeners = () => {
     this._abortController = new AbortController();
     const { signal: t } = this._abortController;
-    this.overlay.addEventListener("wheel", this._passWheelEventThrough, { passive: !1, signal: t }), this.overlay.addEventListener("touchstart", this._onTouchScrollStart, { passive: !1, signal: t }), this.overlay.addEventListener("touchmove", this._onTouchScrollMove, { passive: !1, signal: t }), this.overlay.addEventListener("contextmenu", this._preventContextMenu, { signal: t }), this.quill.root.addEventListener("click", this._onClick, { signal: t }), this.quill.root.addEventListener("scroll", this._repositionOverlay, { signal: t }), this._resizeObserver = new ResizeObserver(this._repositionOverlay), this._resizeObserver.observe(this.quill.root);
+    this.overlay.addEventListener("wheel", this._passWheelEventThrough, { passive: !1, signal: t }), this.overlay.addEventListener("touchstart", this._onTouchScrollStart, { passive: !1, signal: t }), this.overlay.addEventListener("touchmove", this._onTouchScrollMove, { passive: !1, signal: t }), this.overlay.addEventListener("contextmenu", this._preventContextMenu, { signal: t }), this.quill.root.addEventListener("click", this._onClick, { signal: t }), this.quill.root.addEventListener("scroll", this._repositionOverlay, { signal: t }), this._resizeObserver = new ResizeObserver(this._repositionOverlay), this._resizeObserver.observe(this.quill.root), this._qlDisabledObserver.observe(this.quill.container, {
+      attributes: !0,
+      attributeFilter: ["class"]
+    });
   };
   /**
    * Removes event listeners and observers associated with the instance.
@@ -2880,7 +2937,7 @@ class nt {
    * @private
    */
   _removeEventListeners = () => {
-    this._abortController?.abort(), this._resizeObserver?.disconnect();
+    this._abortController?.abort(), this._resizeObserver?.disconnect(), this._qlDisabledObserver.disconnect();
   };
   /**
    * Prevents the default context menu from appearing and stops the event from propagating further.
@@ -3024,11 +3081,11 @@ class nt {
    */
   _registerCustomBlots = () => {
     if (this.options.image.registerImageTitleBlot) {
-      const t = W(this.Quill);
+      const t = q(this.Quill);
       this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, !0), this.options.debug && console.debug("formats/image after register:", this.Quill.import("formats/image"));
     }
     if (this.options.video.registerCustomVideoBlot) {
-      const t = $(this.Quill);
+      const t = j(this.Quill);
       this.options.debug && (console.debug("Registering custom Video blot", t), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, !0), this.options.debug && console.debug("formats/video after register:", this.Quill.import("formats/video"));
     }
   };
@@ -3125,25 +3182,25 @@ class nt {
 }
 export {
   v as Action,
-  F as AlignAction,
-  Q as AttributeAction,
-  z as BlotSpec,
+  P as AlignAction,
+  K as AttributeAction,
+  I as BlotSpec,
   _ as CaretAction,
-  P as DefaultAligner,
-  M as DefaultOptions,
-  U as DeleteAction,
-  K as IframeVideoSpec,
-  G as ImageSpec,
-  Z as LinkAction,
-  V as ResizeAction,
-  I as Toolbar,
+  $ as DefaultAligner,
+  J as DefaultOptions,
+  F as DeleteAction,
+  Y as IframeVideoSpec,
+  Z as ImageSpec,
+  Q as LinkAction,
+  U as ResizeAction,
+  N as Toolbar,
   A as ToolbarButton,
   k as TooltipContainPosition,
-  Y as UnclickableBlotSpec,
-  W as createAltTitleImageBlotClass,
-  D as createIframeAlignAttributor,
-  j as createImageAlignAttributor,
-  $ as createResponsiveVideoBlotClass,
+  X as UnclickableBlotSpec,
+  q as createAltTitleImageBlotClass,
+  W as createIframeAlignAttributor,
+  D as createImageAlignAttributor,
+  j as createResponsiveVideoBlotClass,
   nt as default
 };
 //# sourceMappingURL=index.esm.js.map

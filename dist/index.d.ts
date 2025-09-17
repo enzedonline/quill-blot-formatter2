@@ -333,6 +333,7 @@ declare class BlotFormatter {
     toolbar: Toolbar;
     sizeInfo: HTMLElement;
     actions: Action[];
+    private _enabled;
     private _startX;
     private _startY;
     private _abortController?;
@@ -348,6 +349,50 @@ declare class BlotFormatter {
      * Catches and logs any errors that occur during the destruction process.
      */
     destroy: () => void;
+    /**
+     * Indicates whether the blot formatter is currently active.
+     *
+     * When `true`, formatting controls and interactions are available.
+     * When `false`, the formatter is disabled and will not react to user input. Proxy images are hidden by css.
+     *
+     * @returns True if the formatter is enabled; otherwise false.
+     */
+    get enabled(): boolean;
+    /**
+     * Enables or disables the blot formatter UI.
+     *
+     * When set to false, any currently visible formatter interface (such as
+     * overlays, resize handles, or toolbars) is immediately hidden via `hide()`.
+     * While disabled, user interactions that would normally trigger the formatter
+     * are ignored until re-enabled.
+     *
+     * @param value True to enable the formatter; false to disable it and hide all active UI.
+     */
+    set enabled(value: boolean);
+    /**
+     * MutationObserver monitoring the Quill editor container's class attribute to track disabled state.
+     *
+     * When the container gains or loses the 'ql-disabled' CSS class, this observer updates the
+     * formatter's `enabled` property accordingly, ensuring the formatter UI is automatically
+     * disabled/enabled in sync with the editor.
+     *
+     * Behavior:
+     * - Listens only for attribute mutations on the 'class' attribute.
+     * - Sets `this.enabled` to false if 'ql-disabled' is present; true otherwise.
+     *
+     * Rationale:
+     * Centralizes Quill's disabled state propagation without requiring explicit event hooks or
+     * modifications to Quill's core. This avoids polling and keeps formatter state consistent.
+     *
+     * Lifecycle:
+     * - Should be started after the editor container is available.
+     * - Must be disconnected during teardown (e.g., in a destroy/dispose method) to prevent memory leaks.
+     *
+     * Caveats:
+     * - Assumes the presence and semantic meaning of the 'ql-disabled' class as used by Quill.
+     * - If external code mutates classes frequently, this may fire often; the handler is intentionally lightweight.
+     */
+    private _qlDisabledObserver;
     /**
      * Displays the blot formatter overlay for the specified blot.
      *
@@ -445,6 +490,8 @@ declare class BlotFormatter {
      * - For the Quill root:
      *   - Repositions the overlay on scroll and resize events.
      *   - Dismisses the overlay when clicking on the Quill root.
+     * - For the quill container
+     *   - Observes class attribute changes to detect disabled state.
      *
      * This method ensures proper interaction and synchronization between the overlay
      * and the Quill editor, handling user input and UI updates.
