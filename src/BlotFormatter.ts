@@ -80,6 +80,7 @@ export default class BlotFormatter {
   toolbar: Toolbar;
   sizeInfo: HTMLElement;
   actions: Action[];
+  private _enabled: boolean = true;
   private _startX: number = 0; // touch scroll tracking
   private _startY: number = 0;
   private _abortController?: AbortController;
@@ -114,20 +115,16 @@ export default class BlotFormatter {
       'attributors/class/iframeAlign': this.IframeAlign,
     }, true);
 
-    // disable Blot Formatter behaviour when editor is read only
-    if (quill.options.readOnly) {
-      this.options = DefaultOptions;
-      this.toolbar = new Toolbar(this);
-      this.specs = [];
-      this.overlay = document.createElement('div');
-      this.sizeInfo = document.createElement('div');
-      if (options.debug) console.debug('BlotFormatter disabled in read-only mode');
-      return;
-    }
-
     // merge custom options with default
     this.options = deepmerge(DefaultOptions, options, { arrayMerge: dontMerge });
     if (options.debug) console.debug('BlotFormatter options', this.options);
+
+    // set enabled, add css to hide proxy images when editor is disabled
+    this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains('ql-disabled'));
+    const style = document.createElement('style');
+    style.innerHTML = `.ql-disabled .blot-formatter__proxy-image {display: none;}`;
+    document.head.appendChild(style);
+
     // create overlay & size info plus associated event listeners 
     [this.overlay, this.sizeInfo] = this._createOverlay();
     this._addEventListeners();
@@ -153,7 +150,6 @@ export default class BlotFormatter {
     }
 
   }
-
 
   /**
    * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
@@ -195,6 +191,64 @@ export default class BlotFormatter {
   };
 
   /**
+   * Indicates whether the blot formatter is currently active.
+   *
+   * When `true`, formatting controls and interactions are available.
+   * When `false`, the formatter is disabled and will not react to user input. Proxy images are hidden by css.
+   *
+   * @returns True if the formatter is enabled; otherwise false.
+   */
+  get enabled(): boolean {
+    return this._enabled;
+  }
+
+  /**
+   * Enables or disables the blot formatter UI.
+   *
+   * When set to false, any currently visible formatter interface (such as
+   * overlays, resize handles, or toolbars) is immediately hidden via `hide()`.
+   * While disabled, user interactions that would normally trigger the formatter
+   * are ignored until re-enabled.
+   *
+   * @param value True to enable the formatter; false to disable it and hide all active UI.
+   */
+  set enabled(value: boolean) {
+    if (!value) this.hide();
+    this._enabled = value;
+  }
+
+  /**
+   * MutationObserver monitoring the Quill editor container's class attribute to track disabled state.
+   *
+   * When the container gains or loses the 'ql-disabled' CSS class, this observer updates the
+   * formatter's `enabled` property accordingly, ensuring the formatter UI is automatically
+   * disabled/enabled in sync with the editor.
+   *
+   * Behavior:
+   * - Listens only for attribute mutations on the 'class' attribute.
+   * - Sets `this.enabled` to false if 'ql-disabled' is present; true otherwise.
+   *
+   * Rationale:
+   * Centralizes Quill's disabled state propagation without requiring explicit event hooks or
+   * modifications to Quill's core. This avoids polling and keeps formatter state consistent.
+   *
+   * Lifecycle:
+   * - Should be started after the editor container is available.
+   * - Must be disconnected during teardown (e.g., in a destroy/dispose method) to prevent memory leaks.
+   *
+   * Caveats:
+   * - Assumes the presence and semantic meaning of the 'ql-disabled' class as used by Quill.
+   * - If external code mutates classes frequently, this may fire often; the handler is intentionally lightweight.
+   */
+  private _qlDisabledObserver = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        this.enabled = !this.quill.container.classList.contains('ql-disabled');
+      }
+    });
+  });
+
+  /**
    * Displays the blot formatter overlay for the specified blot.
    *
    * This method performs the following actions:
@@ -215,6 +269,8 @@ export default class BlotFormatter {
    */
   show = (spec: BlotSpec): void => {
     try {
+      // exit early if editor is readOnly or disabled
+      if (!this.enabled) return;
       // hide any open tooltips (closes open hyperlink dialog and more)
       this.quill.container.querySelectorAll('.ql-tooltip:not(.ql-hidden)').forEach(
         (tooltip: HTMLElement) => {
@@ -455,6 +511,8 @@ export default class BlotFormatter {
    * - For the Quill root:
    *   - Repositions the overlay on scroll and resize events.
    *   - Dismisses the overlay when clicking on the Quill root.
+   * - For the quill container
+   *   - Observes class attribute changes to detect disabled state.
    *
    * This method ensures proper interaction and synchronization between the overlay
    * and the Quill editor, handling user input and UI updates.
@@ -481,6 +539,12 @@ export default class BlotFormatter {
 
     this._resizeObserver = new ResizeObserver(this._repositionOverlay);
     this._resizeObserver.observe(this.quill.root);
+
+    // observe quill container for disabled state changes
+    this._qlDisabledObserver.observe(this.quill.container, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
   }
 
   /**
@@ -494,6 +558,7 @@ export default class BlotFormatter {
   private _removeEventListeners = (): void => {
     this._abortController?.abort();
     this._resizeObserver?.disconnect();
+    this._qlDisabledObserver.disconnect();
   };
 
   /**
