@@ -1,5 +1,9 @@
 # Changelog
 
+## [v3.0.3] - 2025-10-11
+### Changed
+Bug fix to prevent Image onclick behaviour if formatter disabled. Fixes bug that stopped click event bubbling when quill editor disabled.
+
 ## [v3.0.2] - 2025-09-18
 ### Changed
 Add `enabled` property to mirror Quill editor enabled state. Hide proxies and disable image click behaviour when enabled false. Mutation observer on quill container monitors changes to classlist and set enabled based on presence of `ql-disabled`. Previous behaviour only disabled if quill started with read-only option.
