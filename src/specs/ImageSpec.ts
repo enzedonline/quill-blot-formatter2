@@ -86,7 +86,7 @@ export default class ImageSpec extends BlotSpec {
    */
   onClick = (event: MouseEvent): void => {
     const el = event.target;
-    if (el instanceof HTMLImageElement) {
+    if (this.formatter.enabled && el instanceof HTMLImageElement) {
       // prevent <a> links from opening
       event.stopImmediatePropagation();
       event.preventDefault();
