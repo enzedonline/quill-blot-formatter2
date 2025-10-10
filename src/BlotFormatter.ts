@@ -638,7 +638,7 @@ export default class BlotFormatter {
    *
    * @param event - The pointer event triggered by user interaction.
    */
-  private _onDocumentPointerDown = (event: PointerEvent) => {
+  private _onDocumentPointerDown = (event: PointerEvent): void => {
     // if clicked outside of quill editor and not a blot formatter modal or iframe proxy image, dismiss overlay 
     const target = event.target as HTMLElement;
     if (!(
@@ -658,9 +658,9 @@ export default class BlotFormatter {
    *
    * @param event - The pointer event triggered by the user's click.
    */
-  private _onClick = (event: PointerEvent) => {
+  private _onClick = (event: PointerEvent): void => {
     if (this.options.debug) console.debug('BlotFormatter _onClick', event);
-    this.hide(event);
+    if (this.enabled) this.hide(event);
   }
 
   /**
@@ -673,7 +673,7 @@ export default class BlotFormatter {
    * @remarks
    * If the `debug` option is enabled, this method logs the scroll delta values to the console.
    */
-  _passWheelEventThrough = (event: WheelEvent) => {
+  _passWheelEventThrough = (event: WheelEvent): void => {
     // scroll the quill root element when overlay or proxy wheel scrolled
     this.quill.root.scrollLeft += event.deltaX;
     this.quill.root.scrollTop += event.deltaY;
@@ -688,7 +688,7 @@ export default class BlotFormatter {
    *
    * @param event - The touch event triggered when the user starts touching the screen.
    */
-  _onTouchScrollStart = (event: TouchEvent) => {
+  _onTouchScrollStart = (event: TouchEvent): void => {
     // Record the initial touch positions
     if (event.touches.length === 1) {
       const touch = event.touches[0];
@@ -715,7 +715,7 @@ export default class BlotFormatter {
    * - Updates the starting touch coordinates after each move to track incremental movement.
    * - Logs debug information if the `debug` option is enabled.
    */
-  _onTouchScrollMove = (event: TouchEvent) => {
+  _onTouchScrollMove = (event: TouchEvent): void => {
     if (event.touches.length === 1) {
       const touch = event.touches[0];
       const deltaX = this._startX - touch.clientX;
