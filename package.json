@@ -3,14 +3,14 @@
   "version": "3.0.3",
   "description": "An update for quill-blot-formatter to make quilljs v2 compatible.",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.esm.js",
-      "require": "./dist/index.js"
+      "require": "./dist/index.cjs"
     },
     "./dist/css/quill-blot-formatter2.css": "./dist/css/quill-blot-formatter2.css"
   },
