@@ -74,7 +74,7 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
  - Debugging is now available by setting option `debug: true` - this is a verbose mode with output to the debug console.
  - Formatter toolbar will now scroll into view in most cases if hidden when activating formatter overlay.
  - Optional Quill tooltip fix will contain Quill's native tooltip within the bounds of the Quill editor element. This is intended for use on scrollable editors where Quill will display the tooltip outside if this rectangle in some cases causing clipping.
- - v3.0.1 adds option `image: { autoheight: boolean }`. When set to false, image height will be set in px rather than default `auto` - adresses requirement for PDF output.
+ - v3.0.1 adds option `image: { autoHeight: boolean }`. When set to false, image height will be set in px rather than default `auto` - adresses requirement for PDF output.
  - v3.0.2 adds enabled state to mirror Quill editor enabled state. Disables formatter and hides video proxy images when enabled is false.
 
 ### Version 2.4
