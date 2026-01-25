@@ -46,13 +46,12 @@
     "deepmerge": "^4.3.1"
   },
   "devDependencies": {
-    "@types/node": "^24.2.0",
+    "@types/node": "^24.10.9",
     "ajv": "^8.17.1",
     "quill": "^2.0.3",
-    "rimraf": "^6.0.1",
-    "rollup-plugin-visualizer": "^6.0.3",
-    "typescript": "^5.9.2",
-    "vite": "^7.0.6",
+    "rimraf": "^6.1.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4"
   },
   "scripts": {

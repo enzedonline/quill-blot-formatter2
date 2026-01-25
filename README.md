@@ -63,6 +63,19 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 
 ## What's New
 
+### Version 3.1
+ Adds a .cjs output and fixes the default export.
+ 
+ Syntax for using `require` changes from:
+```js
+const BlotFormatter = require('quill-blot-formatter2').default;
+```
+to
+```js
+const BlotFormatter = require('quill-blot-formatter2');
+```
+`.default` remains valid for backwards compatibility.
+
 ### Version 3.0
  > [!CAUTION]
  > While there are minor changes to functionality with this release, there are significant changes under the hood, and changes to the build paths. If you are upgrading and have significant modifications in place with this package, test thoroughly before putting in production. This is particularly the case if you have modified the align format attributor classes. 
@@ -158,7 +171,7 @@ npm install @enzedonline/quill-blot-formatter2
 ### Node.js / CommonJS
 
 ```js
-const BlotFormatter = require('@enzedonline/quill-blot-formatter2').default;
+const BlotFormatter = require('@enzedonline/quill-blot-formatter2');
 // or for named exports (for example, Options):
 const { Options } = require('@enzedonline/quill-blot-formatter2');
 ```

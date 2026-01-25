@@ -130,7 +130,7 @@ function R() {
     var c = Object.prototype.toString.call(a);
     return c === "[object RegExp]" || c === "[object Date]" || o(a);
   }
-  var i = typeof Symbol == "function" && Symbol.for, s = i ? Symbol.for("react.element") : 60103;
+  var i = typeof Symbol == "function" && Symbol.for, s = i ? /* @__PURE__ */ Symbol.for("react.element") : 60103;
   function o(a) {
     return a.$$typeof === s;
   }

@@ -1,5 +1,18 @@
 # Changelog
 
+## [v3.1.0] - 2026-01-26
+### Changed
+Build: add CommonJS bundle and fix CJS default export
+
+- Produce a proper CommonJS build (dist/index.cjs) by adding the "cjs" format to the Vite lib build.
+- Update package.json main and exports.require to point to ./dist/index.cjs so require(...) loads the CJS bundle.
+- ESM consumers are unchanged (module export and types remain pointing at dist/index.esm.js and dist/index.d.ts).
+
+Migration note:
+- CommonJS users can now do:
+  const BlotFormatter = require('quill-blot-formatter2');
+  and receive the default class directly (no .default required).
+
 ## [v3.0.3] - 2025-10-11
 ### Changed
 Bug fix to prevent Image onclick behaviour if formatter disabled. Fixes bug that stopped click event bubbling when quill editor disabled.

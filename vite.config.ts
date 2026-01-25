@@ -2,7 +2,6 @@ import dts from 'vite-plugin-dts';
 import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
     base: './',
@@ -34,7 +33,6 @@ export default defineConfig({
                 copyFileSync('src/css/quill-blot-formatter2.css', 'dist/css/quill-blot-formatter2.css');
             }
         },
-        // visualizer({ open: true, filename: 'stats.html' }) 
     ],
     build: {
         lib: {
