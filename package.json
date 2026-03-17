@@ -46,6 +46,7 @@
     "deepmerge": "^4.3.1"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.57.7",
     "@types/node": "^24.10.9",
     "ajv": "^8.17.1",
     "quill": "^2.0.3",
