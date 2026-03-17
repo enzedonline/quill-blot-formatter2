@@ -23,4 +23,9 @@ jobs:
 
       - run: npm ci
 
+      # create a github release
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+
       - run: npm publish
