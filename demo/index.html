@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Quill Blot Formatter Demo</title>
-        <link href="https://cdn.jsdelivr.net/npm/quill@2.0/dist/quill.snow.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0/dist/quill.snow.css"
+              rel="stylesheet">
         <link rel="stylesheet" href="../dist/css/quill-blot-formatter2.css">
         <style>
             body {
@@ -18,7 +18,6 @@
             }
         </style>
     </head>
-
     <body>
         <h1>Quill Blot Formatter Demo</h1>
         <a href="index-esm.html">ESM Version</a> |
@@ -35,6 +34,8 @@
                     toolbar: [
                         [{ header: [1, 2, false] }],
                         ["bold", "italic", "underline"],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'indent': '-1'}, { 'indent': '+1' }],
                         ["image", "video"]
                     ],
                     blotFormatter2: {
@@ -66,5 +67,4 @@
             window.quill = quill; // for debugging
         </script>
     </body>
-
 </html>
