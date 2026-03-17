@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.1.1] - 2026-03-17
+### Changed
+
+Limit `registerBackspaceFix` and `registerArrowRightFix` to fire only when associated with their specific targets - fixes [Issue #49](https://github.com/enzedonline/quill-blot-formatter2/issues/49):
+
+`registerBackspaceFix` fires only for iframes
+`registerArrowRightFix` fires only for formatted image wrapper with `contenteditable=false` span
+
 ## [v3.1.0] - 2026-01-26
 ### Changed
 Build: add CommonJS bundle and fix CJS default export
