@@ -1,0 +1,3 @@
+# Ensure consistent line endings for build output
+/dist/* text eol=lf
+*.js text eol=lf
