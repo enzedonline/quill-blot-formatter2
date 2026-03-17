@@ -60,6 +60,7 @@
     "prepublishOnly": "npm run build",
     "dev": "vite --host 0.0.0.0 --port 3000",
     "preview": "vite preview",
-    "preinstall": "node ./check-upgrade.cjs"
+    "preinstall": "node ./check-upgrade.cjs",
+    "release_minor": "npm run build && git add dist && npm version minor -m \"release: v%s\" && git push origin main --follow-tags"
   }
 }
