@@ -834,12 +834,24 @@ export default class BlotFormatter {
           }
         },
         handler: (range: any) => {
-          this.quill.deleteText(range.index - 1, 1, "user");
+          // Get the blot before the cursor - only fire for iframes
+          const [blot] = this.quill.getLeaf(range.index - 1)
+          if (blot?.domNode?.tagName !== 'IFRAME')
+            return true
+          this.quill.deleteText(range.index - 1, 1, 'user')
+          if (this.options.debug)
+            console.debug(
+              'BlotFormatter Backspace binding triggered, deleting iframe at index',
+              range.index - 1
+            )
         }
       }
-      this.quill.keyboard.bindings.Backspace.unshift(backspaceRule);
+      this.quill.keyboard.bindings.Backspace.unshift(backspaceRule)
       if (this.options.debug)
-        console.debug('BlotFormatter added Backspace keyboard binding', backspaceRule);
+        console.debug(
+          'BlotFormatter added Backspace keyboard binding',
+          backspaceRule
+        )
     }
 
     // handles moving the cursor past the image when format set
@@ -853,13 +865,17 @@ export default class BlotFormatter {
         collapsed: true,
         empty: false,
         suffix: /^$/,
-        line: {
-          domNode: {
-            tagName: "P"
-          }
-        },
-        handler: (range: any, context: any) => {
+        handler: (range: any) => {
           const index = range.index + range.length;
+          // detect formatted image wrapper with contenteditable=false span - only fire for these
+          const [nextLeaf] = this.quill.getLeaf(index + 1);
+          if (!nextLeaf?.domNode) {
+            return true;
+          }
+          const node = nextLeaf.domNode;
+          if (node?.tagName !== 'IMG' || !node.parentElement?.matches('span[contenteditable="false"]')) {
+            return true;
+          }
           const documentLength = this.quill.getLength();
           if (index + 1 >= documentLength - 1) {
             // For the last blot, place cursor at the very end
@@ -870,6 +886,11 @@ export default class BlotFormatter {
             this.quill.setSelection(index + 2, 0, "user");
             CaretAction.sendCaretBack(1); // Move cursor back by 1 character
           }
+          if (this.options.debug)
+            console.debug(
+              'BlotFormatter ArrowRight binding triggered, moving cursor past image at index',
+              index
+            );
         }
       };
       this.quill.keyboard.bindings.ArrowRight.unshift(arrowRightFixRule);
