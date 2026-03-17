@@ -2677,16 +2677,29 @@ class nt {
   constructor(t, e = {}) {
     this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this);
     const i = D(this.Quill), s = W(this.Quill);
-    this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
-      "formats/imageAlign": this.ImageAlign,
-      "attributors/class/imageAlign": this.ImageAlign,
-      "formats/iframeAlign": this.IframeAlign,
-      "attributors/class/iframeAlign": this.IframeAlign
-    }, !0), this.options = H(J, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains("ql-disabled"));
+    this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug(
+      "Registering custom align formats",
+      this.ImageAlign,
+      this.IframeAlign
+    ), this.Quill.register(
+      {
+        "formats/imageAlign": this.ImageAlign,
+        "attributors/class/imageAlign": this.ImageAlign,
+        "formats/iframeAlign": this.IframeAlign,
+        "attributors/class/iframeAlign": this.IframeAlign
+      },
+      !0
+    ), this.options = H(J, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains("ql-disabled"));
     const o = document.createElement("style");
     o.innerHTML = ".ql-disabled .blot-formatter__proxy-image {display: none;}", document.head.appendChild(o), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new N(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
       (n) => new n(this)
-    ), this.specs.forEach((n) => n.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(this.quill, this.options.debug));
+    ), this.specs.forEach((n) => n.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug(
+      "tooltip option",
+      this.options.tooltip?.containTooltipPosition
+    ), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(
+      this.quill,
+      this.options.debug
+    ));
   }
   /**
    * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
@@ -2775,11 +2788,9 @@ class nt {
   show = (t) => {
     try {
       if (!this.enabled) return;
-      this.quill.container.querySelectorAll(".ql-tooltip:not(.ql-hidden)").forEach(
-        (e) => {
-          e.classList.add("ql-hidden");
-        }
-      ), this.options.debug && (window.blotFormatter = this), this.hide(), this.currentSpec = t, this.currentSpec.setSelection(), this._setUserSelect("none"), this.quill.container.appendChild(this.overlay), this._repositionOverlay(), this._createActions(t), this.toolbar.create(), this._scrollToolbarIntoView(this.toolbar.element), document.addEventListener("pointerdown", this._onDocumentPointerDown), this.options.debug && console.debug("BlotFormatter show", t);
+      this.quill.container.querySelectorAll(".ql-tooltip:not(.ql-hidden)").forEach((e) => {
+        e.classList.add("ql-hidden");
+      }), this.options.debug && (window.blotFormatter = this), this.hide(), this.currentSpec = t, this.currentSpec.setSelection(), this._setUserSelect("none"), this.quill.container.appendChild(this.overlay), this._repositionOverlay(), this._createActions(t), this.toolbar.create(), this._scrollToolbarIntoView(this.toolbar.element), document.addEventListener("pointerdown", this._onDocumentPointerDown), this.options.debug && console.debug("BlotFormatter show", t);
     } catch (e) {
       throw console.error("Error showing BlotFormatter:", e), this.hide(), e;
     }
@@ -2826,7 +2837,7 @@ class nt {
   };
   /**
    * Initializes the actions for the given blot specification.
-   * 
+   *
    * This method retrieves the list of actions from the provided `spec` using `getActions()`,
    * calls the `onCreate()` lifecycle method on each action, and assigns the resulting array
    * to the `actions` property. If debugging is enabled in the options, it logs each created action.
@@ -2850,7 +2861,7 @@ class nt {
    *
    * The overlay element is styled and configured to be non-selectable, and the size info element
    * is appended to the overlay. Both elements can be customized via the `options.overlay` property.
-   * 
+   *
    * @returns A tuple containing the overlay HTMLElement and the size info HTMLElement.
    */
   _createOverlay = () => {
@@ -2871,7 +2882,12 @@ class nt {
   _scrollToolbarIntoView = async (t) => {
     let e = t.getBoundingClientRect();
     const i = this.quill.container.getBoundingClientRect(), s = this.currentSpec?.getTargetElement();
-    e.top - i.top < 0 && s && (await this._scrollIntoViewWithOffset(s, e.height), e = t.getBoundingClientRect()), e.top < 0 && (this.options.debug && console.debug(`Scrolling window ${e.top - e.height}px to bring toolbar into view`), window.scrollBy({ top: e.top - e.height, behavior: "smooth" }));
+    e.top - i.top < 0 && s && (await this._scrollIntoViewWithOffset(s, e.height), e = t.getBoundingClientRect()), e.top < 0 && (this.options.debug && console.debug(
+      `Scrolling window ${e.top - e.height}px to bring toolbar into view`
+    ), window.scrollBy({
+      top: e.top - e.height,
+      behavior: "smooth"
+    }));
   };
   /**
    * Scrolls the first scrollable ancestor of the given element into view with a specified offset.
@@ -2887,12 +2903,15 @@ class nt {
     let s = null;
     for (let o = t.parentElement; o; o = o.parentElement) {
       const { overflowY: n } = getComputedStyle(o);
-      if (!["auto", "scroll"].includes(n) || o.scrollHeight <= o.clientHeight) continue;
+      if (!["auto", "scroll"].includes(n) || o.scrollHeight <= o.clientHeight)
+        continue;
       const r = o.getBoundingClientRect(), l = t.getBoundingClientRect();
       if (l.top < r.top + e) {
         s = o, o.scrollTo({
           top: o.scrollTop + l.top - r.top - e
-        }), this.options.debug && console.debug(`Scrolling ancestor ${o.tagName} to bring element into view with offset ${e}px`);
+        }), this.options.debug && console.debug(
+          `Scrolling ancestor ${o.tagName} to bring element into view with offset ${e}px`
+        );
         break;
       }
     }
@@ -2923,14 +2942,27 @@ class nt {
   _addEventListeners = () => {
     this._abortController = new AbortController();
     const { signal: t } = this._abortController;
-    this.overlay.addEventListener("wheel", this._passWheelEventThrough, { passive: !1, signal: t }), this.overlay.addEventListener("touchstart", this._onTouchScrollStart, { passive: !1, signal: t }), this.overlay.addEventListener("touchmove", this._onTouchScrollMove, { passive: !1, signal: t }), this.overlay.addEventListener("contextmenu", this._preventContextMenu, { signal: t }), this.quill.root.addEventListener("click", this._onClick, { signal: t }), this.quill.root.addEventListener("scroll", this._repositionOverlay, { signal: t }), this._resizeObserver = new ResizeObserver(this._repositionOverlay), this._resizeObserver.observe(this.quill.root), this._qlDisabledObserver.observe(this.quill.container, {
+    this.overlay.addEventListener("wheel", this._passWheelEventThrough, {
+      passive: !1,
+      signal: t
+    }), this.overlay.addEventListener("touchstart", this._onTouchScrollStart, {
+      passive: !1,
+      signal: t
+    }), this.overlay.addEventListener("touchmove", this._onTouchScrollMove, {
+      passive: !1,
+      signal: t
+    }), this.overlay.addEventListener("contextmenu", this._preventContextMenu, {
+      signal: t
+    }), this.quill.root.addEventListener("click", this._onClick, { signal: t }), this.quill.root.addEventListener("scroll", this._repositionOverlay, {
+      signal: t
+    }), this._resizeObserver = new ResizeObserver(this._repositionOverlay), this._resizeObserver.observe(this.quill.root), this._qlDisabledObserver.observe(this.quill.container, {
       attributes: !0,
       attributeFilter: ["class"]
     });
   };
   /**
    * Removes event listeners and observers associated with the instance.
-   * 
+   *
    * Aborts any ongoing operations managed by the internal AbortController,
    * and disconnects the internal ResizeObserver to stop observing changes.
    *
@@ -2970,7 +3002,13 @@ class nt {
         Object.assign(this.overlay.style, {
           display: "block",
           ...s
-        }), this.options.debug && console.debug("Blotformatter _repositionOverlay", "specRect:", i, "overlayRect:", s);
+        }), this.options.debug && console.debug(
+          "Blotformatter _repositionOverlay",
+          "specRect:",
+          i,
+          "overlayRect:",
+          s
+        );
       }
     }
   };
@@ -3007,7 +3045,7 @@ class nt {
   };
   /**
    * Handles pointer click events on the editor.
-   * 
+   *
    * If debugging is enabled in the options, logs the click event to the console.
    * Then, hides the formatter UI in response to the click event.
    *
@@ -3027,7 +3065,9 @@ class nt {
    * If the `debug` option is enabled, this method logs the scroll delta values to the console.
    */
   _passWheelEventThrough = (t) => {
-    this.quill.root.scrollLeft += t.deltaX, this.quill.root.scrollTop += t.deltaY, this.options.debug && console.debug(`BlotFormatter scrolling Quill root x: ${t.deltaX}, y: ${t.deltaY}`);
+    this.quill.root.scrollLeft += t.deltaX, this.quill.root.scrollTop += t.deltaY, this.options.debug && console.debug(
+      `BlotFormatter scrolling Quill root x: ${t.deltaX}, y: ${t.deltaY}`
+    );
   };
   /**
    * Handles the touch start event for scrolling interactions.
@@ -3039,19 +3079,22 @@ class nt {
   _onTouchScrollStart = (t) => {
     if (t.touches.length === 1) {
       const e = t.touches[0];
-      this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter _onTouchScrollStart", `X: ${this._startX}, Y: ${this._startY}`);
+      this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug(
+        "BlotFormatter _onTouchScrollStart",
+        `X: ${this._startX}, Y: ${this._startY}`
+      );
     }
   };
   /**
    * Handles touch move events to enable custom scrolling behavior within the Quill editor root element.
-   * 
+   *
    * This method allows for both vertical and horizontal scrolling using touch gestures,
    * and prevents default browser scrolling when appropriate to provide a smoother, controlled experience.
    * It updates the scroll position of the editor root based on the movement of the touch point,
    * and ensures scrolling does not exceed the bounds of the content.
-   * 
+   *
    * @param event - The touch event triggered by the user's finger movement.
-   * 
+   *
    * @remarks
    * - Only processes single-touch events.
    * - Prevents default scrolling if the editor can be scrolled further in the direction of the gesture.
@@ -3064,7 +3107,10 @@ class nt {
       if (Math.abs(i) < 2 && Math.abs(s) < 2) return;
       const o = this.quill.root, n = o.scrollTop === 0, r = o.scrollTop + o.clientHeight === o.scrollHeight, l = o.scrollLeft === 0, p = o.scrollLeft + o.clientWidth === o.scrollWidth, m = Math.abs(s) > Math.abs(i), u = Math.abs(i) > Math.abs(s);
       let g = !1;
-      m && !(n && s < 0) && !(r && s > 0) && (g = !0, o.scrollTop += s), u && !(l && i < 0) && !(p && i > 0) && (g = !0, o.scrollLeft += i), g && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter touch scroll end", `X: ${this._startX}, Y: ${this._startY}`);
+      m && !(n && s < 0) && !(r && s > 0) && (g = !0, o.scrollTop += s), u && !(l && i < 0) && !(p && i > 0) && (g = !0, o.scrollLeft += i), g && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug(
+        "BlotFormatter touch scroll end",
+        `X: ${this._startX}, Y: ${this._startY}`
+      );
     }
   };
   /**
@@ -3082,11 +3128,20 @@ class nt {
   _registerCustomBlots = () => {
     if (this.options.image.registerImageTitleBlot) {
       const t = q(this.Quill);
-      this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, !0), this.options.debug && console.debug("formats/image after register:", this.Quill.import("formats/image"));
+      this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, !0), this.options.debug && console.debug(
+        "formats/image after register:",
+        this.Quill.import("formats/image")
+      );
     }
     if (this.options.video.registerCustomVideoBlot) {
       const t = j(this.Quill);
-      this.options.debug && (console.debug("Registering custom Video blot", t), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, !0), this.options.debug && console.debug("formats/video after register:", this.Quill.import("formats/video"));
+      this.options.debug && (console.debug("Registering custom Video blot", t), console.debug(
+        "Setting default aspect ratio for Video blot",
+        this.options.video.defaultAspectRatio
+      )), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, !0), this.options.debug && console.debug(
+        "formats/video after register:",
+        this.Quill.import("formats/video")
+      );
     }
   };
   /**
@@ -3115,10 +3170,19 @@ class nt {
           }
         },
         handler: (e) => {
-          this.quill.deleteText(e.index - 1, 1, "user");
+          const [i] = this.quill.getLeaf(e.index - 1);
+          if (i?.domNode?.tagName !== "IFRAME")
+            return !0;
+          this.quill.deleteText(e.index - 1, 1, "user"), this.options.debug && console.debug(
+            "BlotFormatter Backspace binding triggered, deleting iframe at index",
+            e.index - 1
+          );
         }
       };
-      this.quill.keyboard.bindings.Backspace.unshift(t), this.options.debug && console.debug("BlotFormatter added Backspace keyboard binding", t);
+      this.quill.keyboard.bindings.Backspace.unshift(t), this.options.debug && console.debug(
+        "BlotFormatter added Backspace keyboard binding",
+        t
+      );
     }
     if (this.options.image.registerArrowRightFix) {
       this.quill.keyboard.bindings.ArrowRight || (this.quill.keyboard.bindings.ArrowRight = []);
@@ -3127,17 +3191,24 @@ class nt {
         collapsed: !0,
         empty: !1,
         suffix: /^$/,
-        line: {
-          domNode: {
-            tagName: "P"
-          }
-        },
-        handler: (e, i) => {
-          const s = e.index + e.length, o = this.quill.getLength();
-          s + 1 >= o - 1 ? this.quill.setSelection(o - 1, 0, "user") : (this.quill.setSelection(s + 2, 0, "user"), _.sendCaretBack(1));
+        handler: (e) => {
+          const i = e.index + e.length, [s] = this.quill.getLeaf(i + 1);
+          if (!s?.domNode)
+            return !0;
+          const o = s.domNode;
+          if (o?.tagName !== "IMG" || o.parentNode?.tagName !== "SPAN")
+            return !0;
+          const n = this.quill.getLength();
+          i + 1 >= n - 1 ? this.quill.setSelection(n - 1, 0, "user") : (this.quill.setSelection(i + 2, 0, "user"), _.sendCaretBack(1)), this.options.debug && console.debug(
+            "BlotFormatter ArrowRight binding triggered, moving cursor past image at index",
+            i
+          );
         }
       };
-      this.quill.keyboard.bindings.ArrowRight.unshift(t), this.options.debug && console.debug("BlotFormatter added ArrowRightFix keyboard binding", t);
+      this.quill.keyboard.bindings.ArrowRight.unshift(t), this.options.debug && console.debug(
+        "BlotFormatter added ArrowRightFix keyboard binding",
+        t
+      );
     }
   };
   /**
@@ -3157,7 +3228,12 @@ class nt {
       const i = t.getAttribute("width");
       i ? e = i.endsWith("%") : e = this.options.resize.useRelativeSize;
     }
-    return this.options.debug && console.debug("BlotFormatter _useRelative", e, "for element", t), e;
+    return this.options.debug && console.debug(
+      "BlotFormatter _useRelative",
+      e,
+      "for element",
+      t
+    ), e;
   };
   /**
    * Determines the relative position of a pointer event with respect to the overlay element.
@@ -3177,7 +3253,12 @@ class nt {
   _getClickPosition = (t) => {
     const i = this.overlay.getBoundingClientRect();
     let s;
-    return t.clientY < i.top ? s = "above" : t.clientY > i.bottom ? s = "below" : t.clientX < i.left ? s = "left" : t.clientX > i.right ? s = "right" : s = "inside", this.options.debug && console.debug("BlotFormatter _getClickPosition", s, "for event", t), s;
+    return t.clientY < i.top ? s = "above" : t.clientY > i.bottom ? s = "below" : t.clientX < i.left ? s = "left" : t.clientX > i.right ? s = "right" : s = "inside", this.options.debug && console.debug(
+      "BlotFormatter _getClickPosition",
+      s,
+      "for event",
+      t
+    ), s;
   };
 }
 export {
