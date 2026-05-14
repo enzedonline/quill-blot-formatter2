@@ -12,7 +12,8 @@
     "declaration": true, 
     "declarationDir": "./dist", 
     "outDir": "./dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "useDefineForClassFields": true
   },
   "include": [
     "src/**/*.ts"
