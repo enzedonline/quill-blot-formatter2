@@ -89,6 +89,46 @@ export default class BlotFormatter {
   ImageAlign: AttributorClass;
   IframeAlign: AttributorClass;
 
+  static cache = {
+    ImageAlign: null as any,
+    IframeAlign: null as any,
+  };
+
+  static registerFormats(quillConstructor: typeof Quill, debug: boolean = false) {
+    BlotFormatter.registerImageAlign(quillConstructor, debug);
+    BlotFormatter.registerIframeAlign(quillConstructor, debug);
+  }
+
+  static registerImageAlign(quillConstructor: typeof Quill, debug: boolean = false) {
+    if (!quillConstructor.imports?.['formats/imageAlign']) {
+      const ImageAlignClass = createImageAlignAttributor(quillConstructor);
+      const ImageAlign = new ImageAlignClass(debug);
+      BlotFormatter.cache.ImageAlign = ImageAlign;
+      if (debug) console.debug('Registering imageAlign format with Quill', ImageAlign);
+      quillConstructor.register({
+        'formats/imageAlign': ImageAlign,
+        'attributors/class/imageAlign': ImageAlign,
+      });
+    } else if (debug) {
+      console.debug('Image align format already registered with Quill, skipping registration');
+    }
+  }
+
+  static registerIframeAlign(quillConstructor: typeof Quill, debug: boolean = false) {
+    if (!quillConstructor.imports?.['formats/iframeAlign']) {
+      const IframeAlignClass = createIframeAlignAttributor(quillConstructor);
+      const IframeAlign = new IframeAlignClass(debug);
+      BlotFormatter.cache.IframeAlign = IframeAlign;
+      if (debug) console.debug('Registering iframeAlign format with Quill', IframeAlign);
+      quillConstructor.register({
+        'formats/iframeAlign': IframeAlign,
+        'attributors/class/iframeAlign': IframeAlign,
+      });
+    } else if (debug) {
+      console.debug('Iframe align format already registered with Quill, skipping registration');
+    }
+  }
+
   constructor(quill: any, options: Partial<Options> = {}) {
     this.Quill = quill.constructor;
     this.quill = quill;
@@ -99,21 +139,25 @@ export default class BlotFormatter {
     }
 
     // Register the custom align formats with Quill
-    const ImageAlignClass = createImageAlignAttributor(this.Quill);
-    const IframeAlignClass = createIframeAlignAttributor(this.Quill);
+    BlotFormatter.registerFormats(this.Quill, options.debug);
+    this.ImageAlign = BlotFormatter.cache.ImageAlign;
+    this.IframeAlign = BlotFormatter.cache.IframeAlign;
 
-    // Create instances of the classes
-    this.ImageAlign = new ImageAlignClass(options.debug);
-    this.IframeAlign = new IframeAlignClass(options.debug);
+    // const ImageAlignClass = createImageAlignAttributor(this.Quill);
+    // const IframeAlignClass = createIframeAlignAttributor(this.Quill);
 
-    // Register the align formats with Quill
-    if (options.debug) console.debug('Registering custom align formats', this.ImageAlign, this.IframeAlign);
-    this.Quill.register({
-      'formats/imageAlign': this.ImageAlign,
-      'attributors/class/imageAlign': this.ImageAlign,
-      'formats/iframeAlign': this.IframeAlign,
-      'attributors/class/iframeAlign': this.IframeAlign,
-    }, true);
+    // // Create instances of the classes
+    // this.ImageAlign = new ImageAlignClass(options.debug);
+    // this.IframeAlign = new IframeAlignClass(options.debug);
+
+    // // Register the align formats with Quill
+    // if (options.debug) console.debug('Registering custom align formats', this.ImageAlign, this.IframeAlign);
+    // this.Quill.register({
+    //   'formats/imageAlign': this.ImageAlign,
+    //   'attributors/class/imageAlign': this.ImageAlign,
+    //   'formats/iframeAlign': this.IframeAlign,
+    //   'attributors/class/iframeAlign': this.IframeAlign,
+    // }, true);
 
     // merge custom options with default
     this.options = deepmerge(DefaultOptions, options, { arrayMerge: dontMerge });
