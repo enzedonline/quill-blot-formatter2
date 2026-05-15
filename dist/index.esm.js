@@ -1,4 +1,4 @@
-class v {
+class x {
   formatter;
   toolbarButtons = [];
   debug;
@@ -24,7 +24,7 @@ class v {
   onUpdate = () => {
   };
 }
-class _ extends v {
+class v extends x {
   /**
    * Moves the caret (text cursor) backward by a specified number of characters within the current selection.
    *
@@ -36,14 +36,14 @@ class _ extends v {
   static sendCaretBack = (t = 1, e = !1) => {
     const i = window.getSelection();
     if (i && i.rangeCount > 0) {
-      const s = i.getRangeAt(0), o = s.startContainer, n = s.startOffset;
+      const o = i.getRangeAt(0), s = o.startContainer, n = o.startOffset;
       if (n > 0)
-        s.setStart(o, n - t);
-      else if (o.previousSibling) {
-        const r = o.previousSibling;
-        r.nodeType === Node.TEXT_NODE && s.setStart(r, r.textContent?.length || 0);
+        o.setStart(s, n - t);
+      else if (s.previousSibling) {
+        const r = s.previousSibling;
+        r.nodeType === Node.TEXT_NODE && o.setStart(r, r.textContent?.length || 0);
       }
-      s.collapse(!0), i.removeAllRanges(), i.addRange(s), e && console.debug("Caret moved back by", t, "characters");
+      o.collapse(!0), i.removeAllRanges(), i.addRange(o), e && console.debug("Caret moved back by", t, "characters");
     }
   };
   /**
@@ -53,8 +53,8 @@ class _ extends v {
    * @param targetBlot - The blot before which the caret should be placed.
    */
   static placeCaretBeforeBlot = (t, e, i = !1) => {
-    const s = t.getIndex(e);
-    t.setSelection(s, 0, "user"), i && console.debug("Caret placed before blot at index:", s, e);
+    const o = t.getIndex(e);
+    t.setSelection(o, 0, "user"), i && console.debug("Caret placed before blot at index:", o, e);
   };
   /**
    * Places the caret (text cursor) immediately after the specified blot in the Quill editor.
@@ -70,8 +70,8 @@ class _ extends v {
    */
   static placeCaretAfterBlot = (t, e, i = !1) => {
     t.setSelection(null), t.root.focus();
-    const s = t.getIndex(e), o = t.getLength();
-    s + 1 >= o - 1 ? (t.setSelection(o - 1, 0, "user"), i && console.debug("Caret placed at the end of the document after blot:", e)) : (i && console.debug("Caret placed after character following blot at index:", s, e), t.setSelection(s + 2, 0, "user"), this.sendCaretBack(1, i));
+    const o = t.getIndex(e), s = t.getLength();
+    o + 1 >= s - 1 ? (t.setSelection(s - 1, 0, "user"), i && console.debug("Caret placed at the end of the document after blot:", e)) : (i && console.debug("Caret placed after character following blot at index:", o, e), t.setSelection(o + 2, 0, "user"), this.sendCaretBack(1, i));
   };
   /**
    * Initializes event listeners for the CaretAction.
@@ -110,16 +110,16 @@ class _ extends v {
     if (!this.formatter.currentSpec || e)
       return;
     const i = this.formatter.currentSpec.getTargetBlot();
-    i && (t.code === "ArrowLeft" ? (_.placeCaretBeforeBlot(this.formatter.quill, i, this.debug), this.formatter.hide()) : t.code === "ArrowRight" && (_.placeCaretAfterBlot(this.formatter.quill, i, this.debug), this.formatter.hide()));
+    i && (t.code === "ArrowLeft" ? (v.placeCaretBeforeBlot(this.formatter.quill, i, this.debug), this.formatter.hide()) : t.code === "ArrowRight" && (v.placeCaretAfterBlot(this.formatter.quill, i, this.debug), this.formatter.hide()));
   };
 }
-function T(h) {
+function R(h) {
   return h && h.__esModule && Object.prototype.hasOwnProperty.call(h, "default") ? h.default : h;
 }
-var C, S;
-function R() {
-  if (S) return C;
-  S = 1;
+var S, I;
+function O() {
+  if (I) return S;
+  I = 1;
   var h = function(c) {
     return t(c) && !e(c);
   };
@@ -128,17 +128,17 @@ function R() {
   }
   function e(a) {
     var c = Object.prototype.toString.call(a);
-    return c === "[object RegExp]" || c === "[object Date]" || o(a);
+    return c === "[object RegExp]" || c === "[object Date]" || s(a);
   }
-  var i = typeof Symbol == "function" && Symbol.for, s = i ? /* @__PURE__ */ Symbol.for("react.element") : 60103;
-  function o(a) {
-    return a.$$typeof === s;
+  var i = typeof Symbol == "function" && Symbol.for, o = i ? /* @__PURE__ */ Symbol.for("react.element") : 60103;
+  function s(a) {
+    return a.$$typeof === o;
   }
   function n(a) {
     return Array.isArray(a) ? [] : {};
   }
   function r(a, c) {
-    return c.clone !== !1 && c.isMergeableObject(a) ? x(n(a), a, c) : a;
+    return c.clone !== !1 && c.isMergeableObject(a) ? w(n(a), a, c) : a;
   }
   function l(a, c, d) {
     return a.concat(c).map(function(y) {
@@ -147,9 +147,9 @@ function R() {
   }
   function p(a, c) {
     if (!c.customMerge)
-      return x;
+      return w;
     var d = c.customMerge(a);
-    return typeof d == "function" ? d : x;
+    return typeof d == "function" ? d : w;
   }
   function m(a) {
     return Object.getOwnPropertySymbols ? Object.getOwnPropertySymbols(a).filter(function(c) {
@@ -169,7 +169,7 @@ function R() {
   function b(a, c) {
     return g(a, c) && !(Object.hasOwnProperty.call(a, c) && Object.propertyIsEnumerable.call(a, c));
   }
-  function M(a, c, d) {
+  function z(a, c, d) {
     var y = {};
     return d.isMergeableObject(a) && u(a).forEach(function(f) {
       y[f] = r(a[f], d);
@@ -177,24 +177,24 @@ function R() {
       b(a, f) || (g(a, f) && d.isMergeableObject(c[f]) ? y[f] = p(f, d)(a[f], c[f], d) : y[f] = r(c[f], d));
     }), y;
   }
-  function x(a, c, d) {
+  function w(a, c, d) {
     d = d || {}, d.arrayMerge = d.arrayMerge || l, d.isMergeableObject = d.isMergeableObject || h, d.cloneUnlessOtherwiseSpecified = r;
     var y = Array.isArray(c), f = Array.isArray(a), B = y === f;
-    return B ? y ? d.arrayMerge(a, c, d) : M(a, c, d) : r(c, d);
+    return B ? y ? d.arrayMerge(a, c, d) : z(a, c, d) : r(c, d);
   }
-  x.all = function(c, d) {
+  w.all = function(c, d) {
     if (!Array.isArray(c))
       throw new Error("first argument should be an array");
     return c.reduce(function(y, f) {
-      return x(y, f, d);
+      return w(y, f, d);
     }, {});
   };
-  var z = x;
-  return C = z, C;
+  var T = w;
+  return S = T, S;
 }
-var O = R();
-const H = /* @__PURE__ */ T(O);
-class N {
+var H = O();
+const N = /* @__PURE__ */ R(H);
+class q {
   formatter;
   element;
   buttons = {};
@@ -233,7 +233,7 @@ class N {
     this.buttons = {}, this.element.innerHTML = "", this.formatter.options.debug && console.debug("Toolbar destroyed");
   };
 }
-class k {
+class E {
   /**
    * Initializes the tooltip adjustment watcher when the action is created.
    * Searches for the tooltip element within the Quill container and, if found,
@@ -246,7 +246,7 @@ class k {
   constructor(t, e = !1) {
     this.quill = t, this.debug = e;
     const i = t.container.querySelector(".ql-tooltip");
-    console.debug("tooltip:", i), i ? (k.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
+    console.debug("tooltip:", i), i ? (E.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
   }
   /**
    * Repositions a tooltip element within a given container to ensure it does not overflow
@@ -258,12 +258,12 @@ class k {
    * @param debug - If true, logs debug information to the console. Defaults to false.
    */
   static _repositionTooltip = (t, e, i = !1) => {
-    const s = t.getBoundingClientRect(), o = e.getBoundingClientRect();
-    let n = s.left - o.left, r = s.top - o.top;
-    const l = s.width, p = s.height, m = e.clientWidth, u = e.clientHeight;
+    const o = t.getBoundingClientRect(), s = e.getBoundingClientRect();
+    let n = o.left - s.left, r = o.top - s.top;
+    const l = o.width, p = o.height, m = e.clientWidth, u = e.clientHeight;
     let g = !1;
     const b = {};
-    r < 0 && (b.top = `${s.height}px`, g = !0), r + p > u && (b.top = `${u - p}px`, g = !0), n < 0 && (b.left = "0px", g = !0), n + l > m && (b.left = `${m - l}px`, g = !0), g ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
+    r < 0 && (b.top = `${o.height}px`, g = !0), r + p > u && (b.top = `${u - p}px`, g = !0), n < 0 && (b.left = "0px", g = !0), n + l > m && (b.left = `${m - l}px`, g = !0), g ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
   };
   // Static property to store observers
   static observers = /* @__PURE__ */ new WeakMap();
@@ -279,20 +279,20 @@ class k {
    * If `debug` is true, mutation details are logged to the console.
    */
   static watchTooltip(t, e = !1) {
-    const i = t.container.querySelector(".ql-tooltip"), s = t.container;
+    const i = t.container.querySelector(".ql-tooltip"), o = t.container;
     if (!i) {
       console.warn("No tooltip found to watch for adjustments.");
       return;
     }
     this.removeTooltipWatcher(i, e);
-    let o = !1;
+    let s = !1;
     const n = new MutationObserver((r) => {
-      if (!o) {
+      if (!s) {
         if (e)
           for (const l of r)
             console.debug("Tooltip mutation:", l.attributeName, i.getAttribute(l.attributeName));
-        o = !0, this._repositionTooltip(i, s, e), setTimeout(() => {
-          o = !1;
+        s = !0, this._repositionTooltip(i, o, e), setTimeout(() => {
+          s = !1;
         }, 0);
       }
     });
@@ -317,31 +317,31 @@ class k {
    * and removes its associated watcher if the tooltip exists.
    */
   destroy = () => {
-    this.quill.container.querySelector(".ql-tooltip") && (k.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
+    this.quill.container.querySelector(".ql-tooltip") && (E.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
   };
 }
-const q = (h) => {
+const W = (h) => {
   const t = h.import("formats/image"), e = ["alt", "height", "width", "title"];
   return class extends t {
     static blotName = "image";
-    static formats(s) {
+    static formats(o) {
       return e.reduce(
-        (o, n) => (s.hasAttribute(n) && (o[n] = s.getAttribute(n)), o),
+        (s, n) => (o.hasAttribute(n) && (s[n] = o.getAttribute(n)), s),
         {}
       );
     }
-    format(s, o) {
-      e.indexOf(s) > -1 ? o || s === "alt" ? this.domNode.setAttribute(s, o) : this.domNode.removeAttribute(s) : super.format(s, o);
+    format(o, s) {
+      e.indexOf(o) > -1 ? s || o === "alt" ? this.domNode.setAttribute(o, s) : this.domNode.removeAttribute(o) : super.format(o, s);
     }
   };
-}, W = (h) => {
+}, D = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
-    constructor(o = !1) {
+    constructor(s = !1) {
       super("iframeAlign", "ql-iframe-align", {
         scope: i.BLOCK,
         whitelist: ["left", "center", "right"]
-      }), this.debug = o;
+      }), this.debug = s;
     }
     static attrName = "iframeAlign";
     /**
@@ -359,11 +359,11 @@ const q = (h) => {
      * @param value - The alignment value, either as a string or an object with an `align` property.
      * @returns `true` if the formatting was successfully applied to an HTMLElement, otherwise `false`.
      */
-    add(o, n) {
-      if (this.debug && console.debug("IframeAlignAttributor.add", o, n), o instanceof HTMLElement) {
-        typeof n == "object" ? (super.add(o, n.align), o.dataset.blotAlign = n.align) : (super.add(o, n), o.dataset.blotAlign = n);
-        let r = o.getAttribute("width");
-        return r ? (isNaN(Number(r.trim().slice(-1))) || (r = `${r}px`), o.style.setProperty("--resize-width", r), o.dataset.relativeSize = `${r.endsWith("%")}`) : (o.style.removeProperty("--resize-width"), o.dataset.relativeSize = "false"), this.debug && console.debug("IframeAlignAttributor.add - node:", o, "aligned with:", n), !0;
+    add(s, n) {
+      if (this.debug && console.debug("IframeAlignAttributor.add", s, n), s instanceof HTMLElement) {
+        typeof n == "object" ? (super.add(s, n.align), s.dataset.blotAlign = n.align) : (super.add(s, n), s.dataset.blotAlign = n);
+        let r = s.getAttribute("width");
+        return r ? (isNaN(Number(r.trim().slice(-1))) || (r = `${r}px`), s.style.setProperty("--resize-width", r), s.dataset.relativeSize = `${r.endsWith("%")}`) : (s.style.removeProperty("--resize-width"), s.dataset.relativeSize = "false"), this.debug && console.debug("IframeAlignAttributor.add - node:", s, "aligned with:", n), !0;
       } else
         return this.debug && console.debug("IframeAlignAttributor.add - node is not an HTMLElement, skipping alignment"), !1;
     }
@@ -376,8 +376,8 @@ const q = (h) => {
      *
      * @param node - The DOM element from which to remove the alignment formatting.
      */
-    remove(o) {
-      this.debug && console.debug("IframeAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), delete o.dataset.blotAlign);
+    remove(s) {
+      this.debug && console.debug("IframeAlignAttributor.remove", s), s instanceof HTMLElement && (super.remove(s), delete s.dataset.blotAlign);
     }
     /**
      * Extracts alignment and width information from a given DOM element.
@@ -389,23 +389,23 @@ const q = (h) => {
      *     its 'width' attribute, or an empty string if not present.
      *   - `relativeSize`: A string indicating whether the width ends with a '%' character, representing a relative size.
      */
-    value(o) {
-      const n = super.value(o), r = o instanceof HTMLElement && (o.style.getPropertyValue("--resize-width") || o.getAttribute("width")) || "", l = {
+    value(s) {
+      const n = super.value(s), r = s instanceof HTMLElement && (s.style.getPropertyValue("--resize-width") || s.getAttribute("width")) || "", l = {
         align: n,
         width: r,
         relativeSize: `${r.endsWith("%")}`
       };
-      return this.debug && console.debug("IframeAlignAttributor.value", o, l), l;
+      return this.debug && console.debug("IframeAlignAttributor.value", s, l), l;
     }
   };
-}, D = (h) => {
+}, j = (h) => {
   const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
   return class extends e {
-    constructor(o = !1) {
+    constructor(s = !1) {
       super("imageAlign", "ql-image-align", {
         scope: i.INLINE,
         whitelist: ["left", "center", "right"]
-      }), this.debug = o;
+      }), this.debug = s;
     }
     static tagName = "SPAN";
     static attrName = "imageAlign";
@@ -424,22 +424,22 @@ const q = (h) => {
      * @param value - The alignment value, which can be a string or an object containing alignment and optional title.
      * @returns `true` if formatting was applied or handled, `false` otherwise.
      */
-    add(o, n) {
-      if (this.debug && console.debug("ImageAlignAttributor.add", o, n), o instanceof HTMLSpanElement && n) {
-        let r = o.querySelector("img");
+    add(s, n) {
+      if (this.debug && console.debug("ImageAlignAttributor.add", s, n), s instanceof HTMLSpanElement && n) {
+        let r = s.querySelector("img");
         if (typeof n == "object" && n.align)
-          super.add(o, n.align), o.setAttribute("contenteditable", "false"), n.title ? o.setAttribute("data-title", n.title) : o.removeAttribute("data-title"), n.align && (r.dataset.blotAlign = n.align), this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n.align);
+          super.add(s, n.align), s.setAttribute("contenteditable", "false"), n.title ? s.setAttribute("data-title", n.title) : s.removeAttribute("data-title"), n.align && (r.dataset.blotAlign = n.align), this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n.align);
         else if (typeof n == "string")
-          super.add(o, n), r.dataset.blotAlign = n, this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n);
+          super.add(s, n), r.dataset.blotAlign = n, this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n);
         else
           return this.debug && console.debug("ImageAlignAttributor.add - no value provided, skipping alignment"), !1;
         let l = this.getImageWidth(r);
-        return o.setAttribute("data-relative-size", `${l?.endsWith("%")}`), !0;
+        return s.setAttribute("data-relative-size", `${l?.endsWith("%")}`), !0;
       } else {
-        const r = o instanceof HTMLImageElement ? o : o.querySelector("img");
-        if (this.debug && console.debug(`ImageAlignAttributor.add - ${o.tagName} is not a span, checking for image:`, r), r instanceof HTMLImageElement) {
+        const r = s instanceof HTMLImageElement ? s : s.querySelector("img");
+        if (this.debug && console.debug(`ImageAlignAttributor.add - ${s.tagName} is not a span, checking for image:`, r), r instanceof HTMLImageElement) {
           const l = h.find(r);
-          return this.debug && console.debug("ImageAlignAttributor.add - found image blot:", l), l && (o.firstChild instanceof HTMLSpanElement || !r.parentElement?.matches('span[class^="ql-image-align-"]')) && (l.format("imageAlign", n), this.debug && console.debug("ImageAlignAttributor.add - reapplying imageAlign format to image blot:", n, l)), !0;
+          return this.debug && console.debug("ImageAlignAttributor.add - found image blot:", l), l && (s.firstChild instanceof HTMLSpanElement || !r.parentElement?.matches('span[class^="ql-image-align-"]')) && (l.format("imageAlign", n), this.debug && console.debug("ImageAlignAttributor.add - reapplying imageAlign format to image blot:", n, l)), !0;
         }
         return !1;
       }
@@ -453,8 +453,8 @@ const q = (h) => {
      *
      * @param node - The DOM element from which to remove alignment formatting.
      */
-    remove(o) {
-      this.debug && console.debug("ImageAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), o.firstChild && o.firstChild instanceof HTMLElement && delete o.firstChild.dataset.blotAlign);
+    remove(s) {
+      this.debug && console.debug("ImageAlignAttributor.remove", s), s instanceof HTMLElement && (super.remove(s), s.firstChild && s.firstChild instanceof HTMLElement && delete s.firstChild.dataset.blotAlign);
     }
     /**
      * Retrieves alignment and metadata information for an image element within a given DOM node.
@@ -468,8 +468,8 @@ const q = (h) => {
      * @param node - The DOM element to search for an image and extract alignment and metadata from.
      * @returns An object containing the image's alignment, title, width, contenteditable status, and relative size flag.
      */
-    value(o) {
-      const n = o.querySelector("img");
+    value(s) {
+      const n = s.querySelector("img");
       if (!n) return null;
       const r = n.parentElement, l = super.value(r), p = n.getAttribute("title") || "";
       let m = n.getAttribute("width") || "";
@@ -483,7 +483,7 @@ const q = (h) => {
         contenteditable: "false",
         relativeSize: `${m.endsWith("%")}`
       };
-      return this.debug && console.debug("ImageAlignAttributor.value", o, u), u;
+      return this.debug && console.debug("ImageAlignAttributor.value", s, u), u;
     }
     /**
      * Retrieves the width of the given HTMLImageElement, ensuring it is set as an attribute and formatted with 'px' units.
@@ -495,26 +495,26 @@ const q = (h) => {
      * @param imageElement - The HTMLImageElement whose width is to be retrieved and set.
      * @returns The width of the image as a string with 'px' units.
      */
-    getImageWidth(o) {
-      let n = o.getAttribute("width");
-      return n ? isNaN(Number(n.trim().slice(-1))) || (n = `${n}px`, o.setAttribute("width", n)) : (n = `${o.naturalWidth}px`, o.setAttribute("width", n)), o.parentElement.style.setProperty("--resize-width", n), n;
+    getImageWidth(s) {
+      let n = s.getAttribute("width");
+      return n ? isNaN(Number(n.trim().slice(-1))) || (n = `${n}px`, s.setAttribute("width", n)) : (n = `${s.naturalWidth}px`, s.setAttribute("width", n)), s.parentElement.style.setProperty("--resize-width", n), n;
     }
   };
-}, j = (h) => {
+}, $ = (h) => {
   const t = h.import("formats/video");
   return class extends t {
     static blotName = "video";
     static aspectRatio = "16 / 9 auto";
     static create(i) {
-      const s = super.create(i);
-      return s.setAttribute("width", "100%"), s.style.aspectRatio = this.aspectRatio, s;
+      const o = super.create(i);
+      return o.setAttribute("width", "100%"), o.style.aspectRatio = this.aspectRatio, o;
     }
     html() {
       return this.domNode.outerHTML;
     }
   };
 };
-class $ {
+class P {
   alignments = {};
   options;
   formatter;
@@ -526,8 +526,8 @@ class $ {
     this.Scope = e.Scope, this.options = t.options, this.options.align.alignments.forEach((i) => {
       this.alignments[i] = {
         name: i,
-        apply: (s) => {
-          this.setAlignment(s, i);
+        apply: (o) => {
+          this.setAlignment(o, i);
         }
       };
     }), this.debug && console.debug("DefaultAligner created with alignments:", this.alignments);
@@ -627,10 +627,10 @@ class $ {
       if (this.isInlineBlot(t) || this.hasInlineScope(t)) {
         if (this.debug && console.debug("setting alignment", this.isInlineBlot(t) || this.hasInlineScope(t)), !t.domNode.getAttribute("width") && this.options.resize.useRelativeSize && !this.options.resize.allowResizeModeChange)
           try {
-            const s = getComputedStyle(this.formatter.quill.root), o = this.formatter.quill.root.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight);
+            const o = getComputedStyle(this.formatter.quill.root), s = this.formatter.quill.root.clientWidth - parseFloat(o.paddingLeft) - parseFloat(o.paddingRight);
             t.domNode.setAttribute(
               "width",
-              `${Math.min(Math.round(100 * t.domNode.naturalWidth / o), 100)}%`
+              `${Math.min(Math.round(100 * t.domNode.naturalWidth / s), 100)}%`
             );
           } catch {
             this.debug && console.debug("DefaultAligner.setAlignment Error setting image width:", t);
@@ -650,8 +650,8 @@ class $ {
           }
         );
         try {
-          const s = this.formatter.quill.getContents().ops;
-          s.length === 2 && s[1].insert === `
+          const o = this.formatter.quill.getContents().ops;
+          o.length === 2 && o[1].insert === `
 ` && this.formatter.quill.insertText(this.formatter.quill.getLength(), `
 `, "user");
         } catch {
@@ -668,7 +668,7 @@ class $ {
       ));
   };
 }
-class A {
+class k {
   action;
   icon;
   onClick;
@@ -759,11 +759,11 @@ class A {
     }
   };
 }
-class P extends v {
+class F extends x {
   aligner;
   alignButtons = {};
   constructor(t) {
-    super(t), this.aligner = new $(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
+    super(t), this.aligner = new P(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
   }
   /**
    * Creates alignment toolbar buttons for each available alignment option.
@@ -777,7 +777,7 @@ class P extends v {
    */
   _createAlignmentButtons = () => {
     for (const e of Object.values(this.aligner.alignments))
-      this.alignButtons[e.name] = new A(
+      this.alignButtons[e.name] = new k(
         e.name,
         this.onClickHandler,
         this.formatter.options.toolbar
@@ -814,10 +814,10 @@ class P extends v {
   onClickHandler = (t) => {
     const e = t.target.closest(`span.${this.formatter.options.toolbar.buttonClassName}`);
     if (e) {
-      const i = e.dataset.action || "", s = this.formatter.currentSpec?.getTargetBlot();
-      if (i && s) {
-        const o = this.aligner.alignments[i];
-        this._clearButtons(), this.aligner.isAligned(s, o) ? (this.aligner.clear(s), this.debug && console.debug("AlignAction clear alignment:", i, s)) : (this.aligner.setAlignment(s, i), this.alignButtons[i].selected = !0, this.debug && console.debug("AlignAction set alignment:", i, s));
+      const i = e.dataset.action || "", o = this.formatter.currentSpec?.getTargetBlot();
+      if (i && o) {
+        const s = this.aligner.alignments[i];
+        this._clearButtons(), this.aligner.isAligned(o, s) ? (this.aligner.clear(o), this.debug && console.debug("AlignAction clear alignment:", i, o)) : (this.aligner.setAlignment(o, i), this.alignButtons[i].selected = !0, this.debug && console.debug("AlignAction set alignment:", i, o));
       }
     }
     this.formatter.update();
@@ -843,7 +843,7 @@ class P extends v {
     this.alignButtons = {}, this.toolbarButtons = [], this.formatter.options.debug && console.debug("AlignAction alignment buttons destroyed");
   };
 }
-class F extends v {
+class U extends x {
   /**
    * Initializes event listeners for the delete action.
    * 
@@ -881,17 +881,17 @@ class F extends v {
       this.debug && console.debug("DeleteAction keyup detected:", t.code);
       const i = this.formatter.currentSpec.getTargetElement();
       if (i) {
-        const s = this.formatter.Quill.find(i);
-        if (s) {
-          const o = this.formatter.quill.getIndex(s);
-          this.formatter.quill.deleteText(o, 1, "user");
+        const o = this.formatter.Quill.find(i);
+        if (o) {
+          const s = this.formatter.quill.getIndex(o);
+          this.formatter.quill.deleteText(s, 1, "user");
         }
       }
       this.formatter.hide();
     }
   };
 }
-class U extends v {
+class V extends x {
   _topLeftHandle;
   _topRightHandle;
   _bottomRightHandle;
@@ -989,10 +989,10 @@ class U extends v {
    * correctly positioned relative to the element being resized.
    */
   _repositionHandles = (t) => {
-    const e = t?.width ? `${-parseFloat(t.width) / 2}px` : "0px", i = t?.height ? `${-parseFloat(t.height) / 2}px` : "0px", { style: s } = this._topLeftHandle;
-    s.left = e, s.top = i;
-    const { style: o } = this._topRightHandle;
-    o.right = e, o.top = i;
+    const e = t?.width ? `${-parseFloat(t.width) / 2}px` : "0px", i = t?.height ? `${-parseFloat(t.height) / 2}px` : "0px", { style: o } = this._topLeftHandle;
+    o.left = e, o.top = i;
+    const { style: s } = this._topRightHandle;
+    s.right = e, s.top = i;
     const { style: n } = this._bottomRightHandle;
     n.right = e, n.bottom = i;
     const { style: r } = this._bottomLeftHandle;
@@ -1091,13 +1091,13 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
   _onHandleDrag = (t) => {
     if (!this._target || !this._dragHandle) return;
     this._hasResized = !0;
-    const e = t.clientX - this._dragStartX, i = this._dragHandle === this._topLeftHandle || this._dragHandle === this._bottomLeftHandle, s = Math.round(
+    const e = t.clientX - this._dragStartX, i = this._dragHandle === this._topLeftHandle || this._dragHandle === this._bottomLeftHandle, o = Math.round(
       i ? this._preDragWidth - e : this._preDragWidth + e
-    ), o = Math.max(
-      Math.min(s, this._editorWidth),
+    ), s = Math.max(
+      Math.min(o, this._editorWidth),
       this.formatter.options.resize.minimumWidthPx
     );
-    this._resizeTarget(o);
+    this._resizeTarget(s);
   };
   /**
    * Handles the pointer up event on the resize handle.
@@ -1134,8 +1134,8 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
     if (t.target === this.formatter.overlay && this._target && t.touches.length === 2 && this._pinchStartDistance !== null && this._preDragWidth !== null && (t.preventDefault(), this._target)) {
       this._hasResized = !0;
       const i = this._calculateDistance(t.touches[0], t.touches[1]) / this._pinchStartDistance;
-      let s = Math.round(this._preDragWidth * i);
-      s = Math.max(Math.min(s, this._editorWidth), 10), this._resizeTarget(s);
+      let o = Math.round(this._preDragWidth * i);
+      o = Math.max(Math.min(o, this._editorWidth), 10), this._resizeTarget(o);
     }
   };
   /**
@@ -1223,24 +1223,24 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    * @param height - The displayed height of the blot.
    */
   _updateSizeInfo = (t, e) => {
-    const i = Math.round(t), s = Math.round(e);
-    let o = `${i} x ${s}px`;
+    const i = Math.round(t), o = Math.round(e);
+    let s = `${i} x ${o}px`;
     if (this.isRelative)
-      o = `${Math.round(100 * t / this._editorWidth)}% (${o})`;
+      s = `${Math.round(100 * t / this._editorWidth)}% (${s})`;
     else if (!this._hasResized && this._target) {
       const n = this._target.getAttribute("width");
       if (n) {
         const r = parseFloat(n);
         if (r !== t) {
           const l = t / e, p = Math.round(r / l);
-          o = `${n} x ${p}px (${o})`;
+          s = `${n} x ${p}px (${s})`;
         }
       } else if (this._target instanceof HTMLImageElement) {
         const { naturalWidth: r, naturalHeight: l } = this._target;
-        r !== t && (o = `${r} x ${l}px (${o})`);
+        r !== t && (s = `${r} x ${l}px (${s})`);
       }
     }
-    this.formatter.sizeInfo.innerText = o;
+    this.formatter.sizeInfo.innerText = s;
   };
   get isRelative() {
     return this._target?.getAttribute("width")?.endsWith("%") || !1;
@@ -1257,7 +1257,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    * @returns {ToolbarButton} The configured resize mode toolbar button.
    */
   _createResizeModeButton = () => {
-    const t = new A(
+    const t = new k(
       "resizeMode",
       this._onResizeModeClickHandler,
       this.formatter.options.toolbar
@@ -1285,8 +1285,8 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
     if (this._target) {
       const e = this._target.getBoundingClientRect();
       this._editorStyle = getComputedStyle(this.formatter.quill.root), this._editorWidth = this.formatter.quill.root.clientWidth - parseFloat(this._editorStyle.paddingLeft) - parseFloat(this._editorStyle.paddingRight);
-      let i, s;
-      this.isRelative ? (i = `${Math.round(e.width)}px`, s = this.formatter.options.image.autoHeight ? "auto" : `${Math.round(e.height)}px`) : (i = `${Math.round(100 * e.width / this._editorWidth)}%`, s = "auto"), this._target.setAttribute("width", `${i}`), this._target.setAttribute("height", `${s}`), this.formatter.currentSpec?.isUnclickable ? (this._target.style.setProperty("--resize-width", `${i}`), this._target.dataset.relativeSize = `${this.isRelative}`) : this.isAligned && this._target.parentElement && (this._target.parentElement.style.setProperty("--resize-width", `${i}`), this._target.parentElement.dataset.relativeSize = `${this.isRelative}`), this.formatter.toolbar.buttons.resizeMode.selected = this.isRelative, this.formatter.update(), t && (this._showSizeInfo(!0, e.width, e.height), this._showSizeInfo(!1)), this.debug && console.debug("ResizeAction resize mode swapped:", {
+      let i, o;
+      this.isRelative ? (i = `${Math.round(e.width)}px`, o = this.formatter.options.image.autoHeight ? "auto" : `${Math.round(e.height)}px`) : (i = `${Math.round(100 * e.width / this._editorWidth)}%`, o = "auto"), this._target.setAttribute("width", `${i}`), this._target.setAttribute("height", `${o}`), this.formatter.currentSpec?.isUnclickable ? (this._target.style.setProperty("--resize-width", `${i}`), this._target.dataset.relativeSize = `${this.isRelative}`) : this.isAligned && this._target.parentElement && (this._target.parentElement.style.setProperty("--resize-width", `${i}`), this._target.parentElement.dataset.relativeSize = `${this.isRelative}`), this.formatter.toolbar.buttons.resizeMode.selected = this.isRelative, this.formatter.update(), t && (this._showSizeInfo(!0, e.width, e.height), this._showSizeInfo(!1)), this.debug && console.debug("ResizeAction resize mode swapped:", {
         target: this._target,
         newWidth: i,
         isRelative: this.isRelative,
@@ -1319,8 +1319,8 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    * @returns The distance in pixels between the two touch points.
    */
   _calculateDistance = (t, e) => {
-    const i = e.clientX - t.clientX, s = e.clientY - t.clientY;
-    return Math.sqrt(i * i + s * s);
+    const i = e.clientX - t.clientX, o = e.clientY - t.clientY;
+    return Math.sqrt(i * i + o * o);
   };
   /**
    * Rounds the numeric part of a dimension string to the nearest integer, preserving any prefix or suffix.
@@ -1332,7 +1332,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    * @param dim - The dimension string containing a number and optional prefix/suffix.
    * @returns The dimension string with the numeric part rounded to the nearest integer.
    */
-  _roundDimension = (t) => t.replace(/([^0-9.-]*)(-?[\d.]+)(.*)/, (e, i, s, o) => `${i}${Math.round(Number(s))}${o}`);
+  _roundDimension = (t) => t.replace(/([^0-9.-]*)(-?[\d.]+)(.*)/, (e, i, o, s) => `${i}${Math.round(Number(o))}${s}`);
   /**
    * Determines whether the target image is an SVG image.
    *
@@ -1344,7 +1344,7 @@ Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}
    */
   _isSvgImage = () => this._target instanceof HTMLImageElement ? this._target.src.startsWith("data:image/") ? this._target.src.includes("image/svg+xml") : this._target.src.endsWith(".svg") : !1;
 }
-class I {
+class M {
   // abstract class for Blot specifications
   formatter;
   isUnclickable = !1;
@@ -1375,7 +1375,7 @@ class I {
    */
   getActions() {
     const t = [];
-    return this.formatter.options.align.allowAligning && t.push(new P(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new U(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new F(this.formatter)), t.push(new _(this.formatter)), t;
+    return this.formatter.options.align.allowAligning && t.push(new F(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new V(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new U(this.formatter)), t.push(new v(this.formatter)), t;
   }
   /**
    * Returns the target HTML element associated with this blot.
@@ -1428,8 +1428,8 @@ class I {
   onHide = () => {
   };
 }
-const V = "blot-formatter__proxy-image";
-class X extends I {
+const X = "blot-formatter__proxy-image";
+class Y extends M {
   selector;
   unclickable;
   proxyContainer;
@@ -1461,7 +1461,7 @@ class X extends I {
   _observeEditorResize = () => {
     let t = null;
     new ResizeObserver((i) => {
-      for (const s of i)
+      for (const o of i)
         t && clearTimeout(t), t = window.setTimeout(() => {
           this._repositionProxyImages();
         }, 200);
@@ -1516,22 +1516,22 @@ class X extends I {
       (r) => String.fromCharCode(97 + r % 26)
     ).join("");
     t.dataset.blotFormatterId = e;
-    const i = document.createElement("canvas"), s = i.getContext("2d");
-    s && (s.globalAlpha = 0, s.fillRect(0, 0, 1, 1));
-    const o = document.createElement("img");
-    o.src = i.toDataURL("image/png"), o.classList.add(V), o.dataset.blotFormatterId = e;
+    const i = document.createElement("canvas"), o = i.getContext("2d");
+    o && (o.globalAlpha = 0, o.fillRect(0, 0, 1, 1));
+    const s = document.createElement("img");
+    s.src = i.toDataURL("image/png"), s.classList.add(X), s.dataset.blotFormatterId = e;
     const n = {
       ...this.formatter.options.video.proxyStyle,
       position: "absolute",
       margin: "0",
       userSelect: "none"
     };
-    Object.assign(o.style, n), o.style.setProperty("-webkit-user-select", "none"), o.style.setProperty("-moz-user-select", "none"), o.style.setProperty("-ms-user-select", "none"), this.formatter.options.debug && o.style.setProperty("border", "3px solid red"), this.proxyContainer.appendChild(o), o.addEventListener("click", this._onProxyImageClick), o.addEventListener("contextmenu", (r) => {
+    Object.assign(s.style, n), s.style.setProperty("-webkit-user-select", "none"), s.style.setProperty("-moz-user-select", "none"), s.style.setProperty("-ms-user-select", "none"), this.formatter.options.debug && s.style.setProperty("border", "3px solid red"), this.proxyContainer.appendChild(s), s.addEventListener("click", this._onProxyImageClick), s.addEventListener("contextmenu", (r) => {
       r.stopPropagation(), r.preventDefault();
-    }), o.addEventListener("wheel", this.formatter._passWheelEventThrough), o.addEventListener("touchstart", this.formatter._onTouchScrollStart, { passive: !1 }), o.addEventListener("touchmove", this.formatter._onTouchScrollMove, { passive: !1 }), this.unclickableProxies[e] = {
+    }), s.addEventListener("wheel", this.formatter._passWheelEventThrough), s.addEventListener("touchstart", this.formatter._onTouchScrollStart, { passive: !1 }), s.addEventListener("touchmove", this.formatter._onTouchScrollMove, { passive: !1 }), this.unclickableProxies[e] = {
       unclickable: t,
-      proxyImage: o
-    }, this.formatter.options.debug && console.debug("UnclickableBlotSpec created proxy for unclickable:", t, "with ID:", e, "and proxy image:", o);
+      proxyImage: s
+    }, this.formatter.options.debug && console.debug("UnclickableBlotSpec created proxy for unclickable:", t, "with ID:", e, "and proxy image:", s);
   };
   /**
    * Repositions proxy images to overlay their corresponding "unclickable" elements
@@ -1546,9 +1546,9 @@ class X extends I {
   _repositionProxyImages = () => {
     if (Object.keys(this.unclickableProxies).length > 0) {
       const t = this.formatter.quill.container.getBoundingClientRect(), e = this.formatter.quill.container.scrollLeft, i = this.formatter.quill.container.scrollTop;
-      Object.entries(this.unclickableProxies).forEach(([s, { unclickable: o, proxyImage: n }]) => {
+      Object.entries(this.unclickableProxies).forEach(([o, { unclickable: s, proxyImage: n }]) => {
         try {
-          const r = o.getBoundingClientRect();
+          const r = s.getBoundingClientRect();
           Object.assign(
             n.style,
             {
@@ -1560,7 +1560,7 @@ class X extends I {
             }
           );
         } catch (r) {
-          const l = `Error positioning proxy image with id ${s}: `;
+          const l = `Error positioning proxy image with id ${o}: `;
           console.error(l, `${r instanceof Error ? r.message : r}`);
         }
       });
@@ -1589,18 +1589,18 @@ class X extends I {
     return t.classList.add("proxy-container"), this.formatter.quill.container.appendChild(t), t;
   };
 }
-class Y extends X {
+class Q extends Y {
   constructor(t) {
     super(t);
   }
 }
-class K extends v {
+class K extends x {
   modal;
   targetElement = null;
   currentBlot = null;
   constructor(t) {
     super(t), this.toolbarButtons = [
-      new A(
+      new k(
         "attribute",
         this._onClickHandler,
         this.formatter.options.toolbar
@@ -1699,10 +1699,10 @@ class K extends v {
       (g) => String.fromCharCode(97 + g % 26)
     ).join(""), e = document.createElement("div");
     e.id = `${t}-modal`, e.setAttribute("data-blot-formatter-modal", "");
-    const i = document.createElement("div"), s = document.createElement("form");
-    s.id = `${t}-form`;
-    const o = document.createElement("label");
-    o.setAttribute("for", "alt"), o.textContent = this.formatter.options.overlay.labels?.alt || this.formatter.options.image.altTitleModalOptions.labels.alt;
+    const i = document.createElement("div"), o = document.createElement("form");
+    o.id = `${t}-form`;
+    const s = document.createElement("label");
+    s.setAttribute("for", "alt"), s.textContent = this.formatter.options.overlay.labels?.alt || this.formatter.options.image.altTitleModalOptions.labels.alt;
     const n = document.createElement("textarea");
     n.name = "alt", n.rows = 3;
     const r = document.createElement("label");
@@ -1710,11 +1710,11 @@ class K extends v {
     const l = document.createElement("textarea");
     l.name = "title", l.rows = 3;
     const p = document.createElement("div"), m = document.createElement("button");
-    m.type = "submit", m.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.submitButton, p.appendChild(m), s.appendChild(o), s.appendChild(n), s.appendChild(r), s.appendChild(l), s.appendChild(p);
+    m.type = "submit", m.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.submitButton, p.appendChild(m), o.appendChild(s), o.appendChild(n), o.appendChild(r), o.appendChild(l), o.appendChild(p);
     const u = document.createElement("button");
-    return u.id = `${t}-cancel`, u.type = "button", u.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.cancelButton, this.formatter.options.image.altTitleModalOptions.styles && (Object.assign(e.style, this.formatter.options.image.altTitleModalOptions.styles.modalBackground), Object.assign(i.style, this.formatter.options.image.altTitleModalOptions.styles.modalContainer), Object.assign(o.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(n.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(r.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(l.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(m.style, this.formatter.options.image.altTitleModalOptions.styles.submitButton), Object.assign(u.style, this.formatter.options.image.altTitleModalOptions.styles.cancelButton)), i.appendChild(s), i.appendChild(u), e.appendChild(i), s.addEventListener("submit", this._onSubmitHandler), s.addEventListener("cancel", this._hideAltTitleModal), e.addEventListener("pointerdown", this._onPointerDownHandler), u.addEventListener("click", this._hideAltTitleModal), {
+    return u.id = `${t}-cancel`, u.type = "button", u.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.cancelButton, this.formatter.options.image.altTitleModalOptions.styles && (Object.assign(e.style, this.formatter.options.image.altTitleModalOptions.styles.modalBackground), Object.assign(i.style, this.formatter.options.image.altTitleModalOptions.styles.modalContainer), Object.assign(s.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(n.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(r.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(l.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(m.style, this.formatter.options.image.altTitleModalOptions.styles.submitButton), Object.assign(u.style, this.formatter.options.image.altTitleModalOptions.styles.cancelButton)), i.appendChild(o), i.appendChild(u), e.appendChild(i), o.addEventListener("submit", this._onSubmitHandler), o.addEventListener("cancel", this._hideAltTitleModal), e.addEventListener("pointerdown", this._onPointerDownHandler), u.addEventListener("click", this._hideAltTitleModal), {
       element: e,
-      form: s,
+      form: o,
       altInput: n,
       titleInput: l,
       cancelButton: u
@@ -1727,7 +1727,7 @@ class K extends v {
     t.target === this.modal.element && this._hideAltTitleModal();
   };
 }
-class w extends v {
+class A extends x {
   options;
   modal;
   targetElement = null;
@@ -1746,8 +1746,8 @@ class w extends v {
   static isEligibleForCompression = (t, e = !1) => {
     let i = !1;
     if (t instanceof HTMLImageElement && t.src.startsWith("data:image/")) {
-      const s = t.src.substring(5, t.src.indexOf(";"));
-      i = s !== "svg+xml" && s !== "gif";
+      const o = t.src.substring(5, t.src.indexOf(";"));
+      i = o !== "svg+xml" && o !== "gif";
     }
     return e && console.debug("Image eligibility check:", {
       element: t,
@@ -1756,7 +1756,7 @@ class w extends v {
   };
   constructor(t) {
     super(t), this.options = this.formatter.options.image.compressorOptions, this.toolbarButtons = [
-      new A(
+      new k(
         "compress",
         this._onClickHandler,
         this.formatter.options.toolbar
@@ -1772,7 +1772,7 @@ class w extends v {
    */
   onCreate = () => {
     this.targetElement = this.formatter.currentSpec?.getTargetElement();
-    const t = w.isEligibleForCompression(this.targetElement, this.debug);
+    const t = A.isEligibleForCompression(this.targetElement, this.debug);
     this.toolbarButtons[0].initialVisibility = t, this.debug && console.debug("CompressAction initialized with target element:", this.targetElement, "is eligible:", t);
   };
   /**
@@ -1821,30 +1821,30 @@ class w extends v {
    * @returns A tuple containing the parsed width and height as numbers, or `null` if parsing fails.
    */
   _parseDimensions = (t) => {
-    let e = t.getAttribute("width"), i = t.getAttribute("height"), s = null, o = null;
+    let e = t.getAttribute("width"), i = t.getAttribute("height"), o = null, s = null;
     if (e)
       if (e.toLowerCase().endsWith("px"))
-        s = parseFloat(e);
+        o = parseFloat(e);
       else if (e.endsWith("%"))
-        s = this.options.maxWidth ?? null;
+        o = this.options.maxWidth ?? null;
       else if (e.toLowerCase().endsWith("em") || e.toLowerCase().endsWith("rem"))
-        s = parseFloat(e) * 16;
+        o = parseFloat(e) * 16;
       else if (!isNaN(parseFloat(e)))
-        s = parseFloat(e);
+        o = parseFloat(e);
       else
         return [null, null];
     if (i)
       if (!isNaN(parseFloat(i)))
-        o = parseFloat(i);
+        s = parseFloat(i);
       else if (i.toLowerCase().endsWith("px"))
-        o = parseFloat(i);
+        s = parseFloat(i);
       else if (i.toLowerCase().endsWith("em") || i.toLowerCase().endsWith("rem"))
-        o = parseFloat(i) * 16;
-      else if (s && t.naturalWidth > 0 && t.naturalHeight > 0)
-        o = s / (t.naturalWidth / t.naturalHeight);
+        s = parseFloat(i) * 16;
+      else if (o && t.naturalWidth > 0 && t.naturalHeight > 0)
+        s = o / (t.naturalWidth / t.naturalHeight);
       else
         return [null, null];
-    return [s, o];
+    return [o, s];
   };
   /**
    * Calculates the approximate byte size of an image from its data URL.
@@ -1882,18 +1882,18 @@ class w extends v {
   _getImageDetails = (t) => {
     let [e, i] = this._parseDimensions(t);
     !e && (this.options.maxWidth ?? 1 / 0) < t.naturalWidth && (e = this.options.maxWidth, i = e / (t.naturalWidth / t.naturalHeight));
-    const s = {
+    const o = {
       naturalWidth: t.naturalWidth,
       naturalHeight: t.naturalHeight,
       targetWidth: e,
       targetHeight: i,
       size: this._getImageSize(t),
-      canCompress: !!(e && i && e < t.naturalWidth && w.isEligibleForCompression(t, this.debug))
+      canCompress: !!(e && i && e < t.naturalWidth && A.isEligibleForCompression(t, this.debug))
     };
     return this.debug && console.debug("Image details:", {
       element: t,
-      ...s
-    }), s;
+      ...o
+    }), o;
   };
   /**
    * Compresses a given HTMLImageElement by resizing it to target dimensions and reducing its quality.
@@ -1917,8 +1917,8 @@ class w extends v {
         this.debug && console.debug("Compressing Image Copy loaded:", e);
         const i = document.createElement("canvas");
         i.width = this.imageDetails.targetWidth, i.height = this.imageDetails.targetHeight, i.getContext("2d").drawImage(e, 0, 0, i.width, i.height);
-        const o = i.toDataURL("image/jpeg", this.options.jpegQuality), n = new TextEncoder().encode(t.src).length, r = new TextEncoder().encode(o).length;
-        r < n && (t.src = o);
+        const s = i.toDataURL("image/jpeg", this.options.jpegQuality), n = new TextEncoder().encode(t.src).length, r = new TextEncoder().encode(s).length;
+        r < n && (t.src = s);
         const l = `${Math.ceil((this.imageDetails.size - this._getImageSize(t)) / 1024)}kB`, p = `${this.options.text.reducedLabel}: ${l}<br>
                             ${this.imageDetails.naturalWidth} x ${this.imageDetails.naturalHeight}px → ${i.width} x ${Math.round(i.height)}px
                         `;
@@ -1950,13 +1950,13 @@ class w extends v {
   _createModal = () => {
     const t = document.createElement("div");
     t.setAttribute("data-blot-formatter-compress-modal", "");
-    const e = document.createElement("div"), i = document.createElement("div"), s = document.createElement("div"), o = document.createElement("div"), n = document.createElement("button"), r = document.createElement("button"), l = document.createElement("button");
-    return s.style.display = "none", o.append(n, r, l), e.append(i, s, o), t.appendChild(e), i.innerHTML = this.options.text.prompt, s.innerHTML = this.options.text.moreInfo || "", this.options.styles && (Object.assign(t.style, this.options.styles.modalBackground), Object.assign(e.style, this.options.styles.modalContainer), Object.assign(o.style, this.options.styles.buttonContainer), Object.assign(n.style, { ...this.options.styles.buttons, ...this.options.buttons.cancel.style }), this.options.text.moreInfo ? Object.assign(r.style, { ...this.options.styles.buttons, ...this.options.buttons.moreInfo.style }) : r.style.visibility = "hidden", Object.assign(l.style, { ...this.options.styles.buttons, ...this.options.buttons.continue.style })), n.innerHTML = this.options.icons.cancel, r.innerHTML = this.options.icons.moreInfo, l.innerHTML = this.options.icons.continue, l.addEventListener("click", this._onContinueClick), r.addEventListener("click", this._onMoreInfoClick), n.addEventListener("click", this._hideModal), t.addEventListener("pointerdown", this._onBackgroundClick), {
+    const e = document.createElement("div"), i = document.createElement("div"), o = document.createElement("div"), s = document.createElement("div"), n = document.createElement("button"), r = document.createElement("button"), l = document.createElement("button");
+    return o.style.display = "none", s.append(n, r, l), e.append(i, o, s), t.appendChild(e), i.innerHTML = this.options.text.prompt, o.innerHTML = this.options.text.moreInfo || "", this.options.styles && (Object.assign(t.style, this.options.styles.modalBackground), Object.assign(e.style, this.options.styles.modalContainer), Object.assign(s.style, this.options.styles.buttonContainer), Object.assign(n.style, { ...this.options.styles.buttons, ...this.options.buttons.cancel.style }), this.options.text.moreInfo ? Object.assign(r.style, { ...this.options.styles.buttons, ...this.options.buttons.moreInfo.style }) : r.style.visibility = "hidden", Object.assign(l.style, { ...this.options.styles.buttons, ...this.options.buttons.continue.style })), n.innerHTML = this.options.icons.cancel, r.innerHTML = this.options.icons.moreInfo, l.innerHTML = this.options.icons.continue, l.addEventListener("click", this._onContinueClick), r.addEventListener("click", this._onMoreInfoClick), n.addEventListener("click", this._hideModal), t.addEventListener("pointerdown", this._onBackgroundClick), {
       element: t,
       moreInfoButton: r,
       cancelButton: n,
       continueButton: l,
-      moreInfoText: s
+      moreInfoText: o
     };
   };
   _onContinueClick = () => {
@@ -1969,14 +1969,14 @@ class w extends v {
     t.stopImmediatePropagation(), t.target === this.modal.element && (this.debug && console.debug("Modal background clicked, hiding modal"), this._hideModal());
   };
 }
-class Q extends v {
+class Z extends x {
   targetElement = null;
   currentBlot = null;
   toolbarButton;
   linkOptions;
   modal;
   constructor(t) {
-    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new A(
+    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new k(
       "link",
       this._onClickHandler,
       this.formatter.options.toolbar
@@ -2096,22 +2096,22 @@ class Q extends v {
     e.method = "dialog", e.className = this.linkOptions.modal.form.className, Object.assign(e.style, this.linkOptions.modal.form.style);
     const i = document.createElement("label");
     i.htmlFor = "link-url", i.textContent = this.linkOptions.modal.label.text, i.className = this.linkOptions.modal.label.className, Object.assign(i.style, this.linkOptions.modal.label.style);
-    const s = document.createElement("input");
-    s.type = "url", s.id = "link-url", s.name = "url", s.value = this.getLink() || "", s.select(), s.autofocus = !0, s.className = this.linkOptions.modal.input.className, Object.assign(s.style, this.linkOptions.modal.input.style), s.placeholder = this.linkOptions.modal.input.placeholder || "";
-    const o = document.createElement("button");
-    o.type = "submit", o.innerHTML = this.linkOptions.modal.buttons.submit.icon, o.className = this.linkOptions.modal.buttons.submit.className, Object.assign(o.style, this.linkOptions.modal.buttons.submit.style);
+    const o = document.createElement("input");
+    o.type = "url", o.id = "link-url", o.name = "url", o.value = this.getLink() || "", o.select(), o.autofocus = !0, o.className = this.linkOptions.modal.input.className, Object.assign(o.style, this.linkOptions.modal.input.style), o.placeholder = this.linkOptions.modal.input.placeholder || "";
+    const s = document.createElement("button");
+    s.type = "submit", s.innerHTML = this.linkOptions.modal.buttons.submit.icon, s.className = this.linkOptions.modal.buttons.submit.className, Object.assign(s.style, this.linkOptions.modal.buttons.submit.style);
     const n = document.createElement("button");
     n.type = "button", n.innerHTML = this.linkOptions.modal.buttons.cancel.icon, n.className = this.linkOptions.modal.buttons.cancel.className, Object.assign(n.style, this.linkOptions.modal.buttons.cancel.style);
     const r = document.createElement("button");
-    r.type = "button", r.innerHTML = this.linkOptions.modal.buttons.remove.icon, r.className = this.linkOptions.modal.buttons.remove.className, Object.assign(r.style, this.linkOptions.modal.buttons.remove.style), e.appendChild(i), e.appendChild(s), e.appendChild(o), e.appendChild(r), e.appendChild(n), t.appendChild(e);
+    r.type = "button", r.innerHTML = this.linkOptions.modal.buttons.remove.icon, r.className = this.linkOptions.modal.buttons.remove.className, Object.assign(r.style, this.linkOptions.modal.buttons.remove.style), e.appendChild(i), e.appendChild(o), e.appendChild(s), e.appendChild(r), e.appendChild(n), t.appendChild(e);
     const l = document.createElement("div");
     return l.className = this.linkOptions.modal.background.className || "", Object.assign(l.style, this.linkOptions.modal.background.style), {
       dialog: t,
       background: l,
       form: e,
       label: i,
-      input: s,
-      okButton: o,
+      input: o,
+      okButton: s,
       cancelButton: n,
       removeButton: r
     };
@@ -2129,11 +2129,11 @@ class Q extends v {
    * @param dialog - The HTMLDialogElement to position.
    */
   _positionModal = (t) => {
-    const e = this.formatter.overlay.getBoundingClientRect(), i = this.formatter.quill.root.getBoundingClientRect(), s = t.offsetParent?.getBoundingClientRect() ?? { top: 0, left: 0 }, o = t.offsetWidth, n = t.offsetHeight;
-    let r = e.left + e.width / 2 - o / 2 - s.left, l = e.top + e.height / 2 - n / 2 - s.top;
-    const p = i.left - s.left, m = i.right - o - s.left;
+    const e = this.formatter.overlay.getBoundingClientRect(), i = this.formatter.quill.root.getBoundingClientRect(), o = t.offsetParent?.getBoundingClientRect() ?? { top: 0, left: 0 }, s = t.offsetWidth, n = t.offsetHeight;
+    let r = e.left + e.width / 2 - s / 2 - o.left, l = e.top + e.height / 2 - n / 2 - o.top;
+    const p = i.left - o.left, m = i.right - s - o.left;
     r = Math.min(Math.max(r, p), m);
-    const u = i.top - s.top, g = i.bottom - n - s.top;
+    const u = i.top - o.top, g = i.bottom - n - o.top;
     l = Math.min(Math.max(l, u), g), t.style.position = "absolute", t.style.left = `${r}px`, t.style.top = `${l}px`;
   };
   /**
@@ -2155,8 +2155,8 @@ class Q extends v {
    */
   _formSubmitHandler = (t) => {
     t.preventDefault();
-    const e = t.target, s = new FormData(e).get("url").trim();
-    this.debug && console.debug("LinkAction form submitted with URL:", s), this.currentBlot && (s ? this.applyLink(s) : this.removeLink());
+    const e = t.target, o = new FormData(e).get("url").trim();
+    this.debug && console.debug("LinkAction form submitted with URL:", o), this.currentBlot && (o ? this.applyLink(o) : this.removeLink());
   };
   /**
    * Retrieves the link format associated with the current blot, if any.
@@ -2206,7 +2206,7 @@ class Q extends v {
     t !== this.getLink() && (this.removeLink(), this.currentBlot?.format("link", t), this.toolbarButton.selected = !!t), this.hideLinkModal();
   };
 }
-class Z extends I {
+class G extends M {
   img;
   constructor(t) {
     super(t), this.img = null;
@@ -2230,7 +2230,7 @@ class Z extends I {
    */
   getActions = () => {
     const t = super.getActions();
-    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new Q(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new K(this.formatter)), this.formatter.options.image.allowCompressor && w.isEligibleForCompression(this.img) && t.push(new w(this.formatter)), t;
+    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new Z(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new K(this.formatter)), this.formatter.options.image.allowCompressor && A.isEligibleForCompression(this.img) && t.push(new A(this.formatter)), t;
   };
   /**
    * Returns the target HTML element associated with this instance.
@@ -2258,10 +2258,10 @@ class Z extends I {
     this.formatter.enabled && e instanceof HTMLImageElement && (t.stopImmediatePropagation(), t.preventDefault(), this.img = e, this.formatter.show(this));
   };
 }
-const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>', L = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>', G = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>', J = {
+const C = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>', L = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>', J = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>', tt = {
   specs: [
-    Z,
-    Y
+    G,
+    Q
   ],
   overlay: {
     className: "blot-formatter__overlay",
@@ -2439,7 +2439,7 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
       },
       icons: {
         submitButton: L,
-        cancelButton: E
+        cancelButton: C
       },
       labels: {
         alt: "Alt Text",
@@ -2517,8 +2517,8 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
         nothingToDo: "Image already optimised."
       },
       icons: {
-        cancel: `<span style="color: rgb(197, 74, 71);">${E}</span>`,
-        moreInfo: G,
+        cancel: `<span style="color: rgb(197, 74, 71);">${C}</span>`,
+        moreInfo: J,
         continue: L
       }
     },
@@ -2622,7 +2622,7 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
               alignItems: "center",
               color: "rgb(197, 74, 71)"
             },
-            icon: E,
+            icon: C,
             tooltip: "Cancel"
           },
           remove: {
@@ -2654,8 +2654,8 @@ const E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width
     defaultAspectRatio: "16/9 auto",
     proxyStyle: {}
   }
-}, tt = (h, t) => t;
-class nt {
+}, et = (h, t) => t;
+class _ {
   Quill;
   quill;
   options;
@@ -2674,19 +2674,41 @@ class nt {
   _tooltipContainPosition;
   ImageAlign;
   IframeAlign;
+  static cache = {
+    ImageAlign: null,
+    IframeAlign: null
+  };
+  static registerFormats(t, e = !1) {
+    _.registerImageAlign(t, e), _.registerIframeAlign(t, e);
+  }
+  static registerImageAlign(t, e = !1) {
+    if (t.imports?.["formats/imageAlign"])
+      e && console.debug("Image align format already registered with Quill, skipping registration");
+    else {
+      const i = j(t), o = new i(e);
+      _.cache.ImageAlign = o, e && console.debug("Registering imageAlign format with Quill", o), t.register({
+        "formats/imageAlign": o,
+        "attributors/class/imageAlign": o
+      });
+    }
+  }
+  static registerIframeAlign(t, e = !1) {
+    if (t.imports?.["formats/iframeAlign"])
+      e && console.debug("Iframe align format already registered with Quill, skipping registration");
+    else {
+      const i = D(t), o = new i(e);
+      _.cache.IframeAlign = o, e && console.debug("Registering iframeAlign format with Quill", o), t.register({
+        "formats/iframeAlign": o,
+        "attributors/class/iframeAlign": o
+      });
+    }
+  }
   constructor(t, e = {}) {
-    this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this);
-    const i = D(this.Quill), s = W(this.Quill);
-    this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
-      "formats/imageAlign": this.ImageAlign,
-      "attributors/class/imageAlign": this.ImageAlign,
-      "formats/iframeAlign": this.IframeAlign,
-      "attributors/class/iframeAlign": this.IframeAlign
-    }, !0), this.options = H(J, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains("ql-disabled"));
-    const o = document.createElement("style");
-    o.innerHTML = ".ql-disabled .blot-formatter__proxy-image {display: none;}", document.head.appendChild(o), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new N(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
-      (n) => new n(this)
-    ), this.specs.forEach((n) => n.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(this.quill, this.options.debug));
+    this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this), _.registerFormats(this.Quill, e.debug), this.ImageAlign = _.cache.ImageAlign, this.IframeAlign = _.cache.IframeAlign, this.options = N(tt, e, { arrayMerge: et }), e.debug && console.debug("BlotFormatter options", this.options), this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains("ql-disabled"));
+    const i = document.createElement("style");
+    i.innerHTML = ".ql-disabled .blot-formatter__proxy-image {display: none;}", document.head.appendChild(i), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new q(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
+      (o) => new o(this)
+    ), this.specs.forEach((o) => o.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new E(this.quill, this.options.debug));
   }
   /**
    * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
@@ -2800,7 +2822,7 @@ class nt {
         const e = this.currentSpec.getTargetBlot();
         if (e) {
           const i = this._getClickPosition(t);
-          i === "left" ? (this.options.debug && console.debug("Click position: LEFT"), _.placeCaretBeforeBlot(this.quill, e)) : i === "right" && (this.options.debug && console.debug("Click position: RIGHT"), _.placeCaretAfterBlot(this.quill, e));
+          i === "left" ? (this.options.debug && console.debug("Click position: LEFT"), v.placeCaretBeforeBlot(this.quill, e)) : i === "right" && (this.options.debug && console.debug("Click position: RIGHT"), v.placeCaretAfterBlot(this.quill, e));
         }
       }
       this.currentSpec.onHide(), this.currentSpec = null, this.quill.container.removeChild(this.overlay), document.removeEventListener("pointerdown", this._onDocumentPointerDown), this.overlay.style.setProperty("display", "none"), this._setUserSelect(""), this._destroyActions(), this.toolbar.destroy(), this.quill.emitter.emit(
@@ -2870,8 +2892,8 @@ class nt {
    */
   _scrollToolbarIntoView = async (t) => {
     let e = t.getBoundingClientRect();
-    const i = this.quill.container.getBoundingClientRect(), s = this.currentSpec?.getTargetElement();
-    e.top - i.top < 0 && s && (await this._scrollIntoViewWithOffset(s, e.height), e = t.getBoundingClientRect()), e.top < 0 && (this.options.debug && console.debug(`Scrolling window ${e.top - e.height}px to bring toolbar into view`), window.scrollBy({ top: e.top - e.height, behavior: "smooth" }));
+    const i = this.quill.container.getBoundingClientRect(), o = this.currentSpec?.getTargetElement();
+    e.top - i.top < 0 && o && (await this._scrollIntoViewWithOffset(o, e.height), e = t.getBoundingClientRect()), e.top < 0 && (this.options.debug && console.debug(`Scrolling window ${e.top - e.height}px to bring toolbar into view`), window.scrollBy({ top: e.top - e.height, behavior: "smooth" }));
   };
   /**
    * Scrolls the first scrollable ancestor of the given element into view with a specified offset.
@@ -2884,22 +2906,22 @@ class nt {
    * @returns A promise that resolves when scrolling is finished.
    */
   _scrollIntoViewWithOffset = (t, e = 10) => new Promise((i) => {
-    let s = null;
-    for (let o = t.parentElement; o; o = o.parentElement) {
-      const { overflowY: n } = getComputedStyle(o);
-      if (!["auto", "scroll"].includes(n) || o.scrollHeight <= o.clientHeight) continue;
-      const r = o.getBoundingClientRect(), l = t.getBoundingClientRect();
+    let o = null;
+    for (let s = t.parentElement; s; s = s.parentElement) {
+      const { overflowY: n } = getComputedStyle(s);
+      if (!["auto", "scroll"].includes(n) || s.scrollHeight <= s.clientHeight) continue;
+      const r = s.getBoundingClientRect(), l = t.getBoundingClientRect();
       if (l.top < r.top + e) {
-        s = o, o.scrollTo({
-          top: o.scrollTop + l.top - r.top - e
-        }), this.options.debug && console.debug(`Scrolling ancestor ${o.tagName} to bring element into view with offset ${e}px`);
+        o = s, s.scrollTo({
+          top: s.scrollTop + l.top - r.top - e
+        }), this.options.debug && console.debug(`Scrolling ancestor ${s.tagName} to bring element into view with offset ${e}px`);
         break;
       }
     }
-    s ? setTimeout(() => {
-      let n = s.scrollTop;
+    o ? setTimeout(() => {
+      let n = o.scrollTop;
       const r = setInterval(() => {
-        s.scrollTop === n ? (clearInterval(r), i()) : n = s.scrollTop;
+        o.scrollTop === n ? (clearInterval(r), i()) : n = o.scrollTop;
       }, 50);
     }, 100) : i();
   });
@@ -2961,7 +2983,7 @@ class nt {
     if (this.currentSpec) {
       const t = this.currentSpec.getOverlayElement();
       if (t) {
-        const e = this.quill.container.getBoundingClientRect(), i = t.getBoundingClientRect(), s = {
+        const e = this.quill.container.getBoundingClientRect(), i = t.getBoundingClientRect(), o = {
           left: `${i.left - e.left - 1 + this.quill.container.scrollLeft}px`,
           top: `${i.top - e.top + this.quill.container.scrollTop}px`,
           width: `${i.width}px`,
@@ -2969,8 +2991,8 @@ class nt {
         };
         Object.assign(this.overlay.style, {
           display: "block",
-          ...s
-        }), this.options.debug && console.debug("Blotformatter _repositionOverlay", "specRect:", i, "overlayRect:", s);
+          ...o
+        }), this.options.debug && console.debug("Blotformatter _repositionOverlay", "specRect:", i, "overlayRect:", o);
       }
     }
   };
@@ -3060,11 +3082,11 @@ class nt {
    */
   _onTouchScrollMove = (t) => {
     if (t.touches.length === 1) {
-      const e = t.touches[0], i = this._startX - e.clientX, s = this._startY - e.clientY;
-      if (Math.abs(i) < 2 && Math.abs(s) < 2) return;
-      const o = this.quill.root, n = o.scrollTop === 0, r = o.scrollTop + o.clientHeight === o.scrollHeight, l = o.scrollLeft === 0, p = o.scrollLeft + o.clientWidth === o.scrollWidth, m = Math.abs(s) > Math.abs(i), u = Math.abs(i) > Math.abs(s);
+      const e = t.touches[0], i = this._startX - e.clientX, o = this._startY - e.clientY;
+      if (Math.abs(i) < 2 && Math.abs(o) < 2) return;
+      const s = this.quill.root, n = s.scrollTop === 0, r = s.scrollTop + s.clientHeight === s.scrollHeight, l = s.scrollLeft === 0, p = s.scrollLeft + s.clientWidth === s.scrollWidth, m = Math.abs(o) > Math.abs(i), u = Math.abs(i) > Math.abs(o);
       let g = !1;
-      m && !(n && s < 0) && !(r && s > 0) && (g = !0, o.scrollTop += s), u && !(l && i < 0) && !(p && i > 0) && (g = !0, o.scrollLeft += i), g && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter touch scroll end", `X: ${this._startX}, Y: ${this._startY}`);
+      m && !(n && o < 0) && !(r && o > 0) && (g = !0, s.scrollTop += o), u && !(l && i < 0) && !(p && i > 0) && (g = !0, s.scrollLeft += i), g && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter touch scroll end", `X: ${this._startX}, Y: ${this._startY}`);
     }
   };
   /**
@@ -3081,11 +3103,11 @@ class nt {
    */
   _registerCustomBlots = () => {
     if (this.options.image.registerImageTitleBlot) {
-      const t = q(this.Quill);
+      const t = W(this.Quill);
       this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, !0), this.options.debug && console.debug("formats/image after register:", this.Quill.import("formats/image"));
     }
     if (this.options.video.registerCustomVideoBlot) {
-      const t = j(this.Quill);
+      const t = $(this.Quill);
       this.options.debug && (console.debug("Registering custom Video blot", t), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, !0), this.options.debug && console.debug("formats/video after register:", this.Quill.import("formats/video"));
     }
   };
@@ -3137,14 +3159,14 @@ class nt {
         empty: !1,
         suffix: /^$/,
         handler: (e) => {
-          const i = e.index + e.length, [s] = this.quill.getLeaf(i + 1);
-          if (!s?.domNode)
+          const i = e.index + e.length, [o] = this.quill.getLeaf(i + 1);
+          if (!o?.domNode)
             return !0;
-          const o = s.domNode;
-          if (o?.tagName !== "IMG" || !o.parentElement?.matches('span[contenteditable="false"]'))
+          const s = o.domNode;
+          if (s?.tagName !== "IMG" || !s.parentElement?.matches('span[contenteditable="false"]'))
             return !0;
           const n = this.quill.getLength();
-          i + 1 >= n - 1 ? this.quill.setSelection(n - 1, 0, "user") : (this.quill.setSelection(i + 2, 0, "user"), _.sendCaretBack(1)), this.options.debug && console.debug(
+          i + 1 >= n - 1 ? this.quill.setSelection(n - 1, 0, "user") : (this.quill.setSelection(i + 2, 0, "user"), v.sendCaretBack(1)), this.options.debug && console.debug(
             "BlotFormatter ArrowRight binding triggered, moving cursor past image at index",
             i
           );
@@ -3189,31 +3211,31 @@ class nt {
    */
   _getClickPosition = (t) => {
     const i = this.overlay.getBoundingClientRect();
-    let s;
-    return t.clientY < i.top ? s = "above" : t.clientY > i.bottom ? s = "below" : t.clientX < i.left ? s = "left" : t.clientX > i.right ? s = "right" : s = "inside", this.options.debug && console.debug("BlotFormatter _getClickPosition", s, "for event", t), s;
+    let o;
+    return t.clientY < i.top ? o = "above" : t.clientY > i.bottom ? o = "below" : t.clientX < i.left ? o = "left" : t.clientX > i.right ? o = "right" : o = "inside", this.options.debug && console.debug("BlotFormatter _getClickPosition", o, "for event", t), o;
   };
 }
 export {
-  v as Action,
-  P as AlignAction,
+  x as Action,
+  F as AlignAction,
   K as AttributeAction,
-  I as BlotSpec,
-  _ as CaretAction,
-  $ as DefaultAligner,
-  J as DefaultOptions,
-  F as DeleteAction,
-  Y as IframeVideoSpec,
-  Z as ImageSpec,
-  Q as LinkAction,
-  U as ResizeAction,
-  N as Toolbar,
-  A as ToolbarButton,
-  k as TooltipContainPosition,
-  X as UnclickableBlotSpec,
-  q as createAltTitleImageBlotClass,
-  W as createIframeAlignAttributor,
-  D as createImageAlignAttributor,
-  j as createResponsiveVideoBlotClass,
-  nt as default
+  M as BlotSpec,
+  v as CaretAction,
+  P as DefaultAligner,
+  tt as DefaultOptions,
+  U as DeleteAction,
+  Q as IframeVideoSpec,
+  G as ImageSpec,
+  Z as LinkAction,
+  V as ResizeAction,
+  q as Toolbar,
+  k as ToolbarButton,
+  E as TooltipContainPosition,
+  Y as UnclickableBlotSpec,
+  W as createAltTitleImageBlotClass,
+  D as createIframeAlignAttributor,
+  j as createImageAlignAttributor,
+  $ as createResponsiveVideoBlotClass,
+  _ as default
 };
 //# sourceMappingURL=index.esm.js.map

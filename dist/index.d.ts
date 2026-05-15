@@ -341,6 +341,13 @@ declare class BlotFormatter {
     private _tooltipContainPosition?;
     ImageAlign: AttributorClass;
     IframeAlign: AttributorClass;
+    static cache: {
+        ImageAlign: any;
+        IframeAlign: any;
+    };
+    static registerFormats(quillConstructor: typeof default_2, debug?: boolean): void;
+    static registerImageAlign(quillConstructor: typeof default_2, debug?: boolean): void;
+    static registerIframeAlign(quillConstructor: typeof default_2, debug?: boolean): void;
     constructor(quill: any, options?: Partial<Options>);
     /**
      * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
