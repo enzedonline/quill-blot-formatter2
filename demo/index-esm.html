@@ -29,8 +29,7 @@
             import Quill from 'https://cdn.skypack.dev/quill@2.0.3';
             import QuillBlotFormatter2 from '../dist/index.esm.js';
 
-            Quill.register('modules/blotFormatter2', QuillBlotFormatter2);
-            window.quill = new Quill("#quill-editor", {
+            const quill = new Quill("#quill-editor", {
                 modules: {
                     toolbar: [
                         [{ header: [1, 2, false] }],
