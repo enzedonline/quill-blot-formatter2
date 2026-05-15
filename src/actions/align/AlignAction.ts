@@ -1,8 +1,8 @@
-import Action from '../Action';
-import BlotFormatter from '../../BlotFormatter';
-import DefaultAligner from './DefaultAligner';
-import ToolbarButton from '../toolbar/ToolbarButton';
-import { Alignment } from './Alignment';
+import Action from '../Action.js';
+import BlotFormatter from '../../BlotFormatter.js';
+import DefaultAligner from './DefaultAligner.js';
+import ToolbarButton from '../toolbar/ToolbarButton.js';
+import { Alignment } from './Alignment.js';
 
 /**
  * Provides alignment actions for Quill editor blots, including creating, managing,

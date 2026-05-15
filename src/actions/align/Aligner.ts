@@ -1,5 +1,5 @@
-import type { Alignment } from './Alignment';
-import type { Blot } from '../../specs/BlotSpec';
+import type { Alignment } from './Alignment.js';
+import type { Blot } from '../../specs/BlotSpec.js';
 
 /**
  * Interface for objects that handle alignment operations on blots.

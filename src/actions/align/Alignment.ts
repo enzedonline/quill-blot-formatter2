@@ -1,4 +1,4 @@
-import type { Blot } from '../../specs/BlotSpec'
+import type { Blot } from '../../specs/BlotSpec.js'
 
 /**
  * Represents an alignment action that can be applied to a Blot.

@@ -1,5 +1,5 @@
-import BlotFormatter from '../../BlotFormatter';
-import ToolbarButton from './ToolbarButton';
+import BlotFormatter from '../../BlotFormatter.js';
+import ToolbarButton from './ToolbarButton.js';
 
 /**
  * Manages the creation, display, and destruction of a toolbar for BlotFormatter actions.

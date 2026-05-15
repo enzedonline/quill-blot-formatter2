@@ -1,9 +1,9 @@
-import Action from '../actions/Action';
-import AlignAction from '../actions/align/AlignAction';
-import BlotFormatter from '../BlotFormatter';
-import CaretAction from '../actions/CaretAction';
-import DeleteAction from '../actions/DeleteAction';
-import ResizeAction from '../actions/ResizeAction';
+import Action from '../actions/Action.js';
+import AlignAction from '../actions/align/AlignAction.js';
+import BlotFormatter from '../BlotFormatter.js';
+import CaretAction from '../actions/CaretAction.js';
+import DeleteAction from '../actions/DeleteAction.js';
+import ResizeAction from '../actions/ResizeAction.js';
 
 export interface Blot {
   domNode: HTMLElement;

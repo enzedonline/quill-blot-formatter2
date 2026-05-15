@@ -1,6 +1,6 @@
-import Action from './Action';
-import BlotFormatter from '../BlotFormatter';
-import ToolbarButton from './toolbar/ToolbarButton';
+import Action from './Action.js';
+import BlotFormatter from '../BlotFormatter.js';
+import ToolbarButton from './toolbar/ToolbarButton.js';
 
 interface HandleStyle {
   width?: string;

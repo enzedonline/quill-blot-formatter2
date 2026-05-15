@@ -1,5 +1,5 @@
-import BlotFormatter from '../BlotFormatter';
-import BlotSpec from './BlotSpec';
+import BlotFormatter from '../BlotFormatter.js';
+import BlotSpec from './BlotSpec.js';
 
 const PROXY_IMAGE_CLASS = 'blot-formatter__proxy-image';
 

@@ -1,5 +1,5 @@
-import Action from './Action';
-import { Blot } from '../specs/BlotSpec';
+import Action from './Action.js';
+import { Blot } from '../specs/BlotSpec.js';
 
 /**
  * Provides caret (text cursor) manipulation actions for the Quill editor, including moving the caret

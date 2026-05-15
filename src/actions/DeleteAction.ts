@@ -1,4 +1,4 @@
-import Action from './Action';
+import Action from './Action.js';
 
 /**
  * Represents an action that handles deletion of a selected blot in a Quill editor.

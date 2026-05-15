@@ -1,8 +1,8 @@
-import BlotFormatter from '../../BlotFormatter';
-import { Aligner } from './Aligner';
-import type { Alignment } from './Alignment';
-import type { Blot } from '../../specs/BlotSpec';
-import type { Options } from '../../Options';
+import BlotFormatter from '../../BlotFormatter.js';
+import { Aligner } from './Aligner.js';
+import type { Alignment } from './Alignment.js';
+import type { Blot } from '../../specs/BlotSpec.js';
+import type { Options } from '../../Options.js';
 
 /**
  * The `DefaultAligner` class provides alignment management for Quill editor blots (such as images and iframes).

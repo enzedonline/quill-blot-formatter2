@@ -1,16 +1,16 @@
-import Action from './actions/Action';
-import BlotSpec from './specs/BlotSpec';
-import CaretAction from './actions/CaretAction';
+import Action from './actions/Action.js';
+import BlotSpec from './specs/BlotSpec.js';
+import CaretAction from './actions/CaretAction.js';
 import deepmerge from 'deepmerge';
 import type Quill from 'quill';
-import Toolbar from './actions/toolbar/Toolbar';
-import TooltipContainPosition from './tooltip/TooltipContainPosition';
-import type { AttributorClass } from './actions/align/AlignFormats';
-import { createAltTitleImageBlotClass } from './blots/Image';
-import { createIframeAlignAttributor, createImageAlignAttributor } from './actions/align/AlignFormats';
-import { createResponsiveVideoBlotClass } from './blots/Video';
-import { DefaultOptions } from './DefaultOptions';
-import type { Options } from './Options';
+import Toolbar from './actions/toolbar/Toolbar.js';
+import TooltipContainPosition from './tooltip/TooltipContainPosition.js';
+import type { AttributorClass } from './actions/align/AlignFormats.js';
+import { createAltTitleImageBlotClass } from './blots/Image.js';
+import { createIframeAlignAttributor, createImageAlignAttributor } from './actions/align/AlignFormats.js';
+import { createResponsiveVideoBlotClass } from './blots/Video.js';
+import { DefaultOptions } from './DefaultOptions.js';
+import type { Options } from './Options.js';
 
 const dontMerge = (destination: Array<any>, source: Array<any>) => source;
 

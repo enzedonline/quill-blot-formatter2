@@ -1,9 +1,8 @@
-import Action from './Action';
-import BlotFormatter from '../BlotFormatter';
-import type Quill from 'quill';
-import ToolbarButton from './toolbar/ToolbarButton';
-import type { Blot } from '../specs/BlotSpec';
-import type { LinkOptions } from '../Options';
+import Action from './Action.js';
+import BlotFormatter from '../BlotFormatter.js';
+import ToolbarButton from './toolbar/ToolbarButton.js';
+import type { Blot } from '../specs/BlotSpec.js';
+import type { LinkOptions } from '../Options.js';
 
 /**
  * Handles the link editing action for image blots within the Quill editor.

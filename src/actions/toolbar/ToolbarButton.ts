@@ -1,4 +1,4 @@
-import { ToolbarOptions } from "../../Options";
+import { ToolbarOptions } from "../../Options.js";
 
 export interface _ToolbarButton {
     action: string;

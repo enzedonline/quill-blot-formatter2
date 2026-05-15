@@ -1,9 +1,9 @@
-import Action from '../actions/Action';
-import AttributeAction from '../actions/AttributeAction';
-import BlotFormatter from '../BlotFormatter';
-import BlotSpec from './BlotSpec';
-import CompressAction from '../actions/CompressAction';
-import LinkAction from '../actions/LinkAction';
+import Action from '../actions/Action.js';
+import AttributeAction from '../actions/AttributeAction.js';
+import BlotFormatter from '../BlotFormatter.js';
+import BlotSpec from './BlotSpec.js';
+import CompressAction from '../actions/CompressAction.js';
+import LinkAction from '../actions/LinkAction.js';
 
 /**
  * Represents a specification for handling image elements within a Quill editor instance.

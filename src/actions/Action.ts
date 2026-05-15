@@ -1,5 +1,5 @@
-import BlotFormatter from '../BlotFormatter';
-import ToolbarButton from './toolbar/ToolbarButton';
+import BlotFormatter from '../BlotFormatter.js';
+import ToolbarButton from './toolbar/ToolbarButton.js';
 
 /**
  * Represents a base class for actions used within the BlotFormatter.

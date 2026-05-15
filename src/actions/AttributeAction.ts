@@ -1,7 +1,7 @@
-import Action from './Action';
-import BlotFormatter from '../BlotFormatter';
-import ToolbarButton from './toolbar/ToolbarButton';
-import type { Blot } from '../specs/BlotSpec';
+import Action from './Action.js';
+import BlotFormatter from '../BlotFormatter.js';
+import ToolbarButton from './toolbar/ToolbarButton.js';
+import type { Blot } from '../specs/BlotSpec.js';
 
 interface AltTitleModal {
     element: HTMLDivElement;

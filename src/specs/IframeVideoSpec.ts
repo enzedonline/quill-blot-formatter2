@@ -1,5 +1,5 @@
-import BlotFormatter from '../BlotFormatter';
-import UnclickableBlotSpec from './UnclickableBlotSpec';
+import BlotFormatter from '../BlotFormatter.js';
+import UnclickableBlotSpec from './UnclickableBlotSpec.js';
 
 /**
  * Represents a specification for handling iframe-based video blots within the Quill editor.
