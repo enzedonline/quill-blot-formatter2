@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "module": "es2022",
+    "module": "nodenext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "declaration": true, 
+    "rootDir": "./src",
     "declarationDir": "./dist", 
     "outDir": "./dist",
     "sourceMap": true,
