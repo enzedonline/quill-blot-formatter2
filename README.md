@@ -1,9 +1,9 @@
 # Quill Blot Formatter 2 (quill-blot-formatter2)
 
+An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos. For images, it supports link management and editing alt & title values. It can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
+
 > [!WARNING]
 > ***THIS README IS FOR v3.x ONLY - see [NPM](https://www.npmjs.com/package/@enzedonline/quill-blot-formatter2?activeTab=versions) for documentation on previous versions***
-
-An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter) to make alignments compatible with Quill V2. Out of the box supports resizing and realigning images and iframe videos. For images, it supports link management and editing alt & title values. It can be easily extended using [`BlotSpec`](#blotspec) and [`Action`](#action).
 
 ![the new toolbar with alt title editing button](/assets/blot-formatter-image-overlay.png)
 
@@ -34,6 +34,7 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
   - [Using Suggested Align Format Styling](#using-suggested-align-format-styling)
     - [via CDN](#via-cdn)
     - [via import](#via-import-react-etc)
+  - [Use with the formats configuration](#use-with-the-formats-configuration)
   - [Demos](#demos)
 - [Actions](#actions)
   - [Align Action](#align-action)
@@ -62,6 +63,12 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 - [Further Customisations](#further-customisations)
 
 ## What's New
+
+### Version 3.2
+
+Added static methods to pre-register `ImageAlign` and `IframeAlign` formats to allow inclusion in the Quill `formats` configuration specification at startup. See [Use with the formats configuration](#use-with-the-formats-configuration) for more information.
+
+Module resolution updated from `Node16` to `NodeNext`.
 
 ### Version 3.1
  Adds a .cjs output and fixes the default export.
@@ -243,6 +250,46 @@ import "@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css"; 
   rel="stylesheet" 
   href="https://cdn.jsdelivr.net/npm/@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css"
 >
+```
+
+### Use with the formats configuration
+
+If you use the Quill [`formats`](https://quilljs.com/docs/configuration#formats) configuration to customise the formats recognised by the editor, you will need to pre-register the formats used by BlotFormatter2 (`ImageAlign` & `IframeAlign`). These are registered automatically by Blotformatter2 during startup, but for the `formats` config to recognise them, they must be registered before startup.
+
+There are 3 static methods to allow this:
+- `Blotformatter.registerImageAlign(Quill)` registers `ImageAlign`
+- `Blotformatter.registerIframeAlign(Quill)` registers `IframeAlign`
+- `Blotformatter.registerFormats(Quill)` calls both of the above 
+
+<mark>Note, you must supply the Quill *object* **NOT** the quill *instance*.</mark>
+
+Add `true` as 2nd parameter to get debug info printed to the console.
+
+e.g. UMD
+
+```js
+  const BlotFormatter = QuillBlotFormatter2.default;
+  BlotFormatter.registerFormats(Quill);
+  Quill.register('modules/blotFormatter2', BlotFormatter);
+  const quill = new Quill("#quill-editor", {
+    ...
+    formats: ["bold", "image", "video", "iframeAlign", "imageAlign"],
+    ...
+  })
+```
+
+or ESM
+
+```js
+  import Quill from 'https://cdn.skypack.dev/quill@2.0.3';
+  import QuillBlotFormatter2 from '.../index.esm.js';
+  QuillBlotFormatter2.registerFormats(Quill);
+  Quill.register('modules/blotFormatter2', QuillBlotFormatter2);
+    const quill = new Quill("#quill-editor", {
+    ...
+    formats: ["bold", "image", "video", "iframeAlign", "imageAlign"],
+    ...
+  })
 ```
 
 ### Demos

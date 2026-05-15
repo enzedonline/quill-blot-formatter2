@@ -1,5 +1,17 @@
 # Changelog
 
+## [v3.2.0] - 2026-05-16
+### Changed
+
+Added static methods to pre-register `ImageAlign` and `IframeAlign` formats to allow inclusion in the Quill `formats` configuration specification at startup:
+- `Blotformatter.registerImageAlign(Quill)` registers `ImageAlign`
+- `Blotformatter.registerIframeAlign(Quill)` registers `IframeAlign`
+- `Blotformatter.registerFormats(Quill)` calls both of the above methods as a shorthand.
+
+Note, you must supply the Quill *object* **NOT** the quill *instance*.
+
+Module and module resolution have been updated to nodenext in prep for TypeScript 6+.
+
 ## [v3.1.1] - 2026-03-17
 ### Changed
 
