@@ -248,6 +248,8 @@ class E {
     const i = t.container.querySelector(".ql-tooltip");
     console.debug("tooltip:", i), i ? (E.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
   }
+  quill;
+  debug;
   /**
    * Repositions a tooltip element within a given container to ensure it does not overflow
    * the container's boundaries. Adjusts the tooltip's `top` and `left` CSS properties if
@@ -343,6 +345,7 @@ const W = (h) => {
         whitelist: ["left", "center", "right"]
       }), this.debug = s;
     }
+    debug;
     static attrName = "iframeAlign";
     /**
      * Adds alignment and width-related formatting to the specified HTML element node.
@@ -407,6 +410,7 @@ const W = (h) => {
         whitelist: ["left", "center", "right"]
       }), this.debug = s;
     }
+    debug;
     static tagName = "SPAN";
     static attrName = "imageAlign";
     /**
