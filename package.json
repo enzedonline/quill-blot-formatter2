@@ -42,9 +42,6 @@
     "resize"
   ],
   "license": "Apache-2.0",
-  "dependencies": {
-    "deepmerge": "^4.3.1"
-  },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.57.7",
     "@types/node": "^24.10.9",
