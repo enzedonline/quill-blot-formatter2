@@ -9,7 +9,8 @@ import { createAltTitleImageBlotClass } from './blots/Image.js';
 import { createIframeAlignAttributor, createImageAlignAttributor } from './actions/align/AlignFormats.js';
 import { createResponsiveVideoBlotClass } from './blots/Video.js';
 import { DefaultOptions } from './DefaultOptions.js';
-import { mergeOptions, type Options } from './Options.js';
+import { mergeOptions } from './MergeOptions.js';
+import type { Options } from './Options.js';
 
 /**
  * Represents the possible positions of a pointer relative to the formatter overlay.
