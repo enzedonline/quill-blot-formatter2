@@ -29,6 +29,8 @@
         <div id="quill-editor"></div>
         <script>
             const BlotFormatter = QuillBlotFormatter2.default;
+            Quill.register("modules/blotFormatter2", BlotFormatter);
+            
             const quill = new Quill("#quill-editor", {
                 modules: {
                     toolbar: [
