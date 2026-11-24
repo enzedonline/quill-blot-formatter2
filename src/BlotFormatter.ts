@@ -1,7 +1,6 @@
 import Action from './actions/Action.js';
 import BlotSpec from './specs/BlotSpec.js';
 import CaretAction from './actions/CaretAction.js';
-import deepmerge from 'deepmerge';
 import type Quill from 'quill';
 import Toolbar from './actions/toolbar/Toolbar.js';
 import TooltipContainPosition from './tooltip/TooltipContainPosition.js';
@@ -10,9 +9,8 @@ import { createAltTitleImageBlotClass } from './blots/Image.js';
 import { createIframeAlignAttributor, createImageAlignAttributor } from './actions/align/AlignFormats.js';
 import { createResponsiveVideoBlotClass } from './blots/Video.js';
 import { DefaultOptions } from './DefaultOptions.js';
+import { mergeOptions } from './MergeOptions.js';
 import type { Options } from './Options.js';
-
-const dontMerge = (destination: Array<any>, source: Array<any>) => source;
 
 /**
  * Represents the possible positions of a pointer relative to the formatter overlay.
@@ -160,7 +158,7 @@ export default class BlotFormatter {
     // }, true);
 
     // merge custom options with default
-    this.options = deepmerge(DefaultOptions, options, { arrayMerge: dontMerge });
+    this.options = mergeOptions(DefaultOptions, options);
     if (options.debug) console.debug('BlotFormatter options', this.options);
 
     // set enabled, add css to hide proxy images when editor is disabled

@@ -42,9 +42,6 @@
     "resize"
   ],
   "license": "Apache-2.0",
-  "dependencies": {
-    "deepmerge": "^4.3.1"
-  },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.57.7",
     "@types/node": "^24.10.9",
@@ -57,6 +54,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
+    "test": "node --test \"test/**/*.test.mjs\"",
     "build": "npm run clean && vite build",
     "prepublishOnly": "npm run build",
     "dev": "vite --host 0.0.0.0 --port 3000",
