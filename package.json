@@ -60,7 +60,7 @@
     "dev": "vite --host 0.0.0.0 --port 3000",
     "preview": "vite preview",
     "preinstall": "node ./check-upgrade.cjs",
-    "release_minor": "npm version minor -m \"release: v%s\" && npm run build && git add dist && git commit --amend --no-edit && git push origin master && git push origin --tags",
-    "release_patch": "npm version patch -m \"release: v%s\" && npm run build && git add dist && git commit --amend --no-edit && git push origin master && git push origin --tags"
+    "release_minor": "npm version minor -m \"release: v%s\" && npm run build && git add dist && git commit --amend --no-edit && git push origin HEAD && git push origin --tags",
+    "release_patch": "npm version patch -m \"release: v%s\" && npm run build && git add dist && git commit --amend --no-edit && git push origin HEAD && git push origin --tags"
   }
 }
