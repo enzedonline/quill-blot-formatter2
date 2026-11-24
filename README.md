@@ -64,6 +64,10 @@ An update of [quill](https://quilljs.com/) module [quill-blot-formatter](https:/
 
 ## What's New
 
+### Version 3.3
+
+Remove dependency on external deepMerge for options.
+
 ### Version 3.2
 
 Added static methods to pre-register `ImageAlign` and `IframeAlign` formats to allow inclusion in the Quill `formats` configuration specification at startup. See [Use with the formats configuration](#use-with-the-formats-configuration) for more information.

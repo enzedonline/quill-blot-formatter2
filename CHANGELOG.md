@@ -1,5 +1,21 @@
 # Changelog
 
+## [v3.3.0] - 2026-11-24
+
+Remove dependency on "deepmerge"
+
+Fixes [#54](https://github.com/enzedonline/quill-blot-formatter2/issues/54). Option merging is now implemented in [src/MergeOptions.ts](https://github.com/enzedonline/quill-blot-formatter2/blob/master/src/MergeOptions.ts).
+
+Things that match the original implementation:
+
+- Nested plain objects are recursively merged into fresh objects
+- Arrays replace defaults by reference (matching the behaviour of the { arrayMerge: dontMerge } option used in the original implementation)
+- Functions and non-plain objects are preserved by reference (probably not needed, but matches the previous implementation)
+- Explicit null and undefined override defaults.
+- Only own enumerable properties are copied, including symbols.
+- No defense against cyclic structures (neither does deepmerge), but this helper's use is specific to option records, not a general-purpose merge for class instances so it shouldn't be a cause for concern.
+
+
 ## [v3.2.0] - 2026-05-16
 ### Changed
 
